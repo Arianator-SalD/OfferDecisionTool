@@ -77,6 +77,161 @@
       min-width: 0;
     }
 
+    .archiveArea {
+      display: grid;
+      gap: 8px;
+      min-width: min(420px, 100%);
+      flex: 1 1 420px;
+    }
+
+    .archiveSelector {
+      display: grid;
+      grid-template-columns: auto minmax(180px, 1fr);
+      gap: 8px;
+      align-items: center;
+    }
+
+    .archiveLabel {
+      color: #685b6c;
+      font-size: 12px;
+      font-weight: 900;
+      white-space: nowrap;
+    }
+
+    .archiveSelect {
+      position: absolute;
+      width: 1px;
+      height: 1px;
+      overflow: hidden;
+      clip: rect(0 0 0 0);
+      clip-path: inset(50%);
+      white-space: nowrap;
+    }
+
+    .archiveDropdown {
+      position: relative;
+      min-width: 0;
+    }
+
+    .archiveDropdownButton {
+      position: relative;
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) 18px;
+      gap: 10px;
+      align-items: center;
+      width: 100%;
+      height: 38px;
+      border: 1px solid rgba(234, 218, 212, 0.92);
+      border-radius: var(--radius);
+      padding: 0 10px 0 12px;
+      color: var(--ink);
+      background: linear-gradient(135deg, rgba(255, 255, 255, 0.96), rgba(255, 248, 241, 0.9), rgba(239, 247, 255, 0.82));
+      font-size: 13px;
+      font-weight: 900;
+      text-align: left;
+      box-shadow: 0 10px 22px rgba(92, 70, 94, 0.08);
+    }
+
+    .archiveDropdownButton:hover {
+      border-color: rgba(255, 169, 178, 0.72);
+      background: linear-gradient(135deg, rgba(255, 255, 255, 0.98), rgba(255, 240, 238, 0.94), rgba(235, 245, 255, 0.9));
+    }
+
+    .archiveDropdownButton:focus-visible {
+      outline: 3px solid rgba(103, 156, 232, 0.3);
+      outline-offset: 2px;
+      border-color: rgba(103, 156, 232, 0.75);
+    }
+
+    .archiveDropdownValue {
+      min-width: 0;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+
+    .archiveDropdownIcon {
+      color: #8b7085;
+      font-size: 14px;
+      line-height: 1;
+      transition: transform 0.16s ease;
+    }
+
+    .archiveDropdown.isOpen .archiveDropdownIcon {
+      transform: rotate(180deg);
+    }
+
+    .archiveMenu {
+      position: absolute;
+      left: 0;
+      right: 0;
+      top: calc(100% + 7px);
+      z-index: 12;
+      display: grid;
+      gap: 4px;
+      max-height: 260px;
+      overflow-y: auto;
+      border: 1px solid rgba(234, 218, 212, 0.96);
+      border-radius: var(--radius);
+      padding: 6px;
+      background: linear-gradient(135deg, rgba(255, 255, 255, 0.98), rgba(255, 241, 247, 0.96), rgba(235, 245, 255, 0.94));
+      box-shadow: 0 20px 44px rgba(54, 38, 58, 0.18);
+    }
+
+    .archiveOption {
+      display: grid;
+      grid-template-columns: 18px minmax(0, 1fr);
+      gap: 8px;
+      align-items: center;
+      min-height: 36px;
+      border-radius: var(--radius);
+      padding: 0 9px;
+      color: #4f4255;
+      background: transparent;
+      font-size: 13px;
+      font-weight: 850;
+      text-align: left;
+    }
+
+    .archiveOption:hover,
+    .archiveOption:focus-visible {
+      outline: 0;
+      background: linear-gradient(135deg, rgba(255, 230, 233, 0.9), rgba(221, 240, 255, 0.78));
+    }
+
+    .archiveOption.isActive {
+      color: #743b50;
+      background: linear-gradient(135deg, rgba(255, 230, 233, 0.96), rgba(255, 247, 204, 0.78), rgba(235, 245, 255, 0.9));
+    }
+
+    .archiveOptionCheck {
+      display: grid;
+      place-items: center;
+      width: 18px;
+      color: #d65d76;
+      font-size: 13px;
+      font-weight: 950;
+    }
+
+    .archiveOptionName {
+      min-width: 0;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+
+    .archiveActions {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+
+    .archiveActions .button {
+      min-height: 34px;
+      padding: 0 10px;
+      font-size: 12px;
+    }
+
     .eyebrow {
       display: block;
       margin-bottom: 6px;
@@ -751,6 +906,30 @@
         flex-direction: column;
       }
 
+      .titleGroup,
+      .archiveArea,
+      .accountArea {
+        flex: none;
+      }
+
+      .archiveArea {
+        min-width: 0;
+        width: 100%;
+      }
+
+      .archiveSelector {
+        grid-template-columns: 1fr;
+      }
+
+      .archiveActions {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+      }
+
+      .archiveActions .button {
+        min-height: 38px;
+      }
+
       .panelHeaderActions {
         align-items: stretch;
         flex-direction: column;
@@ -770,7 +949,8 @@
       }
 
       .button {
-        flex: 1 1 150px;
+        width: 100%;
+        flex: none;
       }
 
       .subtitle,
@@ -797,9 +977,27 @@
   <main class="page">
     <header class="topbar">
       <div class="titleGroup">
-        <span class="eyebrow">Offer decision tool</span>
-        <h1>Offer 选择打分</h1>
-        <p class="subtitle">记录关键信息，按你自己的权重实时排序。</p>
+        <span class="eyebrow">Career Decision Journal</span>
+        <h1>职业选择档案</h1>
+        <p class="subtitle">记录每一次选择的理由、偏好与逻辑，让重要决定有迹可循。</p>
+      </div>
+      <div class="archiveArea" aria-label="档案管理">
+        <div class="archiveSelector">
+          <label class="archiveLabel" for="archiveSelect">当前档案</label>
+          <select class="archiveSelect" id="archiveSelect"></select>
+          <div class="archiveDropdown" id="archiveDropdown">
+            <button class="archiveDropdownButton" id="archiveDropdownButton" type="button" aria-haspopup="listbox" aria-expanded="false">
+              <span class="archiveDropdownValue" id="archiveDropdownValue">暑期实习 offer</span>
+              <span class="archiveDropdownIcon" aria-hidden="true">⌄</span>
+            </button>
+            <div class="archiveMenu isHidden" id="archiveMenu" role="listbox" aria-label="选择档案"></div>
+          </div>
+        </div>
+        <div class="archiveActions">
+          <button class="button secondary" id="newArchiveButton" type="button">新建档案</button>
+          <button class="button secondary" id="renameArchiveButton" type="button">重命名档案</button>
+          <button class="button danger" id="deleteArchiveButton" type="button">删除档案</button>
+        </div>
       </div>
       <div class="accountArea" aria-label="账号与云端保存">
         <div class="authSummary">
@@ -828,6 +1026,29 @@
             <button class="button secondary" id="signUpButton" type="button">注册</button>
           </div>
           <p class="authModalStatus" id="authModalStatus" role="status" aria-live="polite"></p>
+        </form>
+      </section>
+    </div>
+
+    <div class="authModalBackdrop isHidden" id="archiveModalBackdrop">
+      <section class="authModal" role="dialog" aria-modal="true" aria-labelledby="archiveModalTitle">
+        <div class="authModalHeader">
+          <div>
+            <h2 id="archiveModalTitle">新建档案</h2>
+            <p id="archiveModalDescription">创建一组完整 offer 数据。</p>
+          </div>
+          <button class="iconButton" id="closeArchiveModalButton" type="button" aria-label="关闭档案窗口">x</button>
+        </div>
+        <form class="authForm" id="archiveForm">
+          <div class="fieldGroup" id="archiveNameGroup">
+            <label class="fieldLabel" for="archiveNameInput">档案名称</label>
+            <input class="authInput" id="archiveNameInput" type="text" autocomplete="off" maxlength="40" required>
+          </div>
+          <p class="authModalStatus isVisible" id="archiveModalMessage"></p>
+          <div class="authModalActions">
+            <button class="button secondary" id="archiveCancelButton" type="button">取消</button>
+            <button class="button" id="archiveConfirmButton" type="submit">确认</button>
+          </div>
         </form>
       </section>
     </div>
@@ -883,6 +1104,7 @@
     const MAX_NOTE_LINES = 5;
     const CLOUD_TABLE = "offer_boards";
     const CLOUD_BOARD_KEY = "default";
+    const DEFAULT_ARCHIVE_NAME = "暑期实习 offer";
     const SUPABASE_URL = "https://gabpavfvsbfewszwtxno.supabase.co";
     const SUPABASE_ANON_KEY = "sb_publishable_vVxQeL0YKii-60n4wxXaBQ_1KqYkqR2";
 
@@ -891,7 +1113,7 @@
       { id: "interest", label: "兴趣程度", weight: 8 },
       { id: "salary", label: "待遇", weight: 6 },
       { id: "location", label: "工作地", weight: 5 },
-      { id: "workload", label: "工作强度", weight: 6 },
+      { id: "workload", label: "工作生活平衡", weight: 6 },
       { id: "conversion", label: "转正概率", weight: 7 }
     ];
 
@@ -943,6 +1165,7 @@
     let activeUserId = null;
     let cloudSaveTimer = null;
     let isApplyingCloudState = false;
+    let archiveModalMode = null;
 
     const scoreHead = document.getElementById("scoreHead");
     const scoreBody = document.getElementById("scoreBody");
@@ -953,6 +1176,24 @@
     const rankingList = document.getElementById("rankingList");
     const canvas = document.getElementById("radarCanvas");
     const context = canvas.getContext("2d");
+    const archiveSelect = document.getElementById("archiveSelect");
+    const archiveDropdown = document.getElementById("archiveDropdown");
+    const archiveDropdownButton = document.getElementById("archiveDropdownButton");
+    const archiveDropdownValue = document.getElementById("archiveDropdownValue");
+    const archiveMenu = document.getElementById("archiveMenu");
+    const newArchiveButton = document.getElementById("newArchiveButton");
+    const renameArchiveButton = document.getElementById("renameArchiveButton");
+    const deleteArchiveButton = document.getElementById("deleteArchiveButton");
+    const archiveModalBackdrop = document.getElementById("archiveModalBackdrop");
+    const archiveForm = document.getElementById("archiveForm");
+    const archiveNameGroup = document.getElementById("archiveNameGroup");
+    const archiveNameInput = document.getElementById("archiveNameInput");
+    const archiveModalTitle = document.getElementById("archiveModalTitle");
+    const archiveModalDescription = document.getElementById("archiveModalDescription");
+    const archiveModalMessage = document.getElementById("archiveModalMessage");
+    const archiveConfirmButton = document.getElementById("archiveConfirmButton");
+    const archiveCancelButton = document.getElementById("archiveCancelButton");
+    const closeArchiveModalButton = document.getElementById("closeArchiveModalButton");
     const authBadge = document.getElementById("authBadge");
     const syncStatus = document.getElementById("syncStatus");
     const authForm = document.getElementById("authForm");
@@ -967,6 +1208,22 @@
     const signOutButton = document.getElementById("signOutButton");
 
     document.getElementById("addOfferButton").addEventListener("click", addOffer);
+    archiveSelect.addEventListener("change", switchArchive);
+    archiveDropdownButton.addEventListener("click", toggleArchiveMenu);
+    archiveDropdownButton.addEventListener("keydown", handleArchiveDropdownKeydown);
+    archiveMenu.addEventListener("keydown", handleArchiveMenuKeydown);
+    document.addEventListener("click", closeArchiveMenuOnOutsideClick);
+    newArchiveButton.addEventListener("click", openNewArchiveModal);
+    renameArchiveButton.addEventListener("click", openRenameArchiveModal);
+    deleteArchiveButton.addEventListener("click", openDeleteArchiveModal);
+    archiveForm.addEventListener("submit", handleArchiveModalSubmit);
+    archiveCancelButton.addEventListener("click", closeArchiveModal);
+    closeArchiveModalButton.addEventListener("click", closeArchiveModal);
+    archiveModalBackdrop.addEventListener("click", (event) => {
+      if (event.target === archiveModalBackdrop) {
+        closeArchiveModal();
+      }
+    });
     openAuthButton.addEventListener("click", openAuthModal);
     closeAuthButton.addEventListener("click", closeAuthModal);
     authModalBackdrop.addEventListener("click", (event) => {
@@ -979,7 +1236,9 @@
     signOutButton.addEventListener("click", handleSignOut);
     document.addEventListener("keydown", (event) => {
       if (event.key === "Escape") {
+        closeArchiveMenu();
         closeAuthModal();
+        closeArchiveModal();
       }
     });
     window.addEventListener("resize", () => {
@@ -996,10 +1255,24 @@
       }));
     }
 
-    function getDefaultState() {
+    function getDefaultWeights() {
+      return Object.fromEntries(dimensions.map((dimension) => [dimension.id, dimension.weight]));
+    }
+
+    function createArchive(name = DEFAULT_ARCHIVE_NAME, payload = {}) {
       return {
-        weights: Object.fromEntries(dimensions.map((dimension) => [dimension.id, dimension.weight])),
-        offers: cloneDefaultOffers()
+        id: payload.id || crypto.randomUUID(),
+        name: String(name || DEFAULT_ARCHIVE_NAME).trim() || DEFAULT_ARCHIVE_NAME,
+        weights: payload.weights || getDefaultWeights(),
+        offers: payload.offers || cloneDefaultOffers()
+      };
+    }
+
+    function getDefaultState() {
+      const archive = createArchive(DEFAULT_ARCHIVE_NAME);
+      return {
+        activeArchiveId: archive.id,
+        archives: [archive]
       };
     }
 
@@ -1009,15 +1282,47 @@
         return fallback;
       }
 
-      const weights = Object.fromEntries(dimensions.map((dimension) => {
-        const storedWeight = Number(value.weights?.[dimension.id]);
-        return [dimension.id, Number.isFinite(storedWeight) ? storedWeight : fallback.weights[dimension.id]];
-      }));
-      const offers = Array.isArray(value.offers) && value.offers.length
-        ? value.offers.map(normalizeOffer)
-        : fallback.offers;
+      if (Array.isArray(value.archives) && value.archives.length) {
+        const archives = value.archives.map(normalizeArchive).filter(Boolean);
+        if (!archives.length) {
+          return fallback;
+        }
 
-      return { weights, offers };
+        const activeArchiveId = archives.some((archive) => archive.id === value.activeArchiveId)
+          ? value.activeArchiveId
+          : archives[0].id;
+        return { activeArchiveId, archives };
+      }
+
+      const legacyArchive = normalizeArchive({
+        id: value.archiveId,
+        name: value.archiveName || DEFAULT_ARCHIVE_NAME,
+        weights: value.weights,
+        offers: value.offers
+      }, 0);
+
+      return {
+        activeArchiveId: legacyArchive.id,
+        archives: [legacyArchive]
+      };
+    }
+
+    function normalizeArchive(archive, index) {
+      const fallbackWeights = getDefaultWeights();
+      const weights = Object.fromEntries(dimensions.map((dimension) => {
+        const storedWeight = Number(archive.weights?.[dimension.id]);
+        return [dimension.id, Number.isFinite(storedWeight) ? storedWeight : fallbackWeights[dimension.id]];
+      }));
+      const offers = Array.isArray(archive.offers) && archive.offers.length
+        ? archive.offers.map(normalizeOffer)
+        : cloneDefaultOffers();
+
+      return {
+        id: archive.id || crypto.randomUUID(),
+        name: String(archive.name || `档案 ${index + 1}`).trim() || `档案 ${index + 1}`,
+        weights,
+        offers
+      };
     }
 
     function loadState() {
@@ -1057,14 +1362,35 @@
 
     function getStatePayload() {
       return {
-        weights: { ...state.weights },
-        offers: state.offers.map((offer) => ({
-          id: offer.id,
-          name: offer.name,
-          scores: { ...offer.scores },
-          notes: { ...offer.notes }
+        activeArchiveId: state.activeArchiveId,
+        archives: state.archives.map((archive) => ({
+          id: archive.id,
+          name: archive.name,
+          weights: { ...archive.weights },
+          offers: archive.offers.map((offer) => ({
+            id: offer.id,
+            name: offer.name,
+            scores: { ...offer.scores },
+            notes: { ...offer.notes }
+          }))
         }))
       };
+    }
+
+    function getActiveArchive() {
+      if (!Array.isArray(state.archives) || !state.archives.length) {
+        const fallback = getDefaultState();
+        state.activeArchiveId = fallback.activeArchiveId;
+        state.archives = fallback.archives;
+      }
+
+      const active = state.archives.find((archive) => archive.id === state.activeArchiveId);
+      if (active) {
+        return active;
+      }
+
+      state.activeArchiveId = state.archives[0].id;
+      return state.archives[0];
     }
 
     function isSupabaseConfigured() {
@@ -1356,7 +1682,296 @@
       return sanitized;
     }
 
+    function getUniqueArchiveName(baseName) {
+      const existingNames = new Set(state.archives.map((archive) => archive.name));
+      if (!existingNames.has(baseName)) {
+        return baseName;
+      }
+
+      let index = 2;
+      while (existingNames.has(`${baseName} ${index}`)) {
+        index += 1;
+      }
+      return `${baseName} ${index}`;
+    }
+
+    function renderArchives() {
+      const activeArchive = getActiveArchive();
+      archiveSelect.innerHTML = "";
+      archiveMenu.innerHTML = "";
+      state.archives.forEach((archive) => {
+        const option = document.createElement("option");
+        option.value = archive.id;
+        option.textContent = archive.name;
+        archiveSelect.appendChild(option);
+
+        const menuItem = document.createElement("button");
+        const isActive = archive.id === activeArchive.id;
+        menuItem.className = `archiveOption${isActive ? " isActive" : ""}`;
+        menuItem.type = "button";
+        menuItem.role = "option";
+        menuItem.dataset.archiveId = archive.id;
+        menuItem.setAttribute("aria-selected", String(isActive));
+
+        const check = document.createElement("span");
+        check.className = "archiveOptionCheck";
+        check.textContent = isActive ? "✓" : "";
+
+        const name = document.createElement("span");
+        name.className = "archiveOptionName";
+        name.textContent = archive.name;
+
+        menuItem.append(check, name);
+        menuItem.addEventListener("click", () => selectArchive(archive.id));
+        archiveMenu.appendChild(menuItem);
+      });
+      archiveSelect.value = activeArchive.id;
+      archiveDropdownValue.textContent = activeArchive.name;
+      archiveDropdownButton.setAttribute("aria-expanded", String(!archiveMenu.classList.contains("isHidden")));
+      deleteArchiveButton.disabled = state.archives.length <= 1;
+    }
+
+    function switchArchive(event) {
+      selectArchive(event.target.value);
+    }
+
+    function selectArchive(nextArchiveId) {
+      if (!nextArchiveId || nextArchiveId === state.activeArchiveId) {
+        closeArchiveMenu();
+        return;
+      }
+      state.activeArchiveId = nextArchiveId;
+      closeArchiveMenu();
+      render();
+    }
+
+    function toggleArchiveMenu(event) {
+      event.stopPropagation();
+      if (archiveMenu.classList.contains("isHidden")) {
+        openArchiveMenu();
+      } else {
+        closeArchiveMenu();
+      }
+    }
+
+    function openArchiveMenu() {
+      archiveDropdown.classList.add("isOpen");
+      archiveMenu.classList.remove("isHidden");
+      archiveDropdownButton.setAttribute("aria-expanded", "true");
+    }
+
+    function closeArchiveMenu() {
+      archiveDropdown.classList.remove("isOpen");
+      archiveMenu.classList.add("isHidden");
+      archiveDropdownButton.setAttribute("aria-expanded", "false");
+    }
+
+    function closeArchiveMenuOnOutsideClick(event) {
+      if (!archiveDropdown.contains(event.target)) {
+        closeArchiveMenu();
+      }
+    }
+
+    function handleArchiveDropdownKeydown(event) {
+      if (event.key === "ArrowDown" || event.key === "Enter" || event.key === " ") {
+        event.preventDefault();
+        openArchiveMenu();
+        focusArchiveOption(0);
+      }
+    }
+
+    function handleArchiveMenuKeydown(event) {
+      const options = getArchiveOptionElements();
+      const currentIndex = options.indexOf(document.activeElement);
+      if (event.key === "ArrowDown") {
+        event.preventDefault();
+        focusArchiveOption(currentIndex + 1);
+      } else if (event.key === "ArrowUp") {
+        event.preventDefault();
+        focusArchiveOption(currentIndex - 1);
+      } else if (event.key === "Escape") {
+        event.preventDefault();
+        closeArchiveMenu();
+        archiveDropdownButton.focus();
+      }
+    }
+
+    function focusArchiveOption(index) {
+      const options = getArchiveOptionElements();
+      if (!options.length) {
+        return;
+      }
+      const nextIndex = (index + options.length) % options.length;
+      options[nextIndex].focus();
+    }
+
+    function getArchiveOptionElements() {
+      return Array.from(archiveMenu.querySelectorAll(".archiveOption"));
+    }
+
+    function openNewArchiveModal() {
+      const defaultName = getUniqueArchiveName(`档案 ${state.archives.length + 1}`);
+      archiveModalMode = "create";
+      archiveModalTitle.textContent = "新建档案";
+      archiveModalDescription.textContent = "创建一组完整 offer 数据，权重、备注和排序都会独立保存。";
+      archiveModalMessage.textContent = "";
+      archiveModalMessage.classList.remove("isVisible");
+      archiveConfirmButton.textContent = "创建档案";
+      archiveConfirmButton.classList.remove("danger");
+      archiveNameGroup.classList.remove("isHidden");
+      archiveNameInput.value = defaultName;
+      archiveNameInput.required = true;
+      openArchiveModal();
+    }
+
+    function openRenameArchiveModal() {
+      const activeArchive = getActiveArchive();
+      archiveModalMode = "rename";
+      archiveModalTitle.textContent = "重命名档案";
+      archiveModalDescription.textContent = "修改当前档案名称，档案内的 offer、权重和备注不会改变。";
+      archiveModalMessage.textContent = `当前档案：${activeArchive.name}`;
+      archiveModalMessage.classList.add("isVisible");
+      archiveConfirmButton.textContent = "保存名称";
+      archiveConfirmButton.classList.remove("danger");
+      archiveNameGroup.classList.remove("isHidden");
+      archiveNameInput.value = activeArchive.name;
+      archiveNameInput.required = true;
+      openArchiveModal();
+    }
+
+    function openDeleteArchiveModal() {
+      if (state.archives.length <= 1) {
+        return;
+      }
+
+      const activeArchive = getActiveArchive();
+      archiveModalMode = "delete";
+      archiveModalTitle.textContent = "删除档案";
+      archiveModalDescription.textContent = "是否确认删除档案？";
+      archiveModalMessage.textContent = `将删除「${activeArchive.name}」里的 offer、权重和备注。此操作不会影响其他档案。`;
+      archiveModalMessage.classList.add("isVisible");
+      archiveConfirmButton.textContent = "确认删除";
+      archiveConfirmButton.classList.add("danger");
+      archiveNameGroup.classList.add("isHidden");
+      archiveNameInput.value = "";
+      archiveNameInput.required = false;
+      openArchiveModal();
+    }
+
+    function openArchiveModal() {
+      archiveModalBackdrop.classList.remove("isHidden");
+      if (!archiveNameGroup.classList.contains("isHidden")) {
+        requestAnimationFrame(() => {
+          archiveNameInput.focus();
+          archiveNameInput.select();
+        });
+      }
+    }
+
+    function closeArchiveModal() {
+      archiveModalBackdrop.classList.add("isHidden");
+      archiveModalMode = null;
+      archiveConfirmButton.classList.remove("danger");
+    }
+
+    function handleArchiveModalSubmit(event) {
+      event.preventDefault();
+      if (archiveModalMode === "create") {
+        createArchiveFromModal();
+        return;
+      }
+      if (archiveModalMode === "rename") {
+        renameArchiveFromModal();
+        return;
+      }
+      if (archiveModalMode === "delete") {
+        deleteArchiveFromModal();
+        return;
+      }
+      if (archiveModalMode === "deleteOffer") {
+        deleteOfferFromModal();
+      }
+    }
+
+    function createArchiveFromModal() {
+      const defaultName = getUniqueArchiveName(`档案 ${state.archives.length + 1}`);
+      const archiveName = archiveNameInput.value.trim() || defaultName;
+      const archive = createArchive(getUniqueArchiveName(archiveName));
+      state.archives.push(archive);
+      state.activeArchiveId = archive.id;
+      closeArchiveModal();
+      render();
+    }
+
+    function renameArchiveFromModal() {
+      const activeArchive = getActiveArchive();
+      const trimmedName = archiveNameInput.value.trim();
+      if (!trimmedName || trimmedName === activeArchive.name) {
+        closeArchiveModal();
+        return;
+      }
+
+      activeArchive.name = getUniqueArchiveName(trimmedName);
+      closeArchiveModal();
+      render();
+    }
+
+    function deleteArchiveFromModal() {
+      if (state.archives.length <= 1) {
+        closeArchiveModal();
+        return;
+      }
+
+      const activeArchive = getActiveArchive();
+      const activeIndex = state.archives.findIndex((archive) => archive.id === activeArchive.id);
+      state.archives = state.archives.filter((archive) => archive.id !== activeArchive.id);
+      const nextArchive = state.archives[Math.max(0, activeIndex - 1)] || state.archives[0];
+      state.activeArchiveId = nextArchive.id;
+      closeArchiveModal();
+      render();
+    }
+
+    function openDeleteOfferModal(offerId) {
+      const activeArchive = getActiveArchive();
+      if (activeArchive.offers.length <= 1) {
+        return;
+      }
+
+      const offer = activeArchive.offers.find((item) => item.id === offerId);
+      if (!offer) {
+        return;
+      }
+
+      archiveModalMode = "deleteOffer";
+      archiveModalBackdrop.dataset.offerId = offerId;
+      archiveModalTitle.textContent = "删除 offer";
+      archiveModalDescription.textContent = "是否确认删除这个 offer？";
+      archiveModalMessage.textContent = `将删除「${offer.name}」的所有备注和分数。此操作不会影响其他 offer。`;
+      archiveModalMessage.classList.add("isVisible");
+      archiveConfirmButton.textContent = "确认删除";
+      archiveConfirmButton.classList.add("danger");
+      archiveNameGroup.classList.add("isHidden");
+      archiveNameInput.value = "";
+      archiveNameInput.required = false;
+      openArchiveModal();
+    }
+
+    function deleteOfferFromModal() {
+      const offerId = archiveModalBackdrop.dataset.offerId;
+      const activeArchive = getActiveArchive();
+      if (activeArchive.offers.length <= 1 || !offerId) {
+        closeArchiveModal();
+        return;
+      }
+
+      activeArchive.offers = activeArchive.offers.filter((offer) => offer.id !== offerId);
+      delete archiveModalBackdrop.dataset.offerId;
+      closeArchiveModal();
+      render();
+    }
+
     function render() {
+      renderArchives();
       renderScoreTable();
       syncAllNoteHeights();
       renderWeights();
@@ -1366,12 +1981,13 @@
     }
 
     function renderScoreTable() {
+      const activeArchive = getActiveArchive();
       scoreHead.innerHTML = "";
       const titleCell = document.createElement("th");
       titleCell.textContent = "维度";
       scoreHead.appendChild(titleCell);
 
-      state.offers.forEach((offer) => {
+      activeArchive.offers.forEach((offer) => {
         const cell = document.createElement("th");
         const header = document.createElement("div");
         header.className = "offerHeader";
@@ -1391,9 +2007,9 @@
         deleteButton.className = "deleteButton";
         deleteButton.type = "button";
         deleteButton.textContent = "x";
-        deleteButton.disabled = state.offers.length <= 1;
+        deleteButton.disabled = activeArchive.offers.length <= 1;
         deleteButton.setAttribute("aria-label", `删除 ${offer.name}`);
-        deleteButton.addEventListener("click", () => deleteOffer(offer.id));
+        deleteButton.addEventListener("click", () => openDeleteOfferModal(offer.id));
 
         header.append(nameInput, deleteButton);
         cell.appendChild(header);
@@ -1411,7 +2027,7 @@
         dimensionCell.appendChild(dimensionName);
         row.appendChild(dimensionCell);
 
-        state.offers.forEach((offer) => {
+        activeArchive.offers.forEach((offer) => {
           const cell = document.createElement("td");
           cell.className = "scoreCell";
           const entry = document.createElement("div");
@@ -1537,6 +2153,7 @@
     }
 
     function renderWeights() {
+      const activeArchive = getActiveArchive();
       weightControls.innerHTML = "";
       dimensions.forEach((dimension) => {
         const wrapper = document.createElement("div");
@@ -1552,9 +2169,9 @@
         range.min = "0";
         range.max = "10";
         range.step = "1";
-        range.value = state.weights[dimension.id];
+        range.value = activeArchive.weights[dimension.id];
         range.addEventListener("input", (event) => {
-          state.weights[dimension.id] = Number(event.target.value);
+          activeArchive.weights[dimension.id] = Number(event.target.value);
           value.textContent = event.target.value;
           renderRanking();
           drawRadar();
@@ -1563,7 +2180,7 @@
 
         const value = document.createElement("span");
         value.className = "weightValue";
-        value.textContent = state.weights[dimension.id];
+        value.textContent = activeArchive.weights[dimension.id];
 
         wrapper.append(label, range, value);
         weightControls.appendChild(wrapper);
@@ -1571,20 +2188,21 @@
     }
 
     function getWeightedScore(offer) {
-      const totalWeight = dimensions.reduce((sum, dimension) => sum + state.weights[dimension.id], 0);
+      const activeArchive = getActiveArchive();
+      const totalWeight = dimensions.reduce((sum, dimension) => sum + activeArchive.weights[dimension.id], 0);
       if (totalWeight === 0) {
         return 0;
       }
 
       const weightedSum = dimensions.reduce((sum, dimension) => {
-        return sum + offer.scores[dimension.id] * state.weights[dimension.id];
+        return sum + offer.scores[dimension.id] * activeArchive.weights[dimension.id];
       }, 0);
 
       return weightedSum / totalWeight;
     }
 
     function getRanking() {
-      return state.offers
+      return getActiveArchive().offers
         .map((offer) => ({
           ...offer,
           weightedScore: getWeightedScore(offer)
@@ -1673,8 +2291,9 @@
       });
 
       const weightPoints = dimensions.map((dimension, index) => {
+        const activeArchive = getActiveArchive();
         const angle = getAngle(index, count);
-        return getPoint(centerX, centerY, radius * (state.weights[dimension.id] / 10), angle);
+        return getPoint(centerX, centerY, radius * (activeArchive.weights[dimension.id] / 10), angle);
       });
       drawPolygon(weightPoints, true, "rgba(103, 156, 232, 0.9)", "rgba(103, 156, 232, 0.2)");
 
@@ -1754,10 +2373,11 @@
     }
 
     function addOffer() {
-      const nextNumber = state.offers.length + 1;
+      const activeArchive = getActiveArchive();
+      const nextNumber = activeArchive.offers.length + 1;
       const scores = Object.fromEntries(dimensions.map((dimension) => [dimension.id, 5]));
       const notes = Object.fromEntries(dimensions.map((dimension) => [dimension.id, ""]));
-      state.offers.push({
+      activeArchive.offers.push({
         id: crypto.randomUUID(),
         name: `Offer ${nextNumber}`,
         scores,
@@ -1772,14 +2392,6 @@
         left: scoreTableWrap.scrollWidth,
         behavior: "smooth"
       });
-    }
-
-    function deleteOffer(offerId) {
-      if (state.offers.length <= 1) {
-        return;
-      }
-      state.offers = state.offers.filter((offer) => offer.id !== offerId);
-      render();
     }
 
     function restoreDemoLocally() {
