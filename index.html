@@ -357,6 +357,47 @@
       padding: 12px 20px 20px;
     }
 
+    .oauthButton {
+      display: grid;
+      grid-template-columns: 22px minmax(0, 1fr);
+      gap: 10px;
+      min-height: 42px;
+      color: #322836;
+      border-color: rgba(137, 129, 206, 0.24);
+      background: linear-gradient(135deg, rgba(255, 255, 255, 0.98), rgba(255, 240, 238, 0.92), rgba(235, 245, 255, 0.9));
+      box-shadow: 0 10px 20px rgba(92, 70, 94, 0.1);
+    }
+
+    .oauthIcon {
+      display: grid;
+      place-items: center;
+      width: 22px;
+      height: 22px;
+      border-radius: 50%;
+      color: #fff;
+      background: #2d2230;
+      font-size: 13px;
+      font-weight: 950;
+      line-height: 1;
+    }
+
+    .authDivider {
+      display: grid;
+      grid-template-columns: 1fr auto 1fr;
+      gap: 10px;
+      align-items: center;
+      color: #958695;
+      font-size: 11px;
+      font-weight: 850;
+    }
+
+    .authDivider::before,
+    .authDivider::after {
+      content: "";
+      height: 1px;
+      background: rgba(234, 218, 212, 0.9);
+    }
+
     .authInput {
       width: 100%;
       height: 38px;
@@ -818,6 +859,68 @@
       margin-top: 10px;
     }
 
+    .exportActions {
+      display: grid;
+      gap: 8px;
+      margin-top: 12px;
+    }
+
+    .exportStatus {
+      margin: 0;
+      min-height: 18px;
+      color: var(--muted);
+      font-size: 12px;
+      font-weight: 800;
+      line-height: 1.5;
+    }
+
+    .summaryBox {
+      display: grid;
+      gap: 8px;
+      margin-top: 12px;
+      border: 1px solid rgba(234, 218, 212, 0.92);
+      border-radius: var(--radius);
+      padding: 11px 12px;
+      background: linear-gradient(135deg, rgba(255, 255, 255, 0.94), rgba(255, 247, 236, 0.88), rgba(238, 246, 255, 0.8));
+    }
+
+    .summaryHeader {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+    }
+
+    .summaryTitle {
+      margin: 0;
+      color: #5b5062;
+      font-size: 13px;
+      font-weight: 950;
+    }
+
+    .summaryText {
+      margin: 0;
+      min-height: 44px;
+      color: #463b4d;
+      font-size: 13px;
+      font-weight: 650;
+      line-height: 1.6;
+      overflow-wrap: anywhere;
+    }
+
+    .summaryStatus {
+      margin: 0;
+      min-height: 18px;
+      color: var(--muted);
+      font-size: 12px;
+      font-weight: 800;
+      line-height: 1.5;
+    }
+
+    .summaryStatus.isError {
+      color: #b6404d;
+    }
+
     .rankRow {
       --rank-color: #ff9eb0;
       display: grid;
@@ -1019,6 +1122,11 @@
           <button class="iconButton" id="closeAuthButton" type="button" aria-label="关闭登录窗口">x</button>
         </div>
         <form class="authForm" id="authForm">
+          <button class="button secondary oauthButton" id="githubSignInButton" type="button">
+            <span class="oauthIcon" aria-hidden="true">G</span>
+            <span>使用 GitHub 登录</span>
+          </button>
+          <div class="authDivider">或使用邮箱</div>
           <input class="authInput" id="authEmail" type="email" placeholder="邮箱" autocomplete="email" required>
           <input class="authInput" id="authPassword" type="password" placeholder="密码" autocomplete="current-password" minlength="6" required>
           <div class="authModalActions">
@@ -1081,6 +1189,18 @@
             <div class="winnerScore" id="winnerScore">0.00</div>
           </div>
           <div class="ranking" id="rankingList"></div>
+          <div class="summaryBox" aria-label="AI 决策总结">
+            <div class="summaryHeader">
+              <h3 class="summaryTitle">决策总结</h3>
+            </div>
+            <p class="summaryText" id="decisionSummaryText">点击生成后，会基于当前档案的 offer 分数、权重和备注生成摘要。</p>
+            <button class="button" id="generateSummaryButton" type="button">生成决策总结</button>
+            <p class="summaryStatus" id="decisionSummaryStatus" role="status" aria-live="polite"></p>
+          </div>
+          <div class="exportActions">
+            <button class="button secondary" id="exportJsonButton" type="button">导出推荐 JSON</button>
+            <p class="exportStatus" id="exportJsonStatus" role="status" aria-live="polite"></p>
+          </div>
         </section>
 
         <section class="panel chartPanel" aria-labelledby="radarTitle">
@@ -1166,6 +1286,7 @@
     let cloudSaveTimer = null;
     let isApplyingCloudState = false;
     let archiveModalMode = null;
+    let hasGeneratedDecisionSummary = false;
 
     const scoreHead = document.getElementById("scoreHead");
     const scoreBody = document.getElementById("scoreBody");
@@ -1174,6 +1295,11 @@
     const winnerName = document.getElementById("winnerName");
     const winnerScore = document.getElementById("winnerScore");
     const rankingList = document.getElementById("rankingList");
+    const generateSummaryButton = document.getElementById("generateSummaryButton");
+    const decisionSummaryText = document.getElementById("decisionSummaryText");
+    const decisionSummaryStatus = document.getElementById("decisionSummaryStatus");
+    const exportJsonButton = document.getElementById("exportJsonButton");
+    const exportJsonStatus = document.getElementById("exportJsonStatus");
     const canvas = document.getElementById("radarCanvas");
     const context = canvas.getContext("2d");
     const archiveSelect = document.getElementById("archiveSelect");
@@ -1203,6 +1329,7 @@
     const authModalStatus = document.getElementById("authModalStatus");
     const openAuthButton = document.getElementById("openAuthButton");
     const closeAuthButton = document.getElementById("closeAuthButton");
+    const githubSignInButton = document.getElementById("githubSignInButton");
     const signInButton = document.getElementById("signInButton");
     const signUpButton = document.getElementById("signUpButton");
     const signOutButton = document.getElementById("signOutButton");
@@ -1232,8 +1359,11 @@
       }
     });
     authForm.addEventListener("submit", handleSignIn);
+    githubSignInButton.addEventListener("click", handleGithubSignIn);
     signUpButton.addEventListener("click", handleSignUp);
     signOutButton.addEventListener("click", handleSignOut);
+    generateSummaryButton.addEventListener("click", generateDecisionSummary);
+    exportJsonButton.addEventListener("click", exportRecommendationJson);
     document.addEventListener("keydown", (event) => {
       if (event.key === "Escape") {
         closeArchiveMenu();
@@ -1343,7 +1473,7 @@
       const scores = {};
       const notes = {};
       dimensions.forEach((dimension) => {
-        scores[dimension.id] = clampScore(Number(offer.scores?.[dimension.id] ?? 5));
+        scores[dimension.id] = normalizeScoreValue(offer.scores?.[dimension.id]);
         notes[dimension.id] = String(offer.notes?.[dimension.id] || "");
       });
 
@@ -1357,6 +1487,7 @@
 
     function saveState() {
       localStorage.setItem(STORAGE_KEY, JSON.stringify(getStatePayload()));
+      markDecisionSummaryStale();
       scheduleCloudSave();
     }
 
@@ -1408,6 +1539,13 @@
       }
     }
 
+    function getAuthRedirectUrl() {
+      const redirectUrl = new URL(window.location.href);
+      redirectUrl.search = "";
+      redirectUrl.hash = "";
+      return redirectUrl.toString();
+    }
+
     function setSyncStatus(message, tone = "info") {
       syncStatus.textContent = message;
       if (!authModalBackdrop.classList.contains("isHidden")) {
@@ -1419,6 +1557,19 @@
       authModalStatus.textContent = message;
       authModalStatus.classList.toggle("isVisible", Boolean(message));
       authModalStatus.classList.toggle("isError", tone === "error");
+    }
+
+    function setDecisionSummaryStatus(message, tone = "info") {
+      decisionSummaryStatus.textContent = message;
+      decisionSummaryStatus.classList.toggle("isError", tone === "error");
+    }
+
+    function markDecisionSummaryStale() {
+      if (!hasGeneratedDecisionSummary || isApplyingCloudState) {
+        return;
+      }
+
+      setDecisionSummaryStatus("数据已更新，建议重新生成决策总结。");
     }
 
     function openAuthModal() {
@@ -1449,7 +1600,7 @@
 
       openAuthButton.classList.toggle("isHidden", isSignedIn);
       signOutButton.classList.toggle("isHidden", !isSignedIn);
-      [openAuthButton, authEmail, authPassword, signInButton, signUpButton].forEach((control) => {
+      [openAuthButton, githubSignInButton, authEmail, authPassword, signInButton, signUpButton].forEach((control) => {
         control.disabled = !configured;
       });
 
@@ -1528,6 +1679,25 @@
 
       authPassword.value = "";
       setSyncStatus("登录成功，正在同步数据...");
+    }
+
+    async function handleGithubSignIn() {
+      if (!supabaseClient) {
+        return;
+      }
+
+      setSyncStatus("正在跳转到 GitHub...");
+      const { error } = await supabaseClient.auth.signInWithOAuth({
+        provider: "github",
+        options: {
+          redirectTo: getAuthRedirectUrl(),
+          scopes: "read:user user:email"
+        }
+      });
+
+      if (error) {
+        setSyncStatus(`GitHub 登录失败：${error.message}`, "error");
+      }
     }
 
     async function handleSignUp() {
@@ -1650,8 +1820,42 @@
       return Math.max(0, Math.min(10, value));
     }
 
+    function normalizeScoreValue(value) {
+      if (value === "" || value === null) {
+        return "";
+      }
+      if (value === undefined) {
+        return 5;
+      }
+
+      const score = Number(value);
+      if (!Number.isFinite(score)) {
+        return 5;
+      }
+      return clampScore(score);
+    }
+
+    function getScoreNumber(value) {
+      if (value === "" || value === null || value === undefined) {
+        return 0;
+      }
+
+      const score = Number(value);
+      return Number.isFinite(score) ? clampScore(score) : 0;
+    }
+
+    function getExportScore(value) {
+      return value === "" || value === null || value === undefined
+        ? null
+        : getScoreNumber(value);
+    }
+
     function getScoreValidationMessage(value) {
       const trimmed = String(value).trim();
+      if (trimmed === "") {
+        return "";
+      }
+
       const plainNumberPattern = /^(?:\d+(?:\.\d*)?|\.\d+)$/;
       if (!plainNumberPattern.test(trimmed)) {
         return "分数范围0-10之间";
@@ -2065,7 +2269,7 @@
           input.inputMode = "none";
           input.autocomplete = "off";
           input.spellcheck = false;
-          input.value = offer.scores[dimension.id];
+          input.value = offer.scores[dimension.id] ?? "";
           input.setAttribute("aria-label", `${offer.name} ${dimension.label} 分数`);
 
           const scoreWarning = document.createElement("span");
@@ -2092,7 +2296,7 @@
               return;
             }
 
-            offer.scores[dimension.id] = Number(sanitized);
+            offer.scores[dimension.id] = sanitized === "" ? "" : Number(sanitized);
             renderRanking();
             drawRadar();
             saveState();
@@ -2187,18 +2391,24 @@
       });
     }
 
+    function getTotalWeight(activeArchive = getActiveArchive()) {
+      return dimensions.reduce((sum, dimension) => sum + activeArchive.weights[dimension.id], 0);
+    }
+
+    function getWeightedSum(offer, activeArchive = getActiveArchive()) {
+      return dimensions.reduce((sum, dimension) => {
+        return sum + getScoreNumber(offer.scores[dimension.id]) * activeArchive.weights[dimension.id];
+      }, 0);
+    }
+
     function getWeightedScore(offer) {
       const activeArchive = getActiveArchive();
-      const totalWeight = dimensions.reduce((sum, dimension) => sum + activeArchive.weights[dimension.id], 0);
+      const totalWeight = getTotalWeight(activeArchive);
       if (totalWeight === 0) {
         return 0;
       }
 
-      const weightedSum = dimensions.reduce((sum, dimension) => {
-        return sum + offer.scores[dimension.id] * activeArchive.weights[dimension.id];
-      }, 0);
-
-      return weightedSum / totalWeight;
+      return getWeightedSum(offer, activeArchive) / totalWeight;
     }
 
     function getRanking() {
@@ -2242,6 +2452,144 @@
         row.append(number, name, score, bar);
         rankingList.appendChild(row);
       });
+    }
+
+    function buildRecommendationJson() {
+      const activeArchive = getActiveArchive();
+      const totalWeight = getTotalWeight(activeArchive);
+      const rankedOffers = getRanking();
+      const selectedOffer = rankedOffers[0] || null;
+
+      return {
+        schemaVersion: "recommendation_result.v1",
+        archive: {
+          name: activeArchive.name
+        },
+        scoringRule: {
+          method: "weighted_average",
+          formula: "sum(score * weight) / sum(weight)",
+          scoreRange: [0, 10],
+          higherIsBetter: true,
+          totalWeight
+        },
+        dimensions: dimensions.map((dimension) => ({
+          id: dimension.id,
+          label: dimension.label,
+          weight: activeArchive.weights[dimension.id]
+        })),
+        offers: rankedOffers.map((offer, index) => {
+          const weightedSum = getWeightedSum(offer, activeArchive);
+          return {
+            id: offer.id,
+            name: offer.name,
+            rank: index + 1,
+            weightedScore: roundScore(offer.weightedScore),
+            weightedSum: roundScore(weightedSum),
+            scores: Object.fromEntries(dimensions.map((dimension) => [
+              dimension.id,
+              getExportScore(offer.scores[dimension.id])
+            ])),
+            weightedContributions: Object.fromEntries(dimensions.map((dimension) => [
+              dimension.id,
+              roundScore(getScoreNumber(offer.scores[dimension.id]) * activeArchive.weights[dimension.id])
+            ])),
+            notes: Object.fromEntries(dimensions.map((dimension) => [
+              dimension.id,
+              offer.notes[dimension.id] || ""
+            ]))
+          };
+        }),
+        recommendation: {
+          selectedOfferId: selectedOffer?.id || null,
+          selectedOfferName: selectedOffer?.name || null,
+          selectedOfferRank: selectedOffer ? 1 : null,
+          selectedOfferWeightedScore: selectedOffer ? roundScore(selectedOffer.weightedScore) : null
+        }
+      };
+    }
+
+    function roundScore(value) {
+      return Number(Number(value || 0).toFixed(2));
+    }
+
+    function exportRecommendationJson() {
+      const recommendationJson = buildRecommendationJson();
+      const fileName = `${slugifyFileName(recommendationJson.archive.name)}-recommendation.json`;
+      const blob = new Blob([JSON.stringify(recommendationJson, null, 2)], {
+        type: "application/json;charset=utf-8"
+      });
+      const url = URL.createObjectURL(blob);
+      const link = document.createElement("a");
+      link.href = url;
+      link.download = fileName;
+      document.body.appendChild(link);
+      link.click();
+      link.remove();
+      URL.revokeObjectURL(url);
+      exportJsonStatus.textContent = `已导出 ${fileName}`;
+    }
+
+    function slugifyFileName(value) {
+      const normalized = String(value || "offer").trim().toLowerCase();
+      const slug = normalized
+        .replace(/\s+/g, "-")
+        .replace(/[\\/:*?"<>|]+/g, "")
+        .replace(/-+/g, "-")
+        .replace(/^-|-$/g, "");
+
+      return slug || "offer";
+    }
+
+    async function generateDecisionSummary() {
+      if (!isSupabaseConfigured()) {
+        setDecisionSummaryStatus("请先配置 Supabase 后再生成决策总结。", "error");
+        return;
+      }
+
+      if (!supabaseClient) {
+        setDecisionSummaryStatus("Supabase 还在初始化，请稍后再试。", "error");
+        return;
+      }
+
+      if (!currentUser) {
+        setDecisionSummaryStatus("请先登录后再生成决策总结。", "error");
+        return;
+      }
+
+      const recommendationJson = buildRecommendationJson();
+      generateSummaryButton.disabled = true;
+      generateSummaryButton.textContent = "生成中...";
+      setDecisionSummaryStatus("正在生成决策总结...");
+
+      try {
+        const { data, error } = await supabaseClient.functions.invoke("generate-decision-summary", {
+          body: {
+            recommendation: recommendationJson
+          }
+        });
+
+        if (error) {
+          throw error;
+        }
+
+        if (data?.error) {
+          throw new Error(data.error);
+        }
+
+        if (!data?.summary) {
+          throw new Error("API 没有返回 summary。");
+        }
+
+        hasGeneratedDecisionSummary = true;
+        decisionSummaryText.textContent = data.summary;
+        setDecisionSummaryStatus("已基于当前数据生成。");
+      } catch (error) {
+        console.error("generate decision summary failed", error);
+        setDecisionSummaryStatus(`生成失败：${error.message || "请稍后重试。"}`, "error");
+      } finally {
+        generateSummaryButton.disabled = false;
+        generateSummaryButton.textContent = "生成决策总结";
+      }
     }
 
     function drawRadar() {
@@ -2301,7 +2649,7 @@
       if (topOffer) {
         const offerPoints = dimensions.map((dimension, index) => {
           const angle = getAngle(index, count);
-          return getPoint(centerX, centerY, radius * (topOffer.scores[dimension.id] / 10), angle);
+          return getPoint(centerX, centerY, radius * (getScoreNumber(topOffer.scores[dimension.id]) / 10), angle);
         });
         drawPolygon(offerPoints, true, "rgba(242, 112, 141, 0.9)", "rgba(242, 112, 141, 0.18)");
       }
@@ -2375,7 +2723,7 @@
     function addOffer() {
       const activeArchive = getActiveArchive();
       const nextNumber = activeArchive.offers.length + 1;
-      const scores = Object.fromEntries(dimensions.map((dimension) => [dimension.id, 5]));
+      const scores = Object.fromEntries(dimensions.map((dimension) => [dimension.id, ""]));
       const notes = Object.fromEntries(dimensions.map((dimension) => [dimension.id, ""]));
       activeArchive.offers.push({
         id: crypto.randomUUID(),
