@@ -1,0 +1,1796 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Offer 选择打分表</title>
+  <link rel="icon" href="data:,">
+  <style>
+    :root {
+      color-scheme: light;
+      --ink: #2d2230;
+      --muted: #6f6270;
+      --paper: #fff4f8;
+      --panel: #ffffff;
+      --line: #eadad4;
+      --button-red: #ffbbc0;
+      --button-red-hover: #ffa4ad;
+      --button-text: #68313b;
+      --rose: #de7589;
+      --rose-soft: #ffe6e9;
+      --rust: #e38e5f;
+      --amber: #d7ad43;
+      --blue: #679ce8;
+      --slate: #62b2cd;
+      --indigo: #8c82ee;
+      --violet: #d378bd;
+      --shadow: 0 18px 38px rgba(92, 70, 94, 0.1);
+      --radius: 8px;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      min-height: 100vh;
+      font-family: Inter, "PingFang SC", "Microsoft YaHei", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      color: var(--ink);
+      background:
+        linear-gradient(125deg, rgba(255, 235, 242, 0.88) 0%, rgba(255, 237, 217, 0.88) 17%, rgba(255, 250, 207, 0.88) 34%, rgba(226, 248, 222, 0.82) 51%, rgba(221, 240, 255, 0.88) 68%, rgba(231, 225, 255, 0.88) 84%, rgba(255, 226, 248, 0.88) 100%),
+        linear-gradient(180deg, rgba(255, 255, 255, 0.42), rgba(255, 255, 255, 0.16));
+    }
+
+    button,
+    input,
+    textarea {
+      font: inherit;
+    }
+
+    button {
+      border: 0;
+      cursor: pointer;
+    }
+
+    .page {
+      width: min(1280px, calc(100% - 32px));
+      margin: 0 auto;
+      padding: 28px 0 40px;
+    }
+
+    .topbar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 18px;
+      margin-bottom: 16px;
+      padding: 16px 18px;
+      border: 1px solid rgba(234, 218, 212, 0.86);
+      border-radius: var(--radius);
+      background: rgba(255, 255, 255, 0.62);
+      box-shadow: 0 12px 28px rgba(92, 70, 94, 0.08);
+      backdrop-filter: blur(10px);
+    }
+
+    .titleGroup {
+      min-width: 0;
+    }
+
+    .eyebrow {
+      display: block;
+      margin-bottom: 6px;
+      color: #9a6a83;
+      font-size: 12px;
+      font-weight: 900;
+      letter-spacing: 0;
+    }
+
+    h1 {
+      margin: 0;
+      font-size: clamp(22px, 2.2vw, 30px);
+      line-height: 1.18;
+      letter-spacing: 0;
+    }
+
+    .subtitle {
+      margin: 6px 0 0;
+      max-width: 760px;
+      color: var(--muted);
+      font-size: 13px;
+      line-height: 1.6;
+    }
+
+    .actions {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+      justify-content: flex-end;
+    }
+
+    .accountArea {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      flex-wrap: wrap;
+      justify-content: flex-end;
+    }
+
+    .authSummary {
+      display: grid;
+      gap: 3px;
+      min-width: 0;
+      text-align: right;
+    }
+
+    .authBadge {
+      justify-self: end;
+      width: fit-content;
+      border: 1px solid rgba(255, 169, 178, 0.46);
+      border-radius: 999px;
+      padding: 5px 9px;
+      color: #8e5267;
+      background: linear-gradient(135deg, rgba(255, 235, 242, 0.95), rgba(221, 240, 255, 0.8));
+      font-size: 12px;
+      font-weight: 900;
+    }
+
+    .syncStatus {
+      margin: 0;
+      color: var(--muted);
+      font-size: 12px;
+      line-height: 1.5;
+    }
+
+    .authModalBackdrop {
+      position: fixed;
+      inset: 0;
+      z-index: 20;
+      display: grid;
+      place-items: center;
+      padding: 20px;
+      background: rgba(45, 34, 48, 0.28);
+      backdrop-filter: blur(8px);
+    }
+
+    .authModal {
+      width: min(420px, 100%);
+      border: 1px solid rgba(234, 218, 212, 0.92);
+      border-radius: var(--radius);
+      background: linear-gradient(135deg, rgba(255, 255, 255, 0.98), rgba(255, 241, 247, 0.96), rgba(235, 245, 255, 0.94));
+      box-shadow: 0 24px 60px rgba(54, 38, 58, 0.2);
+      overflow: hidden;
+    }
+
+    .authModalHeader {
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      gap: 14px;
+      padding: 18px 20px 8px;
+    }
+
+    .authModalHeader h2 {
+      margin: 0;
+      font-size: 20px;
+      line-height: 1.2;
+    }
+
+    .authModalHeader p {
+      margin: 6px 0 0;
+      color: var(--muted);
+      font-size: 13px;
+      line-height: 1.5;
+    }
+
+    .iconButton {
+      display: grid;
+      place-items: center;
+      width: 34px;
+      height: 34px;
+      border: 1px solid rgba(255, 169, 178, 0.44);
+      border-radius: var(--radius);
+      color: #a53a46;
+      background: rgba(255, 230, 233, 0.86);
+      font-size: 20px;
+      font-weight: 900;
+    }
+
+    .authForm {
+      display: grid;
+      gap: 10px;
+      padding: 12px 20px 20px;
+    }
+
+    .authInput {
+      width: 100%;
+      height: 38px;
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      padding: 0 10px;
+      color: var(--ink);
+      background: rgba(255, 255, 255, 0.94);
+      font-weight: 700;
+    }
+
+    .authModalActions {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+    }
+
+    .authModalStatus {
+      display: none;
+      margin: 0;
+      border: 1px solid rgba(137, 129, 206, 0.18);
+      border-radius: var(--radius);
+      padding: 9px 10px;
+      color: #5f5268;
+      background: linear-gradient(135deg, rgba(221, 240, 255, 0.76), rgba(231, 225, 255, 0.72));
+      font-size: 12px;
+      font-weight: 800;
+      line-height: 1.45;
+    }
+
+    .authModalStatus.isVisible {
+      display: block;
+    }
+
+    .authModalStatus.isError {
+      border-color: rgba(242, 112, 141, 0.36);
+      color: #9f3148;
+      background: linear-gradient(135deg, rgba(255, 235, 242, 0.95), rgba(255, 226, 248, 0.82));
+    }
+
+    .authInput::placeholder {
+      color: #aaa0a6;
+    }
+
+    .isHidden {
+      display: none !important;
+    }
+
+    .button {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 40px;
+      border-radius: var(--radius);
+      padding: 0 14px;
+      font-weight: 800;
+      color: var(--button-text);
+      border: 1px solid rgba(255, 143, 153, 0.58);
+      background: linear-gradient(135deg, #ffd8d3, var(--button-red), var(--button-red-hover));
+      box-shadow: 0 10px 20px rgba(220, 92, 112, 0.18);
+      transition: transform 0.16s ease, box-shadow 0.16s ease, background 0.16s ease;
+      white-space: nowrap;
+    }
+
+    .button:hover {
+      transform: translateY(-1px);
+      box-shadow: 0 12px 24px rgba(220, 92, 112, 0.25);
+    }
+
+    .button.secondary {
+      color: var(--button-text);
+      border-color: rgba(255, 169, 178, 0.42);
+      background: linear-gradient(135deg, #fff0ee, #ffdfe0);
+      box-shadow: none;
+    }
+
+    .button.danger {
+      color: #a53a46;
+      background: linear-gradient(135deg, #fff0f2, var(--rose-soft));
+      box-shadow: none;
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: minmax(0, 1.24fr) minmax(360px, 0.76fr);
+      gap: 18px;
+      align-items: start;
+    }
+
+    .panel {
+      border: 1px solid rgba(234, 218, 212, 0.92);
+      border-radius: var(--radius);
+      background: rgba(255, 255, 255, 0.9);
+      box-shadow: var(--shadow);
+      overflow: hidden;
+    }
+
+    .panelHeader {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      padding: 18px 20px;
+      border-bottom: 1px solid var(--line);
+    }
+
+    .panelHeader h2 {
+      margin: 0;
+      font-size: 18px;
+      letter-spacing: 0;
+    }
+
+    .panelHeaderActions {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      flex-wrap: wrap;
+      justify-content: flex-end;
+    }
+
+    .smallNote {
+      margin: 0;
+      color: var(--muted);
+      font-size: 13px;
+      line-height: 1.5;
+      text-align: right;
+    }
+
+    .tableWrap {
+      overflow-x: auto;
+      overflow-y: visible;
+      max-height: none;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: separate;
+      border-spacing: 0;
+      min-width: 760px;
+    }
+
+    th,
+    td {
+      border-bottom: 1px solid var(--line);
+      padding: 12px 10px;
+      vertical-align: middle;
+      background: rgba(255, 255, 255, 0.88);
+    }
+
+    th {
+      position: sticky;
+      top: 0;
+      z-index: 2;
+      color: #504456;
+      background: linear-gradient(135deg, #fff1f3, #fff7dc 48%, #edf4ff);
+      font-size: 12px;
+      font-weight: 900;
+      text-align: left;
+      white-space: nowrap;
+    }
+
+    th:first-child,
+    td:first-child {
+      position: sticky;
+      left: 0;
+      z-index: 3;
+      min-width: 138px;
+      box-shadow: 1px 0 0 var(--line);
+    }
+
+    th:first-child {
+      z-index: 4;
+    }
+
+    tbody tr:last-child td {
+      border-bottom: 0;
+    }
+
+    tbody tr:hover td {
+      background: #fff9f5;
+    }
+
+    .offerName {
+      width: 100%;
+      min-width: 128px;
+      height: 36px;
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      padding: 0 10px;
+      color: var(--ink);
+      background: rgba(255, 255, 255, 0.96);
+      font-size: 13px;
+      font-weight: 800;
+    }
+
+    .offerHeader {
+      display: grid;
+      grid-template-columns: minmax(128px, 1fr) 34px;
+      gap: 8px;
+      align-items: center;
+      min-width: 178px;
+    }
+
+    .dimensionName {
+      color: #383044;
+      font-size: 13px;
+      font-weight: 900;
+      white-space: nowrap;
+    }
+
+    tbody tr:nth-child(1) td:first-child {
+      border-left: 5px solid #ff9eb0;
+      background: linear-gradient(90deg, rgba(255, 235, 242, 0.98), rgba(255, 255, 255, 0.86));
+    }
+
+    tbody tr:nth-child(2) td:first-child {
+      border-left: 5px solid #ffbd8d;
+      background: linear-gradient(90deg, rgba(255, 237, 217, 0.98), rgba(255, 255, 255, 0.86));
+    }
+
+    tbody tr:nth-child(3) td:first-child {
+      border-left: 5px solid #efd35d;
+      background: linear-gradient(90deg, rgba(255, 250, 207, 0.98), rgba(255, 255, 255, 0.86));
+    }
+
+    tbody tr:nth-child(4) td:first-child {
+      border-left: 5px solid #9fdc9f;
+      background: linear-gradient(90deg, rgba(226, 248, 222, 0.98), rgba(255, 255, 255, 0.86));
+    }
+
+    tbody tr:nth-child(5) td:first-child {
+      border-left: 5px solid #83c6f4;
+      background: linear-gradient(90deg, rgba(221, 240, 255, 0.98), rgba(255, 255, 255, 0.86));
+    }
+
+    tbody tr:nth-child(6) td:first-child {
+      border-left: 5px solid #a99cf7;
+      background: linear-gradient(90deg, rgba(231, 225, 255, 0.98), rgba(255, 255, 255, 0.86));
+    }
+
+    .scoreCell {
+      min-width: 210px;
+    }
+
+    .dimensionEntry {
+      display: grid;
+      grid-template-columns: minmax(126px, 1fr) 54px;
+      gap: 8px;
+      align-items: start;
+      min-width: 190px;
+    }
+
+    .fieldGroup {
+      display: grid;
+      gap: 5px;
+      min-width: 0;
+    }
+
+    .scoreGroup {
+      position: relative;
+    }
+
+    .fieldLabel {
+      color: var(--muted);
+      font-size: 11px;
+      font-weight: 850;
+      line-height: 1;
+    }
+
+    .noteInput {
+      width: 100%;
+      min-height: 0;
+      height: auto;
+      resize: none;
+      overflow-y: hidden;
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      padding: 8px 10px;
+      color: var(--ink);
+      background: rgba(255, 255, 255, 0.96);
+      font-size: 13px;
+      font-weight: 650;
+      line-height: 1.42;
+    }
+
+    .noteInput.isScrollable {
+      overflow-y: auto;
+    }
+
+    .noteInput::placeholder {
+      color: #aaa0a6;
+    }
+
+    .scoreInput {
+      width: 54px;
+      height: 34px;
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      padding: 0 8px;
+      color: var(--ink);
+      background: rgba(255, 255, 255, 0.96);
+      text-align: center;
+      font-size: 13px;
+      font-weight: 800;
+    }
+
+    .scoreGroup.hasError .scoreInput {
+      border-color: rgba(182, 64, 77, 0.62);
+      background: #fff7f8;
+    }
+
+    .scoreWarning {
+      position: absolute;
+      top: 100%;
+      right: 0;
+      display: none;
+      transform: translateY(2px);
+      color: #b6404d;
+      font-size: 10px;
+      font-weight: 800;
+      line-height: 1;
+      white-space: nowrap;
+    }
+
+    .scoreGroup.hasError .scoreWarning {
+      display: block;
+    }
+
+    .deleteButton {
+      width: 34px;
+      height: 34px;
+      border-radius: var(--radius);
+      color: #b6404d;
+      background: linear-gradient(135deg, #fff3f5, #ffdce1);
+      font-size: 19px;
+      font-weight: 900;
+      line-height: 1;
+    }
+
+    .deleteButton:disabled {
+      cursor: not-allowed;
+      opacity: 0.42;
+    }
+
+    .sideStack {
+      display: grid;
+      gap: 18px;
+    }
+
+    .chartPanel {
+      padding-bottom: 18px;
+    }
+
+    .chartArea {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 18px;
+      padding: 18px;
+      align-items: center;
+    }
+
+    .radarBox {
+      width: 100%;
+      max-width: 330px;
+      aspect-ratio: 1;
+      min-height: 246px;
+      margin: 0 auto;
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      background: linear-gradient(145deg, #ffffff, #fff7e6 34%, #edf7ff 68%, #fff1fa);
+    }
+
+    canvas {
+      display: block;
+      width: 100%;
+      height: 100%;
+    }
+
+    .weights {
+      display: grid;
+      gap: 12px;
+      min-width: 0;
+    }
+
+    .weightControl {
+      display: grid;
+      grid-template-columns: 92px minmax(110px, 1fr) 34px;
+      gap: 10px;
+      align-items: center;
+    }
+
+    .weightControl label {
+      color: #5b5062;
+      font-size: 12px;
+      font-weight: 900;
+      white-space: nowrap;
+    }
+
+    input[type="range"] {
+      width: 100%;
+      accent-color: #f2708d;
+    }
+
+    .weightValue {
+      color: #8c60d8;
+      font-size: 13px;
+      font-weight: 900;
+      text-align: right;
+    }
+
+    .winnerPanel {
+      padding: 14px;
+    }
+
+    .winnerTitle {
+      margin: 0 0 10px;
+      font-size: 15px;
+      line-height: 1.2;
+    }
+
+    .winner {
+      display: grid;
+      grid-template-columns: 1fr auto;
+      gap: 4px 12px;
+      align-items: baseline;
+      padding: 11px 12px;
+      border-radius: var(--radius);
+      background: linear-gradient(135deg, rgba(255, 225, 231, 0.9), rgba(221, 239, 255, 0.84), rgba(255, 247, 204, 0.82), rgba(248, 226, 252, 0.86));
+      border: 1px solid rgba(137, 129, 206, 0.16);
+    }
+
+    .winnerLabel {
+      margin: 0;
+      color: var(--muted);
+      font-size: 11px;
+      font-weight: 800;
+    }
+
+    .winnerName {
+      margin: 0;
+      min-width: 0;
+      font-size: 18px;
+      font-weight: 950;
+      overflow-wrap: anywhere;
+    }
+
+    .winnerScore {
+      grid-row: 1 / span 2;
+      grid-column: 2;
+      color: #8c60d8;
+      font-size: 24px;
+      font-weight: 950;
+      white-space: nowrap;
+    }
+
+    .ranking {
+      display: grid;
+      gap: 7px;
+      margin-top: 10px;
+    }
+
+    .rankRow {
+      --rank-color: #ff9eb0;
+      display: grid;
+      grid-template-columns: 24px minmax(0, 1fr) auto;
+      gap: 8px;
+      align-items: center;
+      min-height: 34px;
+      padding: 7px 8px;
+      border: 1px solid var(--line);
+      border-left: 5px solid var(--rank-color);
+      border-radius: var(--radius);
+      background: #fff;
+    }
+
+    .rankRow:nth-child(6n + 1) { --rank-color: #ff9eb0; }
+    .rankRow:nth-child(6n + 2) { --rank-color: #ffbd8d; }
+    .rankRow:nth-child(6n + 3) { --rank-color: #efd35d; }
+    .rankRow:nth-child(6n + 4) { --rank-color: #9fdc9f; }
+    .rankRow:nth-child(6n + 5) { --rank-color: #83c6f4; }
+    .rankRow:nth-child(6n + 6) { --rank-color: #a99cf7; }
+
+    .rankNo {
+      display: grid;
+      place-items: center;
+      width: 24px;
+      height: 24px;
+      border-radius: 50%;
+      color: #463244;
+      background: var(--rank-color);
+      font-weight: 950;
+      font-size: 11px;
+    }
+
+    .rankName {
+      min-width: 0;
+      font-weight: 900;
+      font-size: 13px;
+      overflow-wrap: anywhere;
+    }
+
+    .rankScore {
+      color: #8c60d8;
+      font-weight: 950;
+      font-size: 13px;
+      white-space: nowrap;
+    }
+
+    .bar {
+      grid-column: 2 / 4;
+      height: 5px;
+      border-radius: 999px;
+      background: #f3ece6;
+      overflow: hidden;
+    }
+
+    .bar span {
+      display: block;
+      height: 100%;
+      border-radius: inherit;
+      background: var(--rank-color);
+    }
+
+    @media (max-width: 1080px) {
+      .grid {
+        grid-template-columns: 1fr;
+      }
+
+      .tableWrap {
+        max-height: none;
+      }
+
+      .sideStack {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    @media (max-width: 720px) {
+      .page {
+        width: min(100% - 20px, 1280px);
+        padding-top: 18px;
+      }
+
+      .topbar,
+      .panelHeader {
+        align-items: stretch;
+        flex-direction: column;
+      }
+
+      .panelHeaderActions {
+        align-items: stretch;
+        flex-direction: column;
+      }
+
+      .accountArea {
+        align-items: stretch;
+        flex-direction: column;
+      }
+
+      .authSummary {
+        text-align: left;
+      }
+
+      .authBadge {
+        justify-self: start;
+      }
+
+      .button {
+        flex: 1 1 150px;
+      }
+
+      .subtitle,
+      .smallNote {
+        text-align: left;
+      }
+
+      .weightControl {
+        grid-template-columns: 82px minmax(90px, 1fr) 30px;
+      }
+
+      .winner {
+        grid-template-columns: 1fr;
+      }
+
+      .winnerScore {
+        grid-row: auto;
+        grid-column: auto;
+      }
+    }
+  </style>
+</head>
+<body>
+  <main class="page">
+    <header class="topbar">
+      <div class="titleGroup">
+        <span class="eyebrow">Offer decision tool</span>
+        <h1>Offer 选择打分</h1>
+        <p class="subtitle">记录关键信息，按你自己的权重实时排序。</p>
+      </div>
+      <div class="accountArea" aria-label="账号与云端保存">
+        <div class="authSummary">
+          <span class="authBadge" id="authBadge">本地模式</span>
+          <p class="syncStatus" id="syncStatus">配置 Supabase 后，登录即可把 offer 信息同步到云端。</p>
+        </div>
+        <button class="button" id="openAuthButton" type="button">登录 / 注册</button>
+        <button class="button secondary isHidden" id="signOutButton" type="button">退出登录</button>
+      </div>
+    </header>
+
+    <div class="authModalBackdrop isHidden" id="authModalBackdrop">
+      <section class="authModal" role="dialog" aria-modal="true" aria-labelledby="authModalTitle">
+        <div class="authModalHeader">
+          <div>
+            <h2 id="authModalTitle">登录云端同步</h2>
+            <p>用邮箱和密码保存你的 offer 信息，换浏览器也能恢复。</p>
+          </div>
+          <button class="iconButton" id="closeAuthButton" type="button" aria-label="关闭登录窗口">x</button>
+        </div>
+        <form class="authForm" id="authForm">
+          <input class="authInput" id="authEmail" type="email" placeholder="邮箱" autocomplete="email" required>
+          <input class="authInput" id="authPassword" type="password" placeholder="密码" autocomplete="current-password" minlength="6" required>
+          <div class="authModalActions">
+            <button class="button" id="signInButton" type="submit">登录</button>
+            <button class="button secondary" id="signUpButton" type="button">注册</button>
+          </div>
+          <p class="authModalStatus" id="authModalStatus" role="status" aria-live="polite"></p>
+        </form>
+      </section>
+    </div>
+
+    <div class="grid">
+      <section class="panel" aria-labelledby="scoreTitle">
+        <div class="panelHeader">
+          <h2 id="scoreTitle">自定义打分表</h2>
+          <div class="panelHeaderActions">
+            <p class="smallNote">每格：相关信息 + 0-10 分</p>
+            <button class="button" id="addOfferButton" type="button">新增 offer</button>
+          </div>
+        </div>
+        <div class="tableWrap" id="scoreTableWrap">
+          <table>
+            <thead>
+              <tr id="scoreHead"></tr>
+            </thead>
+            <tbody id="scoreBody"></tbody>
+          </table>
+        </div>
+      </section>
+
+      <aside class="sideStack">
+        <section class="panel winnerPanel" aria-labelledby="winnerTitle">
+          <h2 class="winnerTitle" id="winnerTitle">实时推荐</h2>
+          <div class="winner">
+            <p class="winnerLabel">当前最合适</p>
+            <p class="winnerName" id="winnerName">-</p>
+            <div class="winnerScore" id="winnerScore">0.00</div>
+          </div>
+          <div class="ranking" id="rankingList"></div>
+        </section>
+
+        <section class="panel chartPanel" aria-labelledby="radarTitle">
+          <div class="panelHeader">
+            <h2 id="radarTitle">权重雷达图</h2>
+            <p class="smallNote">权重越高，排序越受该维度影响</p>
+          </div>
+          <div class="chartArea">
+            <div class="radarBox">
+              <canvas id="radarCanvas" aria-label="Offer 维度权重雷达图"></canvas>
+            </div>
+            <div class="weights" id="weightControls"></div>
+          </div>
+        </section>
+      </aside>
+    </div>
+  </main>
+
+  <script type="module">
+    const STORAGE_KEY = "offerDecisionBoard.v1";
+    const MAX_NOTE_LINES = 5;
+    const CLOUD_TABLE = "offer_boards";
+    const CLOUD_BOARD_KEY = "default";
+    const SUPABASE_URL = "https://gabpavfvsbfewszwtxno.supabase.co";
+    const SUPABASE_ANON_KEY = "sb_publishable_vVxQeL0YKii-60n4wxXaBQ_1KqYkqR2";
+
+    const dimensions = [
+      { id: "business", label: "业务前景", weight: 7 },
+      { id: "interest", label: "兴趣程度", weight: 8 },
+      { id: "salary", label: "待遇", weight: 6 },
+      { id: "location", label: "工作地", weight: 5 },
+      { id: "workload", label: "工作强度", weight: 6 },
+      { id: "conversion", label: "转正概率", weight: 7 }
+    ];
+
+    const defaultOffers = [
+      {
+        id: crypto.randomUUID(),
+        name: "Offer A",
+        scores: {
+          business: 7,
+          interest: 8,
+          salary: 6,
+          location: 7,
+          workload: 6,
+          conversion: 7
+        },
+        notes: {}
+      },
+      {
+        id: crypto.randomUUID(),
+        name: "Offer B",
+        scores: {
+          business: 8,
+          interest: 9,
+          salary: 8,
+          location: 5,
+          workload: 7,
+          conversion: 5
+        },
+        notes: {}
+      },
+      {
+        id: crypto.randomUUID(),
+        name: "Offer C",
+        scores: {
+          business: 6,
+          interest: 6,
+          salary: 9,
+          location: 8,
+          workload: 5,
+          conversion: 8
+        },
+        notes: {}
+      }
+    ];
+
+    let state = loadState();
+    let supabaseClient = null;
+    let currentUser = null;
+    let activeUserId = null;
+    let cloudSaveTimer = null;
+    let isApplyingCloudState = false;
+
+    const scoreHead = document.getElementById("scoreHead");
+    const scoreBody = document.getElementById("scoreBody");
+    const scoreTableWrap = document.getElementById("scoreTableWrap");
+    const weightControls = document.getElementById("weightControls");
+    const winnerName = document.getElementById("winnerName");
+    const winnerScore = document.getElementById("winnerScore");
+    const rankingList = document.getElementById("rankingList");
+    const canvas = document.getElementById("radarCanvas");
+    const context = canvas.getContext("2d");
+    const authBadge = document.getElementById("authBadge");
+    const syncStatus = document.getElementById("syncStatus");
+    const authForm = document.getElementById("authForm");
+    const authEmail = document.getElementById("authEmail");
+    const authPassword = document.getElementById("authPassword");
+    const authModalBackdrop = document.getElementById("authModalBackdrop");
+    const authModalStatus = document.getElementById("authModalStatus");
+    const openAuthButton = document.getElementById("openAuthButton");
+    const closeAuthButton = document.getElementById("closeAuthButton");
+    const signInButton = document.getElementById("signInButton");
+    const signUpButton = document.getElementById("signUpButton");
+    const signOutButton = document.getElementById("signOutButton");
+
+    document.getElementById("addOfferButton").addEventListener("click", addOffer);
+    openAuthButton.addEventListener("click", openAuthModal);
+    closeAuthButton.addEventListener("click", closeAuthModal);
+    authModalBackdrop.addEventListener("click", (event) => {
+      if (event.target === authModalBackdrop) {
+        closeAuthModal();
+      }
+    });
+    authForm.addEventListener("submit", handleSignIn);
+    signUpButton.addEventListener("click", handleSignUp);
+    signOutButton.addEventListener("click", handleSignOut);
+    document.addEventListener("keydown", (event) => {
+      if (event.key === "Escape") {
+        closeAuthModal();
+      }
+    });
+    window.addEventListener("resize", () => {
+      syncAllNoteHeights();
+      drawRadar();
+    });
+
+    function cloneDefaultOffers() {
+      return defaultOffers.map((offer, index) => ({
+        id: crypto.randomUUID(),
+        name: offer.name || `Offer ${index + 1}`,
+        scores: { ...offer.scores },
+        notes: Object.fromEntries(dimensions.map((dimension) => [dimension.id, offer.notes?.[dimension.id] || ""]))
+      }));
+    }
+
+    function getDefaultState() {
+      return {
+        weights: Object.fromEntries(dimensions.map((dimension) => [dimension.id, dimension.weight])),
+        offers: cloneDefaultOffers()
+      };
+    }
+
+    function normalizeState(value) {
+      const fallback = getDefaultState();
+      if (!value || typeof value !== "object") {
+        return fallback;
+      }
+
+      const weights = Object.fromEntries(dimensions.map((dimension) => {
+        const storedWeight = Number(value.weights?.[dimension.id]);
+        return [dimension.id, Number.isFinite(storedWeight) ? storedWeight : fallback.weights[dimension.id]];
+      }));
+      const offers = Array.isArray(value.offers) && value.offers.length
+        ? value.offers.map(normalizeOffer)
+        : fallback.offers;
+
+      return { weights, offers };
+    }
+
+    function loadState() {
+      const fallback = getDefaultState();
+      const stored = localStorage.getItem(STORAGE_KEY);
+      if (!stored) {
+        return fallback;
+      }
+
+      try {
+        return normalizeState(JSON.parse(stored));
+      } catch (error) {
+        return fallback;
+      }
+    }
+
+    function normalizeOffer(offer, index) {
+      const scores = {};
+      const notes = {};
+      dimensions.forEach((dimension) => {
+        scores[dimension.id] = clampScore(Number(offer.scores?.[dimension.id] ?? 5));
+        notes[dimension.id] = String(offer.notes?.[dimension.id] || "");
+      });
+
+      return {
+        id: offer.id || crypto.randomUUID(),
+        name: String(offer.name || `Offer ${index + 1}`),
+        scores,
+        notes
+      };
+    }
+
+    function saveState() {
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(getStatePayload()));
+      scheduleCloudSave();
+    }
+
+    function getStatePayload() {
+      return {
+        weights: { ...state.weights },
+        offers: state.offers.map((offer) => ({
+          id: offer.id,
+          name: offer.name,
+          scores: { ...offer.scores },
+          notes: { ...offer.notes }
+        }))
+      };
+    }
+
+    function isSupabaseConfigured() {
+      const projectUrl = getSupabaseUrl();
+      return projectUrl.startsWith("https://")
+        && projectUrl.includes(".supabase.co")
+        && SUPABASE_ANON_KEY.length > 40;
+    }
+
+    function getSupabaseUrl() {
+      try {
+        return new URL(SUPABASE_URL.trim()).origin;
+      } catch (error) {
+        return SUPABASE_URL.trim().replace(/\/+$/, "");
+      }
+    }
+
+    function setSyncStatus(message, tone = "info") {
+      syncStatus.textContent = message;
+      if (!authModalBackdrop.classList.contains("isHidden")) {
+        setAuthModalStatus(message, tone);
+      }
+    }
+
+    function setAuthModalStatus(message, tone = "info") {
+      authModalStatus.textContent = message;
+      authModalStatus.classList.toggle("isVisible", Boolean(message));
+      authModalStatus.classList.toggle("isError", tone === "error");
+    }
+
+    function openAuthModal() {
+      if (!isSupabaseConfigured()) {
+        setSyncStatus("请先填写 Supabase 配置后再登录。", "error");
+        return;
+      }
+
+      authModalBackdrop.classList.remove("isHidden");
+      setAuthModalStatus("登录后会自动加载云端数据，并把同步后续的修改。");
+      requestAnimationFrame(() => authEmail.focus());
+    }
+
+    function closeAuthModal() {
+      authModalBackdrop.classList.add("isHidden");
+      setAuthModalStatus("");
+    }
+
+    function updateAuthUI() {
+      const configured = isSupabaseConfigured();
+      const isSignedIn = Boolean(currentUser);
+
+      authBadge.textContent = !configured
+        ? "本地模式"
+        : isSignedIn
+          ? `已登录：${currentUser.email || "Supabase 用户"}`
+          : "云端同步未登录";
+
+      openAuthButton.classList.toggle("isHidden", isSignedIn);
+      signOutButton.classList.toggle("isHidden", !isSignedIn);
+      [openAuthButton, authEmail, authPassword, signInButton, signUpButton].forEach((control) => {
+        control.disabled = !configured;
+      });
+
+      if (isSignedIn) {
+        closeAuthModal();
+      }
+
+      if (!configured) {
+        setSyncStatus("请先在代码中填写 SUPABASE_URL 和 SUPABASE_ANON_KEY；当前数据只保存在本地浏览器。");
+      } else if (!isSignedIn) {
+        setSyncStatus("登录后会自动加载云端数据，并把同步后续的修改。");
+      }
+    }
+
+    async function initSupabase() {
+      updateAuthUI();
+      if (!isSupabaseConfigured()) {
+        return;
+      }
+
+      let createClient;
+      try {
+        ({ createClient } = await import("https://esm.sh/@supabase/supabase-js@2"));
+      } catch (error) {
+        setSyncStatus("Supabase SDK 加载失败，请检查网络或稍后重试。", "error");
+        return;
+      }
+
+      supabaseClient = createClient(getSupabaseUrl(), SUPABASE_ANON_KEY);
+      const { data, error } = await supabaseClient.auth.getSession();
+      if (error) {
+        setSyncStatus(`读取登录状态失败：${error.message}`, "error");
+      } else {
+        await applySession(data.session);
+      }
+
+      supabaseClient.auth.onAuthStateChange((_event, session) => {
+        applySession(session);
+      });
+    }
+
+    async function applySession(session) {
+      const nextUser = session?.user || null;
+      if (nextUser?.id === activeUserId) {
+        return;
+      }
+
+      currentUser = nextUser;
+      activeUserId = nextUser?.id || null;
+      updateAuthUI();
+
+      if (!currentUser) {
+        setSyncStatus(isSupabaseConfigured() ? "已退出登录，之后的修改会先保存在本地。" : syncStatus.textContent);
+        return;
+      }
+
+      await loadCloudState();
+    }
+
+    async function handleSignIn(event) {
+      event.preventDefault();
+      if (!supabaseClient) {
+        return;
+      }
+
+      setSyncStatus("正在登录...");
+      const { error } = await supabaseClient.auth.signInWithPassword({
+        email: authEmail.value.trim(),
+        password: authPassword.value
+      });
+
+      if (error) {
+        setSyncStatus(`登录失败：${error.message}`, "error");
+        return;
+      }
+
+      authPassword.value = "";
+      setSyncStatus("登录成功，正在同步数据...");
+    }
+
+    async function handleSignUp() {
+      if (!supabaseClient) {
+        return;
+      }
+
+      if (!authEmail.reportValidity() || !authPassword.reportValidity()) {
+        return;
+      }
+
+      setSyncStatus("正在注册...");
+      const options = {};
+      if (window.location.protocol.startsWith("http")) {
+        options.emailRedirectTo = window.location.href;
+      }
+      const { data, error } = await supabaseClient.auth.signUp({
+        email: authEmail.value.trim(),
+        password: authPassword.value,
+        options
+      });
+
+      if (error) {
+        setSyncStatus(`注册失败：${error.message}`, "error");
+        return;
+      }
+
+      authPassword.value = "";
+      setSyncStatus(data.session ? "注册成功，已登录并开始同步。" : "注册成功，请去邮箱完成确认后再登录。");
+    }
+
+    async function handleSignOut() {
+      if (!supabaseClient) {
+        return;
+      }
+
+      setSyncStatus("正在退出登录...");
+      const { error } = await supabaseClient.auth.signOut();
+      if (error) {
+        setSyncStatus(`退出失败：${error.message}`, "error");
+        return;
+      }
+
+      currentUser = null;
+      activeUserId = null;
+      updateAuthUI();
+      restoreDemoLocally();
+      setSyncStatus("已退出登录，界面已恢复为示例数据。");
+    }
+
+    async function loadCloudState() {
+      if (!supabaseClient || !currentUser) {
+        return;
+      }
+
+      setSyncStatus("正在加载云端 offer...");
+      const { data, error } = await supabaseClient
+        .from(CLOUD_TABLE)
+        .select("board_data")
+        .eq("user_id", currentUser.id)
+        .eq("board_key", CLOUD_BOARD_KEY)
+        .maybeSingle();
+
+      if (error) {
+        setSyncStatus(`云端加载失败：${error.message}`, "error");
+        return;
+      }
+
+      if (data?.board_data) {
+        isApplyingCloudState = true;
+        state = normalizeState(data.board_data);
+        render();
+        isApplyingCloudState = false;
+        setSyncStatus("已加载云端 offer，之后修改会自动同步。");
+        return;
+      }
+
+      setSyncStatus("云端还没有数据，正在把本地表格初始化到云端...");
+      await saveCloudState();
+    }
+
+    function scheduleCloudSave() {
+      if (!supabaseClient || !currentUser || isApplyingCloudState) {
+        return;
+      }
+
+      setSyncStatus("保存中...");
+      clearTimeout(cloudSaveTimer);
+      cloudSaveTimer = window.setTimeout(saveCloudState, 550);
+    }
+
+    async function saveCloudState() {
+      if (!supabaseClient || !currentUser) {
+        return;
+      }
+
+      const { error } = await supabaseClient
+        .from(CLOUD_TABLE)
+        .upsert({
+          user_id: currentUser.id,
+          board_key: CLOUD_BOARD_KEY,
+          board_data: getStatePayload(),
+          updated_at: new Date().toISOString()
+        }, { onConflict: "user_id,board_key" })
+        .select("id")
+        .single();
+
+      if (error) {
+        setSyncStatus(`云端保存失败：${error.message}`, "error");
+        return;
+      }
+
+      setSyncStatus("已同步到云端");
+    }
+
+    function clampScore(value) {
+      if (!Number.isFinite(value)) {
+        return 0;
+      }
+      return Math.max(0, Math.min(10, value));
+    }
+
+    function getScoreValidationMessage(value) {
+      const trimmed = String(value).trim();
+      const plainNumberPattern = /^(?:\d+(?:\.\d*)?|\.\d+)$/;
+      if (!plainNumberPattern.test(trimmed)) {
+        return "分数范围0-10之间";
+      }
+      const score = Number(trimmed);
+      if (trimmed === "" || !Number.isFinite(score)) {
+        return "分数范围0-10之间";
+      }
+      if (score < 0 || score > 10) {
+        return "分数范围0-10之间";
+      }
+      return "";
+    }
+
+    function sanitizeScoreInput(value) {
+      let sanitized = "";
+      let hasDot = false;
+      String(value).split("").forEach((char) => {
+        if (char >= "0" && char <= "9") {
+          sanitized += char;
+          return;
+        }
+        if (char === "." && !hasDot) {
+          sanitized += char;
+          hasDot = true;
+        }
+      });
+      return sanitized;
+    }
+
+    function render() {
+      renderScoreTable();
+      syncAllNoteHeights();
+      renderWeights();
+      renderRanking();
+      drawRadar();
+      saveState();
+    }
+
+    function renderScoreTable() {
+      scoreHead.innerHTML = "";
+      const titleCell = document.createElement("th");
+      titleCell.textContent = "维度";
+      scoreHead.appendChild(titleCell);
+
+      state.offers.forEach((offer) => {
+        const cell = document.createElement("th");
+        const header = document.createElement("div");
+        header.className = "offerHeader";
+
+        const nameInput = document.createElement("input");
+        nameInput.className = "offerName";
+        nameInput.value = offer.name;
+        nameInput.setAttribute("aria-label", `${offer.name} 名称`);
+        nameInput.addEventListener("input", (event) => {
+          offer.name = event.target.value.trim() || "未命名 offer";
+          renderRanking();
+          drawRadar();
+          saveState();
+        });
+
+        const deleteButton = document.createElement("button");
+        deleteButton.className = "deleteButton";
+        deleteButton.type = "button";
+        deleteButton.textContent = "x";
+        deleteButton.disabled = state.offers.length <= 1;
+        deleteButton.setAttribute("aria-label", `删除 ${offer.name}`);
+        deleteButton.addEventListener("click", () => deleteOffer(offer.id));
+
+        header.append(nameInput, deleteButton);
+        cell.appendChild(header);
+        scoreHead.appendChild(cell);
+      });
+
+      scoreBody.innerHTML = "";
+      dimensions.forEach((dimension) => {
+        const row = document.createElement("tr");
+
+        const dimensionCell = document.createElement("td");
+        const dimensionName = document.createElement("div");
+        dimensionName.className = "dimensionName";
+        dimensionName.textContent = dimension.label;
+        dimensionCell.appendChild(dimensionName);
+        row.appendChild(dimensionCell);
+
+        state.offers.forEach((offer) => {
+          const cell = document.createElement("td");
+          cell.className = "scoreCell";
+          const entry = document.createElement("div");
+          entry.className = "dimensionEntry";
+
+          const note = document.createElement("textarea");
+          note.className = "noteInput";
+          note.rows = 1;
+          note.dataset.dimensionId = dimension.id;
+          note.value = offer.notes[dimension.id] || "";
+          note.placeholder = dimension.label;
+          note.setAttribute("aria-label", `${offer.name} ${dimension.label} 相关信息`);
+          note.addEventListener("input", (event) => {
+            offer.notes[dimension.id] = event.target.value;
+            syncNoteRowHeight(dimension.id);
+            saveState();
+          });
+
+          const noteGroup = document.createElement("div");
+          noteGroup.className = "fieldGroup";
+          const noteLabel = document.createElement("span");
+          noteLabel.className = "fieldLabel";
+          noteLabel.textContent = "备注";
+          noteGroup.append(noteLabel, note);
+
+          const scoreGroup = document.createElement("div");
+          scoreGroup.className = "fieldGroup scoreGroup";
+          const scoreLabel = document.createElement("span");
+          scoreLabel.className = "fieldLabel";
+          scoreLabel.textContent = "分数";
+
+          const input = document.createElement("input");
+          input.className = "scoreInput";
+          input.type = "text";
+          input.inputMode = "none";
+          input.autocomplete = "off";
+          input.spellcheck = false;
+          input.value = offer.scores[dimension.id];
+          input.setAttribute("aria-label", `${offer.name} ${dimension.label} 分数`);
+
+          const scoreWarning = document.createElement("span");
+          scoreWarning.className = "scoreWarning";
+          scoreWarning.textContent = "分数范围0-10之间";
+
+          input.addEventListener("beforeinput", (event) => {
+            if (event.inputType.startsWith("delete") || event.inputType === "insertFromPaste") {
+              return;
+            }
+            if (!/^[0-9.]*$/.test(event.data || "")) {
+              event.preventDefault();
+            }
+          });
+          input.addEventListener("input", (event) => {
+            const sanitized = sanitizeScoreInput(event.target.value);
+            if (event.target.value !== sanitized) {
+              event.target.value = sanitized;
+            }
+            const message = getScoreValidationMessage(sanitized);
+            scoreGroup.classList.toggle("hasError", Boolean(message));
+            if (message) {
+              scoreWarning.textContent = message;
+              return;
+            }
+
+            offer.scores[dimension.id] = Number(sanitized);
+            renderRanking();
+            drawRadar();
+            saveState();
+          });
+
+          scoreGroup.append(scoreLabel, input, scoreWarning);
+          entry.append(noteGroup, scoreGroup);
+          cell.appendChild(entry);
+          row.appendChild(cell);
+        });
+
+        scoreBody.appendChild(row);
+      });
+    }
+
+    function syncAllNoteHeights() {
+      dimensions.forEach((dimension) => syncNoteRowHeight(dimension.id));
+    }
+
+    function syncNoteRowHeight(dimensionId) {
+      const textareas = Array.from(scoreBody.querySelectorAll(`.noteInput[data-dimension-id="${dimensionId}"]`));
+      if (!textareas.length) {
+        return;
+      }
+
+      let targetHeight = 0;
+      textareas.forEach((textarea) => {
+        const { minHeight, maxHeight } = getNoteHeightLimits(textarea);
+        textarea.style.height = `${minHeight}px`;
+        const naturalHeight = textarea.scrollHeight + getVerticalBorderSize(textarea);
+        targetHeight = Math.max(targetHeight, Math.min(naturalHeight, maxHeight));
+      });
+
+      textareas.forEach((textarea) => {
+        const { minHeight, maxHeight } = getNoteHeightLimits(textarea);
+        const height = Math.max(minHeight, Math.min(targetHeight, maxHeight));
+        textarea.style.height = `${height}px`;
+        textarea.classList.toggle("isScrollable", textarea.scrollHeight + getVerticalBorderSize(textarea) > height + 1);
+      });
+    }
+
+    function getNoteHeightLimits(textarea) {
+      const style = window.getComputedStyle(textarea);
+      const fontSize = Number.parseFloat(style.fontSize) || 16;
+      const lineHeight = Number.parseFloat(style.lineHeight) || fontSize * 1.45;
+      const paddingY = Number.parseFloat(style.paddingTop) + Number.parseFloat(style.paddingBottom);
+      const borderY = getVerticalBorderSize(textarea);
+
+      return {
+        minHeight: Math.ceil(lineHeight + paddingY + borderY),
+        maxHeight: Math.ceil(lineHeight * MAX_NOTE_LINES + paddingY + borderY)
+      };
+    }
+
+    function getVerticalBorderSize(element) {
+      const style = window.getComputedStyle(element);
+      return Number.parseFloat(style.borderTopWidth) + Number.parseFloat(style.borderBottomWidth);
+    }
+
+    function renderWeights() {
+      weightControls.innerHTML = "";
+      dimensions.forEach((dimension) => {
+        const wrapper = document.createElement("div");
+        wrapper.className = "weightControl";
+
+        const label = document.createElement("label");
+        label.htmlFor = `weight-${dimension.id}`;
+        label.textContent = dimension.label;
+
+        const range = document.createElement("input");
+        range.id = `weight-${dimension.id}`;
+        range.type = "range";
+        range.min = "0";
+        range.max = "10";
+        range.step = "1";
+        range.value = state.weights[dimension.id];
+        range.addEventListener("input", (event) => {
+          state.weights[dimension.id] = Number(event.target.value);
+          value.textContent = event.target.value;
+          renderRanking();
+          drawRadar();
+          saveState();
+        });
+
+        const value = document.createElement("span");
+        value.className = "weightValue";
+        value.textContent = state.weights[dimension.id];
+
+        wrapper.append(label, range, value);
+        weightControls.appendChild(wrapper);
+      });
+    }
+
+    function getWeightedScore(offer) {
+      const totalWeight = dimensions.reduce((sum, dimension) => sum + state.weights[dimension.id], 0);
+      if (totalWeight === 0) {
+        return 0;
+      }
+
+      const weightedSum = dimensions.reduce((sum, dimension) => {
+        return sum + offer.scores[dimension.id] * state.weights[dimension.id];
+      }, 0);
+
+      return weightedSum / totalWeight;
+    }
+
+    function getRanking() {
+      return state.offers
+        .map((offer) => ({
+          ...offer,
+          weightedScore: getWeightedScore(offer)
+        }))
+        .sort((a, b) => b.weightedScore - a.weightedScore);
+    }
+
+    function renderRanking() {
+      const ranking = getRanking();
+      const topOffer = ranking[0];
+      winnerName.textContent = topOffer ? topOffer.name : "-";
+      winnerScore.textContent = topOffer ? topOffer.weightedScore.toFixed(2) : "0.00";
+
+      rankingList.innerHTML = "";
+      ranking.forEach((offer, index) => {
+        const row = document.createElement("div");
+        row.className = "rankRow";
+
+        const number = document.createElement("div");
+        number.className = "rankNo";
+        number.textContent = index + 1;
+
+        const name = document.createElement("div");
+        name.className = "rankName";
+        name.textContent = offer.name;
+
+        const score = document.createElement("div");
+        score.className = "rankScore";
+        score.textContent = offer.weightedScore.toFixed(2);
+
+        const bar = document.createElement("div");
+        bar.className = "bar";
+        const fill = document.createElement("span");
+        fill.style.width = `${Math.max(0, Math.min(100, offer.weightedScore * 10))}%`;
+        bar.appendChild(fill);
+
+        row.append(number, name, score, bar);
+        rankingList.appendChild(row);
+      });
+    }
+
+    function drawRadar() {
+      const box = canvas.parentElement.getBoundingClientRect();
+      const size = Math.max(220, Math.floor(Math.min(box.width, box.height || box.width)));
+      const dpr = window.devicePixelRatio || 1;
+      canvas.width = size * dpr;
+      canvas.height = size * dpr;
+      context.setTransform(dpr, 0, 0, dpr, 0, 0);
+      context.clearRect(0, 0, size, size);
+
+      const centerX = size / 2;
+      const centerY = size / 2 - size * 0.035;
+      const radius = size * 0.34;
+      const labelRadius = size * 0.41;
+      const stepCount = 5;
+      const count = dimensions.length;
+
+      context.lineWidth = 1;
+      context.strokeStyle = "#ead8d1";
+      context.fillStyle = "#74677a";
+      context.font = "700 10px Inter, PingFang SC, sans-serif";
+      context.textAlign = "center";
+      context.textBaseline = "middle";
+
+      for (let step = 1; step <= stepCount; step += 1) {
+        const points = dimensions.map((_, index) => {
+          const angle = getAngle(index, count);
+          const pointRadius = (radius * step) / stepCount;
+          return getPoint(centerX, centerY, pointRadius, angle);
+        });
+        drawPolygon(points, false, step === stepCount ? "#dfc9d8" : "#f0e3dc");
+      }
+
+      dimensions.forEach((dimension, index) => {
+        const angle = getAngle(index, count);
+        const end = getPoint(centerX, centerY, radius, angle);
+        context.beginPath();
+        context.moveTo(centerX, centerY);
+        context.lineTo(end.x, end.y);
+        context.strokeStyle = "#eadce6";
+        context.stroke();
+
+        const label = getPoint(centerX, centerY, labelRadius, angle);
+        context.fillStyle = "#5f5268";
+        context.fillText(shortLabel(dimension.label), label.x, label.y);
+      });
+
+      const weightPoints = dimensions.map((dimension, index) => {
+        const angle = getAngle(index, count);
+        return getPoint(centerX, centerY, radius * (state.weights[dimension.id] / 10), angle);
+      });
+      drawPolygon(weightPoints, true, "rgba(103, 156, 232, 0.9)", "rgba(103, 156, 232, 0.2)");
+
+      const topOffer = getRanking()[0];
+      if (topOffer) {
+        const offerPoints = dimensions.map((dimension, index) => {
+          const angle = getAngle(index, count);
+          return getPoint(centerX, centerY, radius * (topOffer.scores[dimension.id] / 10), angle);
+        });
+        drawPolygon(offerPoints, true, "rgba(242, 112, 141, 0.9)", "rgba(242, 112, 141, 0.18)");
+      }
+
+      drawLegend(size);
+    }
+
+    function getAngle(index, count) {
+      return -Math.PI / 2 + (index * Math.PI * 2) / count;
+    }
+
+    function getPoint(cx, cy, radius, angle) {
+      return {
+        x: cx + Math.cos(angle) * radius,
+        y: cy + Math.sin(angle) * radius
+      };
+    }
+
+    function drawPolygon(points, filled, strokeStyle, fillStyle = "transparent") {
+      context.beginPath();
+      points.forEach((point, index) => {
+        if (index === 0) {
+          context.moveTo(point.x, point.y);
+        } else {
+          context.lineTo(point.x, point.y);
+        }
+      });
+      context.closePath();
+      if (filled) {
+        context.fillStyle = fillStyle;
+        context.fill();
+      }
+      context.strokeStyle = strokeStyle;
+      context.lineWidth = filled ? 2.8 : 1;
+      context.stroke();
+
+      if (filled) {
+        points.forEach((point) => {
+          context.beginPath();
+          context.arc(point.x, point.y, 4, 0, Math.PI * 2);
+          context.fillStyle = strokeStyle;
+          context.fill();
+        });
+      }
+    }
+
+    function drawLegend(size) {
+      const items = [
+        { label: "权重", color: "#679ce8" },
+        { label: "第一名", color: "#f2708d" }
+      ];
+      const y = size - 10;
+      let x = size / 2 - 58;
+
+      context.font = "800 11px Inter, PingFang SC, sans-serif";
+      context.textAlign = "left";
+      context.textBaseline = "middle";
+      items.forEach((item) => {
+        context.fillStyle = item.color;
+        context.fillRect(x, y - 4, 16, 8);
+        context.fillStyle = "#716478";
+        context.fillText(item.label, x + 22, y);
+        x += 72;
+      });
+    }
+
+    function shortLabel(label) {
+      return label.replace("程度", "").replace("概率", "").replace("帮助", "");
+    }
+
+    function addOffer() {
+      const nextNumber = state.offers.length + 1;
+      const scores = Object.fromEntries(dimensions.map((dimension) => [dimension.id, 5]));
+      const notes = Object.fromEntries(dimensions.map((dimension) => [dimension.id, ""]));
+      state.offers.push({
+        id: crypto.randomUUID(),
+        name: `Offer ${nextNumber}`,
+        scores,
+        notes
+      });
+      render();
+      requestAnimationFrame(scrollToLatestOffer);
+    }
+
+    function scrollToLatestOffer() {
+      scoreTableWrap.scrollTo({
+        left: scoreTableWrap.scrollWidth,
+        behavior: "smooth"
+      });
+    }
+
+    function deleteOffer(offerId) {
+      if (state.offers.length <= 1) {
+        return;
+      }
+      state.offers = state.offers.filter((offer) => offer.id !== offerId);
+      render();
+    }
+
+    function restoreDemoLocally() {
+      isApplyingCloudState = true;
+      state = getDefaultState();
+      render();
+      isApplyingCloudState = false;
+    }
+
+    render();
+    initSupabase();
+  </script>
+</body>
+</html>

@@ -1,0 +1,28 @@
+server {
+    listen 80;
+    listen [::]:80;
+    server_name __DOMAIN__;
+
+    root __DEPLOY_PATH__;
+    index index.html;
+
+    access_log /var/log/nginx/__SITE_NAME__.access.log;
+    error_log /var/log/nginx/__SITE_NAME__.error.log;
+
+    add_header X-Content-Type-Options "nosniff" always;
+    add_header Referrer-Policy "strict-origin-when-cross-origin" always;
+
+    location / {
+        try_files $uri $uri/ /index.html;
+    }
+
+    location ~ /\.(?!well-known) {
+        deny all;
+    }
+
+    location ~* \.(?:css|js|mjs|png|jpg|jpeg|gif|svg|ico|webp|woff2?)$ {
+        expires 7d;
+        add_header Cache-Control "public, max-age=604800";
+        try_files $uri =404;
+    }
+}

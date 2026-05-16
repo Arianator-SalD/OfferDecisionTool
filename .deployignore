@@ -1,0 +1,12 @@
+.git/
+.vercel/
+node_modules/
+.DS_Store
+.deployignore
+.gitignore
+.vercelignore
+DEPLOY-HK.md
+supabase-schema.sql
+deploy/
+scripts/
+*.log
