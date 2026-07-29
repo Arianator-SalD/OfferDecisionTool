@@ -5,26 +5,53 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Offer 选择打分表</title>
   <link rel="icon" href="data:,">
+  <link rel="stylesheet" href="https://fonts.googleapis.cn/css2?family=Playfair+Display:wght@400;600;700&family=DM+Sans:wght@300;400;500;600;700;800&display=swap">
   <style>
     :root {
       color-scheme: light;
-      --ink: #2d2230;
-      --muted: #6f6270;
-      --paper: #fff4f8;
-      --panel: #ffffff;
-      --line: #eadad4;
-      --button-red: #ffbbc0;
-      --button-red-hover: #ffa4ad;
-      --button-text: #68313b;
-      --rose: #de7589;
-      --rose-soft: #ffe6e9;
-      --rust: #e38e5f;
-      --amber: #d7ad43;
-      --blue: #679ce8;
-      --slate: #62b2cd;
-      --indigo: #8c82ee;
-      --violet: #d378bd;
-      --shadow: 0 18px 38px rgba(92, 70, 94, 0.1);
+
+      /* 主题色 - 个人网站同源的印象派调色 */
+      --primary: #4a6b7a;
+      --primary-hover: #365462;
+      --primary-soft: #eaf3f6;
+      --mist: #a8c4d4;
+      --mist-soft: #edf5f8;
+      --lotus: #d4a8c4;
+      --lotus-soft: #f7edf4;
+      --cream: #f5f0e8;
+
+      /* 文本色 */
+      --text: #3d3d3d;
+      --text-muted: #7a8a92;
+      --text-light: #a7b4ba;
+      --text-inverse: #ffffff;
+
+      /* 背景与表面 */
+      --bg: #f5f0e8;
+      --surface: #ffffff;
+      --surface-subtle: #f8f5f0;
+      --surface-hover: #eff6f8;
+      --surface-raised: #ffffff;
+
+      /* 边界与焦点 */
+      --border: #dce8ee;
+      --border-strong: #a8c4d4;
+      --focus-ring: rgba(168, 196, 212, 0.46);
+
+      /* 语义色 */
+      --success: #4b8778;
+      --success-soft: #e9f6f1;
+      --warning: #96703c;
+      --warning-soft: #f8efdc;
+      --danger: #9f4d65;
+      --danger-soft: #f8eaf0;
+
+      /* 阴影系统 - 柔和阴影 */
+      --shadow-sm: 0 1px 2px rgba(74, 107, 122, 0.05);
+      --shadow-md: 0 10px 24px rgba(74, 107, 122, 0.08);
+      --shadow-lg: 0 22px 48px rgba(74, 107, 122, 0.13);
+
+      /* 圆角 */
       --radius: 8px;
     }
 
@@ -35,11 +62,13 @@
     body {
       margin: 0;
       min-height: 100vh;
-      font-family: Inter, "PingFang SC", "Microsoft YaHei", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
-      color: var(--ink);
+      font-family: "DM Sans", "PingFang SC", "Microsoft YaHei", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      color: var(--text);
       background:
-        linear-gradient(125deg, rgba(255, 235, 242, 0.88) 0%, rgba(255, 237, 217, 0.88) 17%, rgba(255, 250, 207, 0.88) 34%, rgba(226, 248, 222, 0.82) 51%, rgba(221, 240, 255, 0.88) 68%, rgba(231, 225, 255, 0.88) 84%, rgba(255, 226, 248, 0.88) 100%),
-        linear-gradient(180deg, rgba(255, 255, 255, 0.42), rgba(255, 255, 255, 0.16));
+        linear-gradient(120deg, rgba(245, 240, 232, 0.98) 0%, rgba(255, 255, 255, 0.96) 42%, rgba(168, 196, 212, 0.22) 100%),
+        linear-gradient(155deg, transparent 0%, rgba(212, 168, 196, 0.13) 46%, transparent 72%),
+        repeating-linear-gradient(90deg, rgba(74, 107, 122, 0.035) 0 1px, transparent 1px 44px),
+        var(--bg);
     }
 
     button,
@@ -51,6 +80,15 @@
     button {
       border: 0;
       cursor: pointer;
+    }
+
+    button:focus-visible,
+    input:focus-visible,
+    textarea:focus-visible,
+    select:focus-visible {
+      outline: 3px solid var(--focus-ring);
+      outline-offset: 2px;
+      border-color: var(--primary);
     }
 
     .page {
@@ -66,11 +104,11 @@
       gap: 18px;
       margin-bottom: 16px;
       padding: 16px 18px;
-      border: 1px solid rgba(234, 218, 212, 0.86);
+      border: 1px solid rgba(168, 196, 212, 0.32);
       border-radius: var(--radius);
-      background: rgba(255, 255, 255, 0.62);
-      box-shadow: 0 12px 28px rgba(92, 70, 94, 0.08);
-      backdrop-filter: blur(10px);
+      background: rgba(255, 255, 255, 0.74);
+      box-shadow: var(--shadow-md);
+      backdrop-filter: blur(14px);
     }
 
     .titleGroup {
@@ -92,9 +130,9 @@
     }
 
     .archiveLabel {
-      color: #685b6c;
+      color: var(--text-muted);
       font-size: 12px;
-      font-weight: 900;
+      font-weight: 700;
       white-space: nowrap;
     }
 
@@ -121,26 +159,26 @@
       align-items: center;
       width: 100%;
       height: 38px;
-      border: 1px solid rgba(234, 218, 212, 0.92);
+      border: 1px solid var(--border);
       border-radius: var(--radius);
       padding: 0 10px 0 12px;
-      color: var(--ink);
-      background: linear-gradient(135deg, rgba(255, 255, 255, 0.96), rgba(255, 248, 241, 0.9), rgba(239, 247, 255, 0.82));
+      color: var(--text);
+      background: var(--surface-raised);
       font-size: 13px;
-      font-weight: 900;
+      font-weight: 600;
       text-align: left;
-      box-shadow: 0 10px 22px rgba(92, 70, 94, 0.08);
+      box-shadow: var(--shadow-sm);
     }
 
     .archiveDropdownButton:hover {
-      border-color: rgba(255, 169, 178, 0.72);
-      background: linear-gradient(135deg, rgba(255, 255, 255, 0.98), rgba(255, 240, 238, 0.94), rgba(235, 245, 255, 0.9));
+      border-color: var(--primary);
+      background: var(--surface-hover);
     }
 
     .archiveDropdownButton:focus-visible {
-      outline: 3px solid rgba(103, 156, 232, 0.3);
+      outline: 3px solid var(--focus-ring);
       outline-offset: 2px;
-      border-color: rgba(103, 156, 232, 0.75);
+      border-color: var(--primary);
     }
 
     .archiveDropdownValue {
@@ -151,7 +189,7 @@
     }
 
     .archiveDropdownIcon {
-      color: #8b7085;
+      color: var(--text-muted);
       font-size: 14px;
       line-height: 1;
       transition: transform 0.16s ease;
@@ -171,11 +209,11 @@
       gap: 4px;
       max-height: 260px;
       overflow-y: auto;
-      border: 1px solid rgba(234, 218, 212, 0.96);
+      border: 1px solid var(--border);
       border-radius: var(--radius);
       padding: 6px;
-      background: linear-gradient(135deg, rgba(255, 255, 255, 0.98), rgba(255, 241, 247, 0.96), rgba(235, 245, 255, 0.94));
-      box-shadow: 0 20px 44px rgba(54, 38, 58, 0.18);
+      background: var(--surface-raised);
+      box-shadow: var(--shadow-lg);
     }
 
     .archiveOption {
@@ -186,31 +224,31 @@
       min-height: 36px;
       border-radius: var(--radius);
       padding: 0 9px;
-      color: #4f4255;
+      color: var(--text);
       background: transparent;
       font-size: 13px;
-      font-weight: 850;
+      font-weight: 600;
       text-align: left;
     }
 
     .archiveOption:hover,
     .archiveOption:focus-visible {
       outline: 0;
-      background: linear-gradient(135deg, rgba(255, 230, 233, 0.9), rgba(221, 240, 255, 0.78));
+      background: var(--surface-hover);
     }
 
     .archiveOption.isActive {
-      color: #743b50;
-      background: linear-gradient(135deg, rgba(255, 230, 233, 0.96), rgba(255, 247, 204, 0.78), rgba(235, 245, 255, 0.9));
+      color: var(--primary);
+      background: var(--primary-soft);
     }
 
     .archiveOptionCheck {
       display: grid;
       place-items: center;
       width: 18px;
-      color: #d65d76;
+      color: var(--primary);
       font-size: 13px;
-      font-weight: 950;
+      font-weight: 700;
     }
 
     .archiveOptionName {
@@ -220,30 +258,47 @@
       white-space: nowrap;
     }
 
-    .archiveActions {
-      display: flex;
-      gap: 8px;
-      flex-wrap: wrap;
+    .archiveMenuDivider {
+      height: 1px;
+      margin: 4px 2px;
+      background: var(--border);
     }
 
-    .archiveActions .button {
-      min-height: 34px;
-      padding: 0 10px;
-      font-size: 12px;
+    .archiveMenuAction {
+      grid-template-columns: minmax(0, 1fr);
+      color: var(--text);
+    }
+
+    .archiveMenuAction.danger {
+      color: var(--danger);
+    }
+
+    .archiveMenuAction:disabled {
+      cursor: not-allowed;
+      color: var(--text-light);
+      background: transparent;
+      opacity: 0.72;
+    }
+
+    .archiveMenuAction:disabled:hover,
+    .archiveMenuAction:disabled:focus-visible {
+      background: transparent;
     }
 
     .eyebrow {
       display: block;
       margin-bottom: 6px;
-      color: #9a6a83;
+      color: var(--text-muted);
       font-size: 12px;
-      font-weight: 900;
+      font-weight: 600;
       letter-spacing: 0;
     }
 
     h1 {
       margin: 0;
+      font-family: "Playfair Display", "Songti SC", "STSong", serif;
       font-size: clamp(22px, 2.2vw, 30px);
+      font-weight: 700;
       line-height: 1.18;
       letter-spacing: 0;
     }
@@ -251,7 +306,7 @@
     .subtitle {
       margin: 6px 0 0;
       max-width: 760px;
-      color: var(--muted);
+      color: var(--text-muted);
       font-size: 13px;
       line-height: 1.6;
     }
@@ -281,18 +336,18 @@
     .authBadge {
       justify-self: end;
       width: fit-content;
-      border: 1px solid rgba(255, 169, 178, 0.46);
+      border: 1px solid rgba(168, 196, 212, 0.34);
       border-radius: 999px;
       padding: 5px 9px;
-      color: #8e5267;
-      background: linear-gradient(135deg, rgba(255, 235, 242, 0.95), rgba(221, 240, 255, 0.8));
+      color: var(--primary);
+      background: rgba(168, 196, 212, 0.18);
       font-size: 12px;
-      font-weight: 900;
+      font-weight: 600;
     }
 
     .syncStatus {
       margin: 0;
-      color: var(--muted);
+      color: var(--text-muted);
       font-size: 12px;
       line-height: 1.5;
     }
@@ -304,16 +359,16 @@
       display: grid;
       place-items: center;
       padding: 20px;
-      background: rgba(45, 34, 48, 0.28);
-      backdrop-filter: blur(8px);
+      background: rgba(61, 61, 61, 0.28);
     }
 
     .authModal {
       width: min(420px, 100%);
-      border: 1px solid rgba(234, 218, 212, 0.92);
+      border: 1px solid var(--border);
       border-radius: var(--radius);
-      background: linear-gradient(135deg, rgba(255, 255, 255, 0.98), rgba(255, 241, 247, 0.96), rgba(235, 245, 255, 0.94));
-      box-shadow: 0 24px 60px rgba(54, 38, 58, 0.2);
+      background: rgba(255, 255, 255, 0.92);
+      box-shadow: var(--shadow-lg);
+      backdrop-filter: blur(14px);
       overflow: hidden;
     }
 
@@ -333,7 +388,7 @@
 
     .authModalHeader p {
       margin: 6px 0 0;
-      color: var(--muted);
+      color: var(--text-muted);
       font-size: 13px;
       line-height: 1.5;
     }
@@ -343,12 +398,12 @@
       place-items: center;
       width: 34px;
       height: 34px;
-      border: 1px solid rgba(255, 169, 178, 0.44);
+      border: 1px solid var(--border);
       border-radius: var(--radius);
-      color: #a53a46;
-      background: rgba(255, 230, 233, 0.86);
+      color: var(--danger);
+      background: var(--danger-soft);
       font-size: 20px;
-      font-weight: 900;
+      font-weight: 700;
     }
 
     .authForm {
@@ -362,10 +417,10 @@
       grid-template-columns: 22px minmax(0, 1fr);
       gap: 10px;
       min-height: 42px;
-      color: #322836;
-      border-color: rgba(137, 129, 206, 0.24);
-      background: linear-gradient(135deg, rgba(255, 255, 255, 0.98), rgba(255, 240, 238, 0.92), rgba(235, 245, 255, 0.9));
-      box-shadow: 0 10px 20px rgba(92, 70, 94, 0.1);
+      color: var(--text);
+      border-color: var(--border);
+      background: var(--surface);
+      box-shadow: var(--shadow-sm);
     }
 
     .oauthIcon {
@@ -374,10 +429,10 @@
       width: 22px;
       height: 22px;
       border-radius: 50%;
-      color: #fff;
-      background: #2d2230;
+      color: var(--text-inverse);
+      background: var(--text);
       font-size: 13px;
-      font-weight: 950;
+      font-weight: 700;
       line-height: 1;
     }
 
@@ -386,27 +441,27 @@
       grid-template-columns: 1fr auto 1fr;
       gap: 10px;
       align-items: center;
-      color: #958695;
+      color: var(--text-muted);
       font-size: 11px;
-      font-weight: 850;
+      font-weight: 600;
     }
 
     .authDivider::before,
     .authDivider::after {
       content: "";
       height: 1px;
-      background: rgba(234, 218, 212, 0.9);
+      background: var(--border);
     }
 
     .authInput {
       width: 100%;
       height: 38px;
-      border: 1px solid var(--line);
+      border: 1px solid var(--border);
       border-radius: var(--radius);
       padding: 0 10px;
-      color: var(--ink);
-      background: rgba(255, 255, 255, 0.94);
-      font-weight: 700;
+      color: var(--text);
+      background: var(--surface-raised);
+      font-weight: 600;
     }
 
     .authModalActions {
@@ -418,13 +473,13 @@
     .authModalStatus {
       display: none;
       margin: 0;
-      border: 1px solid rgba(137, 129, 206, 0.18);
+      border: 1px solid var(--border);
       border-radius: var(--radius);
       padding: 9px 10px;
-      color: #5f5268;
-      background: linear-gradient(135deg, rgba(221, 240, 255, 0.76), rgba(231, 225, 255, 0.72));
+      color: var(--text-muted);
+      background: var(--surface-subtle);
       font-size: 12px;
-      font-weight: 800;
+      font-weight: 600;
       line-height: 1.45;
     }
 
@@ -433,13 +488,76 @@
     }
 
     .authModalStatus.isError {
-      border-color: rgba(242, 112, 141, 0.36);
-      color: #9f3148;
-      background: linear-gradient(135deg, rgba(255, 235, 242, 0.95), rgba(255, 226, 248, 0.82));
+      border-color: var(--danger);
+      color: var(--danger);
+      background: var(--danger-soft);
+    }
+
+    .toastRegion {
+      position: fixed;
+      top: 20px;
+      right: 20px;
+      z-index: 30;
+      display: grid;
+      gap: 10px;
+      width: min(360px, calc(100vw - 32px));
+      pointer-events: none;
+    }
+
+    .toast {
+      border: 1px solid rgba(168, 196, 212, 0.36);
+      border-radius: var(--radius);
+      padding: 11px 12px;
+      color: var(--text);
+      background: rgba(255, 255, 255, 0.92);
+      box-shadow: var(--shadow-lg);
+      backdrop-filter: blur(12px);
+      font-size: 13px;
+      font-weight: 700;
+      line-height: 1.45;
+      overflow-wrap: anywhere;
+      pointer-events: auto;
+      animation: toastIn 0.18s ease-out;
+    }
+
+    .toast.isInfo {
+      border-color: var(--mist);
+      color: var(--text);
+      background: var(--mist-soft);
+    }
+
+    .toast.isSuccess {
+      border-color: var(--success);
+      color: var(--success);
+      background: var(--success-soft);
+    }
+
+    .toast.isError {
+      border-color: var(--danger);
+      color: var(--danger);
+      background: var(--danger-soft);
+    }
+
+    .toast.isLeaving {
+      opacity: 0;
+      transform: translateY(-6px);
+      transition: opacity 0.16s ease, transform 0.16s ease;
+    }
+
+    @keyframes toastIn {
+      from {
+        opacity: 0;
+        transform: translateY(-6px);
+      }
+
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
     }
 
     .authInput::placeholder {
-      color: #aaa0a6;
+      color: var(--text-light);
     }
 
     .isHidden {
@@ -453,31 +571,41 @@
       min-height: 40px;
       border-radius: var(--radius);
       padding: 0 14px;
-      font-weight: 800;
-      color: var(--button-text);
-      border: 1px solid rgba(255, 143, 153, 0.58);
-      background: linear-gradient(135deg, #ffd8d3, var(--button-red), var(--button-red-hover));
-      box-shadow: 0 10px 20px rgba(220, 92, 112, 0.18);
+      font-weight: 600;
+      color: var(--text-inverse);
+      border: 1px solid var(--primary);
+      background: var(--primary);
+      box-shadow: var(--shadow-sm);
       transition: transform 0.16s ease, box-shadow 0.16s ease, background 0.16s ease;
       white-space: nowrap;
     }
 
     .button:hover {
-      transform: translateY(-1px);
-      box-shadow: 0 12px 24px rgba(220, 92, 112, 0.25);
+      background: var(--primary-hover);
+      box-shadow: var(--shadow-md);
     }
 
     .button.secondary {
-      color: var(--button-text);
-      border-color: rgba(255, 169, 178, 0.42);
-      background: linear-gradient(135deg, #fff0ee, #ffdfe0);
+      color: var(--text);
+      border-color: rgba(168, 196, 212, 0.36);
+      background: rgba(255, 255, 255, 0.72);
       box-shadow: none;
     }
 
+    .button.secondary:hover {
+      background: var(--mist-soft);
+    }
+
     .button.danger {
-      color: #a53a46;
-      background: linear-gradient(135deg, #fff0f2, var(--rose-soft));
+      color: var(--danger);
+      border-color: var(--danger);
+      background: var(--danger-soft);
       box-shadow: none;
+    }
+
+    .button.danger:hover {
+      background: var(--danger);
+      color: var(--text-inverse);
     }
 
     .grid {
@@ -488,10 +616,11 @@
     }
 
     .panel {
-      border: 1px solid rgba(234, 218, 212, 0.92);
+      border: 1px solid rgba(168, 196, 212, 0.28);
       border-radius: var(--radius);
-      background: rgba(255, 255, 255, 0.9);
-      box-shadow: var(--shadow);
+      background: rgba(255, 255, 255, 0.82);
+      box-shadow: var(--shadow-md);
+      backdrop-filter: blur(12px);
       overflow: hidden;
     }
 
@@ -501,12 +630,14 @@
       justify-content: space-between;
       gap: 12px;
       padding: 18px 20px;
-      border-bottom: 1px solid var(--line);
+      border-bottom: 1px solid var(--border);
     }
 
     .panelHeader h2 {
       margin: 0;
+      font-family: "Playfair Display", "Songti SC", "STSong", serif;
       font-size: 18px;
+      font-weight: 600;
       letter-spacing: 0;
     }
 
@@ -520,7 +651,7 @@
 
     .smallNote {
       margin: 0;
-      color: var(--muted);
+      color: var(--text-muted);
       font-size: 13px;
       line-height: 1.5;
       text-align: right;
@@ -541,20 +672,20 @@
 
     th,
     td {
-      border-bottom: 1px solid var(--line);
+      border-bottom: 1px solid var(--border);
       padding: 12px 10px;
       vertical-align: middle;
-      background: rgba(255, 255, 255, 0.88);
+      background: var(--surface-raised);
     }
 
     th {
       position: sticky;
       top: 0;
       z-index: 2;
-      color: #504456;
-      background: linear-gradient(135deg, #fff1f3, #fff7dc 48%, #edf4ff);
+      color: var(--text);
+      background: rgba(245, 240, 232, 0.86);
       font-size: 12px;
-      font-weight: 900;
+      font-weight: 600;
       text-align: left;
       white-space: nowrap;
     }
@@ -565,7 +696,7 @@
       left: 0;
       z-index: 3;
       min-width: 138px;
-      box-shadow: 1px 0 0 var(--line);
+      box-shadow: 1px 0 0 var(--border);
     }
 
     th:first-child {
@@ -577,20 +708,20 @@
     }
 
     tbody tr:hover td {
-      background: #fff9f5;
+      background: var(--surface-hover);
     }
 
     .offerName {
       width: 100%;
       min-width: 128px;
       height: 36px;
-      border: 1px solid var(--line);
+      border: 1px solid var(--border);
       border-radius: var(--radius);
       padding: 0 10px;
-      color: var(--ink);
-      background: rgba(255, 255, 255, 0.96);
+      color: var(--text);
+      background: var(--surface);
       font-size: 13px;
-      font-weight: 800;
+      font-weight: 600;
     }
 
     .offerHeader {
@@ -602,40 +733,15 @@
     }
 
     .dimensionName {
-      color: #383044;
+      color: var(--text);
       font-size: 13px;
-      font-weight: 900;
+      font-weight: 600;
       white-space: nowrap;
     }
 
-    tbody tr:nth-child(1) td:first-child {
-      border-left: 5px solid #ff9eb0;
-      background: linear-gradient(90deg, rgba(255, 235, 242, 0.98), rgba(255, 255, 255, 0.86));
-    }
-
-    tbody tr:nth-child(2) td:first-child {
-      border-left: 5px solid #ffbd8d;
-      background: linear-gradient(90deg, rgba(255, 237, 217, 0.98), rgba(255, 255, 255, 0.86));
-    }
-
-    tbody tr:nth-child(3) td:first-child {
-      border-left: 5px solid #efd35d;
-      background: linear-gradient(90deg, rgba(255, 250, 207, 0.98), rgba(255, 255, 255, 0.86));
-    }
-
-    tbody tr:nth-child(4) td:first-child {
-      border-left: 5px solid #9fdc9f;
-      background: linear-gradient(90deg, rgba(226, 248, 222, 0.98), rgba(255, 255, 255, 0.86));
-    }
-
-    tbody tr:nth-child(5) td:first-child {
-      border-left: 5px solid #83c6f4;
-      background: linear-gradient(90deg, rgba(221, 240, 255, 0.98), rgba(255, 255, 255, 0.86));
-    }
-
-    tbody tr:nth-child(6) td:first-child {
-      border-left: 5px solid #a99cf7;
-      background: linear-gradient(90deg, rgba(231, 225, 255, 0.98), rgba(255, 255, 255, 0.86));
+    tbody tr td:first-child {
+      border-left: 3px solid rgba(168, 196, 212, 0.45);
+      background: rgba(255, 255, 255, 0.92);
     }
 
     .scoreCell {
@@ -661,9 +767,9 @@
     }
 
     .fieldLabel {
-      color: var(--muted);
+      color: var(--text-muted);
       font-size: 11px;
-      font-weight: 850;
+      font-weight: 600;
       line-height: 1;
     }
 
@@ -673,13 +779,13 @@
       height: auto;
       resize: none;
       overflow-y: hidden;
-      border: 1px solid var(--line);
+      border: 1px solid var(--border);
       border-radius: var(--radius);
       padding: 8px 10px;
-      color: var(--ink);
-      background: rgba(255, 255, 255, 0.96);
+      color: var(--text);
+      background: var(--surface);
       font-size: 13px;
-      font-weight: 650;
+      font-weight: 400;
       line-height: 1.42;
     }
 
@@ -688,25 +794,25 @@
     }
 
     .noteInput::placeholder {
-      color: #aaa0a6;
+      color: var(--text-light);
     }
 
     .scoreInput {
       width: 54px;
       height: 34px;
-      border: 1px solid var(--line);
+      border: 1px solid var(--border);
       border-radius: var(--radius);
       padding: 0 8px;
-      color: var(--ink);
-      background: rgba(255, 255, 255, 0.96);
+      color: var(--text);
+      background: var(--surface-raised);
       text-align: center;
       font-size: 13px;
-      font-weight: 800;
+      font-weight: 600;
     }
 
     .scoreGroup.hasError .scoreInput {
-      border-color: rgba(182, 64, 77, 0.62);
-      background: #fff7f8;
+      border-color: var(--danger);
+      background: var(--danger-soft);
     }
 
     .scoreWarning {
@@ -715,9 +821,9 @@
       right: 0;
       display: none;
       transform: translateY(2px);
-      color: #b6404d;
+      color: var(--danger);
       font-size: 10px;
-      font-weight: 800;
+      font-weight: 600;
       line-height: 1;
       white-space: nowrap;
     }
@@ -730,10 +836,10 @@
       width: 34px;
       height: 34px;
       border-radius: var(--radius);
-      color: #b6404d;
-      background: linear-gradient(135deg, #fff3f5, #ffdce1);
+      color: var(--danger);
+      background: var(--danger-soft);
       font-size: 19px;
-      font-weight: 900;
+      font-weight: 700;
       line-height: 1;
     }
 
@@ -765,9 +871,9 @@
       aspect-ratio: 1;
       min-height: 246px;
       margin: 0 auto;
-      border: 1px solid var(--line);
+      border: 1px solid var(--border);
       border-radius: var(--radius);
-      background: linear-gradient(145deg, #ffffff, #fff7e6 34%, #edf7ff 68%, #fff1fa);
+      background: linear-gradient(135deg, rgba(255, 255, 255, 0.94), rgba(168, 196, 212, 0.1));
     }
 
     canvas {
@@ -790,21 +896,21 @@
     }
 
     .weightControl label {
-      color: #5b5062;
+      color: var(--text);
       font-size: 12px;
-      font-weight: 900;
+      font-weight: 600;
       white-space: nowrap;
     }
 
     input[type="range"] {
       width: 100%;
-      accent-color: #f2708d;
+      accent-color: var(--primary);
     }
 
     .weightValue {
-      color: #8c60d8;
+      color: var(--primary);
       font-size: 13px;
-      font-weight: 900;
+      font-weight: 600;
       text-align: right;
     }
 
@@ -814,7 +920,9 @@
 
     .winnerTitle {
       margin: 0 0 10px;
+      font-family: "Playfair Display", "Songti SC", "STSong", serif;
       font-size: 15px;
+      font-weight: 600;
       line-height: 1.2;
     }
 
@@ -823,15 +931,17 @@
       grid-template-columns: 1fr auto;
       gap: 4px 12px;
       align-items: baseline;
-      padding: 11px 12px;
+      padding: 14px 15px;
+      border: 1px solid rgba(168, 196, 212, 0.42);
+      border-left: 5px solid var(--mist);
       border-radius: var(--radius);
-      background: linear-gradient(135deg, rgba(255, 225, 231, 0.9), rgba(221, 239, 255, 0.84), rgba(255, 247, 204, 0.82), rgba(248, 226, 252, 0.86));
-      border: 1px solid rgba(137, 129, 206, 0.16);
+      color: var(--text);
+      background: linear-gradient(135deg, rgba(168, 196, 212, 0.34), rgba(212, 168, 196, 0.18), rgba(255, 255, 255, 0.94));
     }
 
     .winnerLabel {
       margin: 0;
-      color: var(--muted);
+      color: var(--text-muted);
       font-size: 11px;
       font-weight: 800;
     }
@@ -847,7 +957,7 @@
     .winnerScore {
       grid-row: 1 / span 2;
       grid-column: 2;
-      color: #8c60d8;
+      color: var(--primary);
       font-size: 24px;
       font-weight: 950;
       white-space: nowrap;
@@ -859,29 +969,14 @@
       margin-top: 10px;
     }
 
-    .exportActions {
-      display: grid;
-      gap: 8px;
-      margin-top: 12px;
-    }
-
-    .exportStatus {
-      margin: 0;
-      min-height: 18px;
-      color: var(--muted);
-      font-size: 12px;
-      font-weight: 800;
-      line-height: 1.5;
-    }
-
     .summaryBox {
       display: grid;
       gap: 8px;
       margin-top: 12px;
-      border: 1px solid rgba(234, 218, 212, 0.92);
+      border: 1px solid rgba(212, 168, 196, 0.26);
       border-radius: var(--radius);
       padding: 11px 12px;
-      background: linear-gradient(135deg, rgba(255, 255, 255, 0.94), rgba(255, 247, 236, 0.88), rgba(238, 246, 255, 0.8));
+      background: rgba(247, 237, 244, 0.56);
     }
 
     .summaryHeader {
@@ -893,7 +988,7 @@
 
     .summaryTitle {
       margin: 0;
-      color: #5b5062;
+      color: var(--text);
       font-size: 13px;
       font-weight: 950;
     }
@@ -901,46 +996,31 @@
     .summaryText {
       margin: 0;
       min-height: 44px;
-      color: #463b4d;
+      color: var(--text-muted);
       font-size: 13px;
       font-weight: 650;
       line-height: 1.6;
       overflow-wrap: anywhere;
     }
 
-    .summaryStatus {
-      margin: 0;
-      min-height: 18px;
-      color: var(--muted);
-      font-size: 12px;
-      font-weight: 800;
-      line-height: 1.5;
-    }
-
-    .summaryStatus.isError {
-      color: #b6404d;
-    }
-
     .rankRow {
-      --rank-color: #ff9eb0;
       display: grid;
       grid-template-columns: 24px minmax(0, 1fr) auto;
       gap: 8px;
       align-items: center;
       min-height: 34px;
       padding: 7px 8px;
-      border: 1px solid var(--line);
-      border-left: 5px solid var(--rank-color);
+      border: 1px solid var(--border);
+      border-left: 5px solid var(--border-strong);
       border-radius: var(--radius);
-      background: #fff;
+      background: var(--surface-raised);
     }
 
-    .rankRow:nth-child(6n + 1) { --rank-color: #ff9eb0; }
-    .rankRow:nth-child(6n + 2) { --rank-color: #ffbd8d; }
-    .rankRow:nth-child(6n + 3) { --rank-color: #efd35d; }
-    .rankRow:nth-child(6n + 4) { --rank-color: #9fdc9f; }
-    .rankRow:nth-child(6n + 5) { --rank-color: #83c6f4; }
-    .rankRow:nth-child(6n + 6) { --rank-color: #a99cf7; }
+    .rankRow:first-child {
+      border-color: rgba(212, 168, 196, 0.36);
+      border-left-color: var(--lotus);
+      background: linear-gradient(135deg, rgba(168, 196, 212, 0.24), rgba(212, 168, 196, 0.15));
+    }
 
     .rankNo {
       display: grid;
@@ -948,10 +1028,15 @@
       width: 24px;
       height: 24px;
       border-radius: 50%;
-      color: #463244;
-      background: var(--rank-color);
+      color: var(--text-muted);
+      background: var(--surface-subtle);
       font-weight: 950;
       font-size: 11px;
+    }
+
+    .rankRow:first-child .rankNo {
+      color: var(--text-inverse);
+      background: var(--primary);
     }
 
     .rankName {
@@ -962,17 +1047,21 @@
     }
 
     .rankScore {
-      color: #8c60d8;
+      color: var(--text-muted);
       font-weight: 950;
       font-size: 13px;
       white-space: nowrap;
+    }
+
+    .rankRow:first-child .rankScore {
+      color: var(--primary);
     }
 
     .bar {
       grid-column: 2 / 4;
       height: 5px;
       border-radius: 999px;
-      background: #f3ece6;
+      background: var(--surface-subtle);
       overflow: hidden;
     }
 
@@ -980,7 +1069,36 @@
       display: block;
       height: 100%;
       border-radius: inherit;
-      background: var(--rank-color);
+      background: var(--border-strong);
+    }
+
+    .rankRow:first-child .bar span {
+      background: var(--lotus);
+    }
+
+    .siteFooter {
+      margin-top: 3rem;
+      border-top: 1px solid rgba(168, 196, 212, 0.26);
+      padding: 2rem 0;
+      background: rgba(255, 255, 255, 0.58);
+      text-align: center;
+    }
+
+    .siteFooterInner {
+      width: min(1200px, calc(100% - 48px));
+      margin: 0 auto;
+    }
+
+    .siteFooterTitle {
+      margin: 0 0 0.5rem;
+      color: var(--text-muted);
+      font-size: 0.875rem;
+    }
+
+    .siteFooterMeta {
+      margin: 0;
+      color: var(--text-light);
+      font-size: 0.75rem;
     }
 
     @media (max-width: 1080px) {
@@ -1024,15 +1142,6 @@
         grid-template-columns: 1fr;
       }
 
-      .archiveActions {
-        display: grid;
-        grid-template-columns: 1fr 1fr;
-      }
-
-      .archiveActions .button {
-        min-height: 38px;
-      }
-
       .panelHeaderActions {
         align-items: stretch;
         flex-direction: column;
@@ -1049,6 +1158,13 @@
 
       .authBadge {
         justify-self: start;
+      }
+
+      .toastRegion {
+        top: 12px;
+        right: 10px;
+        left: 10px;
+        width: auto;
       }
 
       .button {
@@ -1089,17 +1205,12 @@
           <label class="archiveLabel" for="archiveSelect">当前档案</label>
           <select class="archiveSelect" id="archiveSelect"></select>
           <div class="archiveDropdown" id="archiveDropdown">
-            <button class="archiveDropdownButton" id="archiveDropdownButton" type="button" aria-haspopup="listbox" aria-expanded="false">
+            <button class="archiveDropdownButton" id="archiveDropdownButton" type="button" aria-haspopup="menu" aria-expanded="false">
               <span class="archiveDropdownValue" id="archiveDropdownValue">暑期实习 offer</span>
               <span class="archiveDropdownIcon" aria-hidden="true">⌄</span>
             </button>
-            <div class="archiveMenu isHidden" id="archiveMenu" role="listbox" aria-label="选择档案"></div>
+            <div class="archiveMenu isHidden" id="archiveMenu" role="menu" aria-label="档案菜单"></div>
           </div>
-        </div>
-        <div class="archiveActions">
-          <button class="button secondary" id="newArchiveButton" type="button">新建档案</button>
-          <button class="button secondary" id="renameArchiveButton" type="button">重命名档案</button>
-          <button class="button danger" id="deleteArchiveButton" type="button">删除档案</button>
         </div>
       </div>
       <div class="accountArea" aria-label="账号与云端保存">
@@ -1195,11 +1306,6 @@
             </div>
             <p class="summaryText" id="decisionSummaryText">点击生成后，会基于当前档案的 offer 分数、权重和备注生成摘要。</p>
             <button class="button" id="generateSummaryButton" type="button">生成决策总结</button>
-            <p class="summaryStatus" id="decisionSummaryStatus" role="status" aria-live="polite"></p>
-          </div>
-          <div class="exportActions">
-            <button class="button secondary" id="exportJsonButton" type="button">导出推荐 JSON</button>
-            <p class="exportStatus" id="exportJsonStatus" role="status" aria-live="polite"></p>
           </div>
         </section>
 
@@ -1218,6 +1324,19 @@
       </aside>
     </div>
   </main>
+
+  <footer class="siteFooter">
+    <div class="siteFooterInner">
+      <p class="siteFooterTitle">
+        Offer 决策助手
+      </p>
+      <p class="siteFooterMeta">
+        帮助你做出更明智的职业选择
+      </p>
+    </div>
+  </footer>
+
+  <div class="toastRegion" id="toastRegion" role="status" aria-live="polite" aria-atomic="true"></div>
 
   <script type="module">
     const STORAGE_KEY = "offerDecisionBoard.v1";
@@ -1287,6 +1406,8 @@
     let isApplyingCloudState = false;
     let archiveModalMode = null;
     let hasGeneratedDecisionSummary = false;
+    let hasShownDecisionSummaryStaleToast = false;
+    let decisionSummaryToast = null;
 
     const scoreHead = document.getElementById("scoreHead");
     const scoreBody = document.getElementById("scoreBody");
@@ -1297,9 +1418,7 @@
     const rankingList = document.getElementById("rankingList");
     const generateSummaryButton = document.getElementById("generateSummaryButton");
     const decisionSummaryText = document.getElementById("decisionSummaryText");
-    const decisionSummaryStatus = document.getElementById("decisionSummaryStatus");
-    const exportJsonButton = document.getElementById("exportJsonButton");
-    const exportJsonStatus = document.getElementById("exportJsonStatus");
+    const toastRegion = document.getElementById("toastRegion");
     const canvas = document.getElementById("radarCanvas");
     const context = canvas.getContext("2d");
     const archiveSelect = document.getElementById("archiveSelect");
@@ -1307,9 +1426,6 @@
     const archiveDropdownButton = document.getElementById("archiveDropdownButton");
     const archiveDropdownValue = document.getElementById("archiveDropdownValue");
     const archiveMenu = document.getElementById("archiveMenu");
-    const newArchiveButton = document.getElementById("newArchiveButton");
-    const renameArchiveButton = document.getElementById("renameArchiveButton");
-    const deleteArchiveButton = document.getElementById("deleteArchiveButton");
     const archiveModalBackdrop = document.getElementById("archiveModalBackdrop");
     const archiveForm = document.getElementById("archiveForm");
     const archiveNameGroup = document.getElementById("archiveNameGroup");
@@ -1340,9 +1456,6 @@
     archiveDropdownButton.addEventListener("keydown", handleArchiveDropdownKeydown);
     archiveMenu.addEventListener("keydown", handleArchiveMenuKeydown);
     document.addEventListener("click", closeArchiveMenuOnOutsideClick);
-    newArchiveButton.addEventListener("click", openNewArchiveModal);
-    renameArchiveButton.addEventListener("click", openRenameArchiveModal);
-    deleteArchiveButton.addEventListener("click", openDeleteArchiveModal);
     archiveForm.addEventListener("submit", handleArchiveModalSubmit);
     archiveCancelButton.addEventListener("click", closeArchiveModal);
     closeArchiveModalButton.addEventListener("click", closeArchiveModal);
@@ -1363,7 +1476,6 @@
     signUpButton.addEventListener("click", handleSignUp);
     signOutButton.addEventListener("click", handleSignOut);
     generateSummaryButton.addEventListener("click", generateDecisionSummary);
-    exportJsonButton.addEventListener("click", exportRecommendationJson);
     document.addEventListener("keydown", (event) => {
       if (event.key === "Escape") {
         closeArchiveMenu();
@@ -1559,17 +1671,85 @@
       authModalStatus.classList.toggle("isError", tone === "error");
     }
 
-    function setDecisionSummaryStatus(message, tone = "info") {
-      decisionSummaryStatus.textContent = message;
-      decisionSummaryStatus.classList.toggle("isError", tone === "error");
+    function showToast(message, tone = "info", options = {}) {
+      const existingToast = options.toast?.isConnected ? options.toast : null;
+      const toast = existingToast || document.createElement("div");
+      const toneClass = {
+        info: "isInfo",
+        success: "isSuccess",
+        error: "isError"
+      }[tone] || "isInfo";
+
+      if (toast._hideTimer) {
+        clearTimeout(toast._hideTimer);
+      }
+
+      if (toast._removeTimer) {
+        clearTimeout(toast._removeTimer);
+      }
+
+      toast.className = `toast ${toneClass}`;
+      toast.textContent = message;
+      toast.setAttribute("role", tone === "error" ? "alert" : "status");
+      toastRegion.setAttribute("aria-live", tone === "error" ? "assertive" : "polite");
+
+      if (!existingToast) {
+        toastRegion.appendChild(toast);
+      }
+
+      if (!options.persist) {
+        const duration = options.duration ?? (tone === "error" ? 5600 : 3200);
+        toast._hideTimer = window.setTimeout(() => dismissToast(toast), duration);
+      }
+
+      return toast;
     }
 
-    function markDecisionSummaryStale() {
-      if (!hasGeneratedDecisionSummary || isApplyingCloudState) {
+    function dismissToast(toast) {
+      if (!toast?.isConnected) {
         return;
       }
 
-      setDecisionSummaryStatus("数据已更新，建议重新生成决策总结。");
+      if (toast._hideTimer) {
+        clearTimeout(toast._hideTimer);
+      }
+
+      toast.classList.add("isLeaving");
+      toast._removeTimer = window.setTimeout(() => {
+        toast.remove();
+      }, 180);
+    }
+
+    function isFetchFailure(error) {
+      const message = String(error?.message || error || "");
+      return /failed to fetch|load failed|networkerror/i.test(message);
+    }
+
+    function formatSupabaseError(action, error) {
+      if (isFetchFailure(error)) {
+        return `${action}失败：无法连接 Supabase 项目 ${getSupabaseUrl()}。请确认 SUPABASE_URL 是 Dashboard 里的 Project URL，项目仍可访问，并且当前网络能访问 *.supabase.co。`;
+      }
+
+      const message = String(error?.message || "");
+      const code = String(error?.code || "");
+      if (code === "invalid_credentials" || /invalid login credentials/i.test(message)) {
+        return `${action}失败：邮箱或密码不正确。请确认这个邮箱已经注册、密码输入无误；如果刚注册，请先完成邮箱确认后再登录。`;
+      }
+
+      if (code === "email_not_confirmed" || /email not confirmed/i.test(message)) {
+        return `${action}失败：这个邮箱还没有完成确认。请先点击 Supabase 发来的确认邮件，或在 Supabase Auth 设置里关闭邮箱确认。`;
+      }
+
+      return `${action}失败：${error?.message || "请稍后重试。"}`;
+    }
+
+    function markDecisionSummaryStale() {
+      if (!hasGeneratedDecisionSummary || isApplyingCloudState || hasShownDecisionSummaryStaleToast) {
+        return;
+      }
+
+      hasShownDecisionSummaryStaleToast = true;
+      showToast("数据已更新，建议重新生成决策总结。", "info");
     }
 
     function openAuthModal() {
@@ -1667,13 +1847,17 @@
       }
 
       setSyncStatus("正在登录...");
-      const { error } = await supabaseClient.auth.signInWithPassword({
-        email: authEmail.value.trim(),
-        password: authPassword.value
-      });
+      try {
+        const { error } = await supabaseClient.auth.signInWithPassword({
+          email: authEmail.value.trim(),
+          password: authPassword.value
+        });
 
-      if (error) {
-        setSyncStatus(`登录失败：${error.message}`, "error");
+        if (error) {
+          throw error;
+        }
+      } catch (error) {
+        setSyncStatus(formatSupabaseError("登录", error), "error");
         return;
       }
 
@@ -1687,16 +1871,20 @@
       }
 
       setSyncStatus("正在跳转到 GitHub...");
-      const { error } = await supabaseClient.auth.signInWithOAuth({
-        provider: "github",
-        options: {
-          redirectTo: getAuthRedirectUrl(),
-          scopes: "read:user user:email"
-        }
-      });
+      try {
+        const { error } = await supabaseClient.auth.signInWithOAuth({
+          provider: "github",
+          options: {
+            redirectTo: getAuthRedirectUrl(),
+            scopes: "read:user user:email"
+          }
+        });
 
-      if (error) {
-        setSyncStatus(`GitHub 登录失败：${error.message}`, "error");
+        if (error) {
+          throw error;
+        }
+      } catch (error) {
+        setSyncStatus(formatSupabaseError("GitHub 登录", error), "error");
       }
     }
 
@@ -1714,14 +1902,20 @@
       if (window.location.protocol.startsWith("http")) {
         options.emailRedirectTo = window.location.href;
       }
-      const { data, error } = await supabaseClient.auth.signUp({
-        email: authEmail.value.trim(),
-        password: authPassword.value,
-        options
-      });
+      let data;
+      try {
+        const result = await supabaseClient.auth.signUp({
+          email: authEmail.value.trim(),
+          password: authPassword.value,
+          options
+        });
+        data = result.data;
 
-      if (error) {
-        setSyncStatus(`注册失败：${error.message}`, "error");
+        if (result.error) {
+          throw result.error;
+        }
+      } catch (error) {
+        setSyncStatus(formatSupabaseError("注册", error), "error");
         return;
       }
 
@@ -1735,9 +1929,13 @@
       }
 
       setSyncStatus("正在退出登录...");
-      const { error } = await supabaseClient.auth.signOut();
-      if (error) {
-        setSyncStatus(`退出失败：${error.message}`, "error");
+      try {
+        const { error } = await supabaseClient.auth.signOut();
+        if (error) {
+          throw error;
+        }
+      } catch (error) {
+        setSyncStatus(formatSupabaseError("退出", error), "error");
         return;
       }
 
@@ -1754,15 +1952,21 @@
       }
 
       setSyncStatus("正在加载云端 offer...");
-      const { data, error } = await supabaseClient
-        .from(CLOUD_TABLE)
-        .select("board_data")
-        .eq("user_id", currentUser.id)
-        .eq("board_key", CLOUD_BOARD_KEY)
-        .maybeSingle();
+      let data;
+      try {
+        const result = await supabaseClient
+          .from(CLOUD_TABLE)
+          .select("board_data")
+          .eq("user_id", currentUser.id)
+          .eq("board_key", CLOUD_BOARD_KEY)
+          .maybeSingle();
+        data = result.data;
 
-      if (error) {
-        setSyncStatus(`云端加载失败：${error.message}`, "error");
+        if (result.error) {
+          throw result.error;
+        }
+      } catch (error) {
+        setSyncStatus(formatSupabaseError("云端加载", error), "error");
         return;
       }
 
@@ -1794,19 +1998,23 @@
         return;
       }
 
-      const { error } = await supabaseClient
-        .from(CLOUD_TABLE)
-        .upsert({
-          user_id: currentUser.id,
-          board_key: CLOUD_BOARD_KEY,
-          board_data: getStatePayload(),
-          updated_at: new Date().toISOString()
-        }, { onConflict: "user_id,board_key" })
-        .select("id")
-        .single();
+      try {
+        const { error } = await supabaseClient
+          .from(CLOUD_TABLE)
+          .upsert({
+            user_id: currentUser.id,
+            board_key: CLOUD_BOARD_KEY,
+            board_data: getStatePayload(),
+            updated_at: new Date().toISOString()
+          }, { onConflict: "user_id,board_key" })
+          .select("id")
+          .single();
 
-      if (error) {
-        setSyncStatus(`云端保存失败：${error.message}`, "error");
+        if (error) {
+          throw error;
+        }
+      } catch (error) {
+        setSyncStatus(formatSupabaseError("云端保存", error), "error");
         return;
       }
 
@@ -1911,11 +2119,11 @@
 
         const menuItem = document.createElement("button");
         const isActive = archive.id === activeArchive.id;
-        menuItem.className = `archiveOption${isActive ? " isActive" : ""}`;
+        menuItem.className = `archiveMenuItem archiveOption${isActive ? " isActive" : ""}`;
         menuItem.type = "button";
-        menuItem.role = "option";
+        menuItem.role = "menuitemradio";
         menuItem.dataset.archiveId = archive.id;
-        menuItem.setAttribute("aria-selected", String(isActive));
+        menuItem.setAttribute("aria-checked", String(isActive));
 
         const check = document.createElement("span");
         check.className = "archiveOptionCheck";
@@ -1929,10 +2137,39 @@
         menuItem.addEventListener("click", () => selectArchive(archive.id));
         archiveMenu.appendChild(menuItem);
       });
+
+      const divider = document.createElement("div");
+      divider.className = "archiveMenuDivider";
+      divider.role = "separator";
+      archiveMenu.appendChild(divider);
+
+      archiveMenu.appendChild(createArchiveMenuAction("新建档案", openNewArchiveModal));
+      archiveMenu.appendChild(createArchiveMenuAction("重命名当前档案", openRenameArchiveModal));
+      archiveMenu.appendChild(createArchiveMenuAction("删除当前档案", openDeleteArchiveModal, {
+        danger: true,
+        disabled: state.archives.length <= 1
+      }));
+
       archiveSelect.value = activeArchive.id;
       archiveDropdownValue.textContent = activeArchive.name;
       archiveDropdownButton.setAttribute("aria-expanded", String(!archiveMenu.classList.contains("isHidden")));
-      deleteArchiveButton.disabled = state.archives.length <= 1;
+    }
+
+    function createArchiveMenuAction(label, handler, options = {}) {
+      const action = document.createElement("button");
+      action.className = `archiveMenuItem archiveOption archiveMenuAction${options.danger ? " danger" : ""}`;
+      action.type = "button";
+      action.role = "menuitem";
+      action.textContent = label;
+      action.disabled = Boolean(options.disabled);
+      action.addEventListener("click", () => {
+        if (action.disabled) {
+          return;
+        }
+        closeArchiveMenu();
+        handler();
+      });
+      return action;
     }
 
     function switchArchive(event) {
@@ -1993,6 +2230,12 @@
       } else if (event.key === "ArrowUp") {
         event.preventDefault();
         focusArchiveOption(currentIndex - 1);
+      } else if (event.key === "Home") {
+        event.preventDefault();
+        focusArchiveOption(0);
+      } else if (event.key === "End") {
+        event.preventDefault();
+        focusArchiveOption(options.length - 1);
       } else if (event.key === "Escape") {
         event.preventDefault();
         closeArchiveMenu();
@@ -2010,7 +2253,7 @@
     }
 
     function getArchiveOptionElements() {
-      return Array.from(archiveMenu.querySelectorAll(".archiveOption"));
+      return Array.from(archiveMenu.querySelectorAll(".archiveMenuItem:not(:disabled)"));
     }
 
     function openNewArchiveModal() {
@@ -2512,54 +2755,29 @@
       return Number(Number(value || 0).toFixed(2));
     }
 
-    function exportRecommendationJson() {
-      const recommendationJson = buildRecommendationJson();
-      const fileName = `${slugifyFileName(recommendationJson.archive.name)}-recommendation.json`;
-      const blob = new Blob([JSON.stringify(recommendationJson, null, 2)], {
-        type: "application/json;charset=utf-8"
-      });
-      const url = URL.createObjectURL(blob);
-      const link = document.createElement("a");
-      link.href = url;
-      link.download = fileName;
-      document.body.appendChild(link);
-      link.click();
-      link.remove();
-      URL.revokeObjectURL(url);
-      exportJsonStatus.textContent = `已导出 ${fileName}`;
-    }
-
-    function slugifyFileName(value) {
-      const normalized = String(value || "offer").trim().toLowerCase();
-      const slug = normalized
-        .replace(/\s+/g, "-")
-        .replace(/[\\/:*?"<>|]+/g, "")
-        .replace(/-+/g, "-")
-        .replace(/^-|-$/g, "");
-
-      return slug || "offer";
-    }
-
     async function generateDecisionSummary() {
       if (!isSupabaseConfigured()) {
-        setDecisionSummaryStatus("请先配置 Supabase 后再生成决策总结。", "error");
+        showToast("请先配置 Supabase 后再生成决策总结。", "error");
         return;
       }
 
       if (!supabaseClient) {
-        setDecisionSummaryStatus("Supabase 还在初始化，请稍后再试。", "error");
+        showToast("Supabase 还在初始化，请稍后再试。", "error");
         return;
       }
 
       if (!currentUser) {
-        setDecisionSummaryStatus("请先登录后再生成决策总结。", "error");
+        showToast("请先登录后再生成决策总结。", "error");
         return;
       }
 
       const recommendationJson = buildRecommendationJson();
       generateSummaryButton.disabled = true;
       generateSummaryButton.textContent = "生成中...";
-      setDecisionSummaryStatus("正在生成决策总结...");
+      decisionSummaryToast = showToast("正在生成决策总结...", "info", {
+        persist: true,
+        toast: decisionSummaryToast
+      });
 
       try {
         const { data, error } = await supabaseClient.functions.invoke("generate-decision-summary", {
@@ -2581,15 +2799,42 @@
         }
 
         hasGeneratedDecisionSummary = true;
+        hasShownDecisionSummaryStaleToast = false;
         decisionSummaryText.textContent = data.summary;
-        setDecisionSummaryStatus("已基于当前数据生成。");
+        decisionSummaryToast = showToast("已基于当前数据生成。", "success", {
+          toast: decisionSummaryToast
+        });
       } catch (error) {
         console.error("generate decision summary failed", error);
-        setDecisionSummaryStatus(`生成失败：${error.message || "请稍后重试。"}`, "error");
+        decisionSummaryToast = showToast(`生成失败：${error.message || "请稍后重试。"}`, "error", {
+          toast: decisionSummaryToast
+        });
       } finally {
         generateSummaryButton.disabled = false;
         generateSummaryButton.textContent = "生成决策总结";
       }
+    }
+
+    function getThemeColor(name) {
+      return getComputedStyle(document.documentElement).getPropertyValue(name).trim();
+    }
+
+    function colorWithAlpha(color, alpha) {
+      const hex = color.trim();
+      const shortHexMatch = hex.match(/^#([0-9a-f]{3})$/i);
+      const longHexMatch = hex.match(/^#([0-9a-f]{6})$/i);
+      const normalizedHex = shortHexMatch
+        ? shortHexMatch[1].split("").map((char) => char + char).join("")
+        : longHexMatch?.[1];
+
+      if (!normalizedHex) {
+        return color;
+      }
+
+      const r = parseInt(normalizedHex.slice(0, 2), 16);
+      const g = parseInt(normalizedHex.slice(2, 4), 16);
+      const b = parseInt(normalizedHex.slice(4, 6), 16);
+      return `rgba(${r}, ${g}, ${b}, ${alpha})`;
     }
 
     function drawRadar() {
@@ -2607,11 +2852,17 @@
       const labelRadius = size * 0.41;
       const stepCount = 5;
       const count = dimensions.length;
+      const colors = {
+        primary: getThemeColor("--primary"),
+        border: getThemeColor("--border"),
+        borderStrong: getThemeColor("--border-strong"),
+        textMuted: getThemeColor("--text-muted")
+      };
 
       context.lineWidth = 1;
-      context.strokeStyle = "#ead8d1";
-      context.fillStyle = "#74677a";
-      context.font = "700 10px Inter, PingFang SC, sans-serif";
+      context.strokeStyle = colors.border;
+      context.fillStyle = colors.textMuted;
+      context.font = "700 10px DM Sans, PingFang SC, sans-serif";
       context.textAlign = "center";
       context.textBaseline = "middle";
 
@@ -2621,7 +2872,7 @@
           const pointRadius = (radius * step) / stepCount;
           return getPoint(centerX, centerY, pointRadius, angle);
         });
-        drawPolygon(points, false, step === stepCount ? "#dfc9d8" : "#f0e3dc");
+        drawPolygon(points, false, step === stepCount ? colors.borderStrong : colors.border);
       }
 
       dimensions.forEach((dimension, index) => {
@@ -2630,11 +2881,11 @@
         context.beginPath();
         context.moveTo(centerX, centerY);
         context.lineTo(end.x, end.y);
-        context.strokeStyle = "#eadce6";
+        context.strokeStyle = colors.border;
         context.stroke();
 
         const label = getPoint(centerX, centerY, labelRadius, angle);
-        context.fillStyle = "#5f5268";
+        context.fillStyle = colors.textMuted;
         context.fillText(shortLabel(dimension.label), label.x, label.y);
       });
 
@@ -2643,7 +2894,7 @@
         const angle = getAngle(index, count);
         return getPoint(centerX, centerY, radius * (activeArchive.weights[dimension.id] / 10), angle);
       });
-      drawPolygon(weightPoints, true, "rgba(103, 156, 232, 0.9)", "rgba(103, 156, 232, 0.2)");
+      drawPolygon(weightPoints, true, colors.borderStrong, colorWithAlpha(colors.borderStrong, 0.18));
 
       const topOffer = getRanking()[0];
       if (topOffer) {
@@ -2651,10 +2902,10 @@
           const angle = getAngle(index, count);
           return getPoint(centerX, centerY, radius * (getScoreNumber(topOffer.scores[dimension.id]) / 10), angle);
         });
-        drawPolygon(offerPoints, true, "rgba(242, 112, 141, 0.9)", "rgba(242, 112, 141, 0.18)");
+        drawPolygon(offerPoints, true, colors.primary, colorWithAlpha(colors.primary, 0.16));
       }
 
-      drawLegend(size);
+      drawLegend(size, colors);
     }
 
     function getAngle(index, count) {
@@ -2696,21 +2947,21 @@
       }
     }
 
-    function drawLegend(size) {
+    function drawLegend(size, colors) {
       const items = [
-        { label: "权重", color: "#679ce8" },
-        { label: "第一名", color: "#f2708d" }
+        { label: "权重", color: colors.borderStrong },
+        { label: "第一名", color: colors.primary }
       ];
       const y = size - 10;
       let x = size / 2 - 58;
 
-      context.font = "800 11px Inter, PingFang SC, sans-serif";
+      context.font = "800 11px DM Sans, PingFang SC, sans-serif";
       context.textAlign = "left";
       context.textBaseline = "middle";
       items.forEach((item) => {
         context.fillStyle = item.color;
         context.fillRect(x, y - 4, 16, 8);
-        context.fillStyle = "#716478";
+        context.fillStyle = colors.textMuted;
         context.fillText(item.label, x + 22, y);
         x += 72;
       });

@@ -1,6 +1,6 @@
 # OfferDecisionTool
 
-OfferDecisionTool 是一个面向职业选择场景的 offer 决策档案工具。它帮助用户把不同 offer 的关键信息、维度打分、权重偏好和最终排序放在同一个界面里，形成可复盘、可导出、可同步的决策记录。
+OfferDecisionTool 是一个面向职业选择场景的 offer 决策档案工具。它帮助用户把不同 offer 的关键信息、维度打分、权重偏好和最终排序放在同一个界面里，形成可复盘、可同步的决策记录。
 
 当前版本以单页静态应用为主，入口文件是 `index.html`。本地可以直接打开使用；配置 Supabase 后，可以开启账号登录、云端同步和 AI 决策总结。
 
@@ -13,8 +13,7 @@ OfferDecisionTool 是一个面向职业选择场景的 offer 决策档案工具�
 - 职业选择档案：支持新建、切换、重命名、删除档案；每个档案独立保存 offer、权重、备注和排序。
 - 本地保存：默认使用浏览器 `localStorage` 保存数据。
 - 云端同步：配置 Supabase 后支持邮箱登录、GitHub OAuth 和跨设备恢复。
-- AI 决策总结：通过 Supabase Edge Function 调用 DeepSeek，根据当前推荐 JSON 生成简短中文总结。
-- 推荐结果导出：导出包含评分公式、维度权重、排名、加权贡献和最终推荐的 JSON 文件。
+- AI 决策总结：通过 Supabase Edge Function 调用 DeepSeek，根据当前内部推荐 JSON 生成简短中文总结。
 
 ## 技术栈
 
@@ -113,9 +112,9 @@ npx supabase secrets set DEEPSEEK_MODEL=deepseek-v4-flash
 npx supabase functions deploy generate-decision-summary
 ```
 
-## 推荐 JSON 格式
+## AI 总结输入 JSON
 
-前端导出的 JSON 使用 `recommendation_result.v1` schema，主要包含：
+前端在调用 AI 总结时会内部生成 `recommendation_result.v1` JSON，主要包含：
 
 - `archive`：当前档案名称。
 - `scoringRule`：加权平均公式、分数范围和总权重。
@@ -123,7 +122,7 @@ npx supabase functions deploy generate-decision-summary
 - `offers`：每个 offer 的排名、加权分、原始分数、加权贡献和备注。
 - `recommendation`：最终推荐 offer 的 ID、名称、排名和加权分。
 
-这个 JSON 既用于本地导出，也用于 AI 决策总结。
+这个 JSON 目前作为 AI 决策总结的内部输入，不作为前台导出功能展示。
 
 ## 部署
 
