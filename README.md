@@ -21,7 +21,7 @@ OfferDecisionTool 是一个面向职业选择场景的 offer 决策档案工具�
 - 数据同步：Supabase Auth + Postgres + Row Level Security。
 - 云函数：Supabase Edge Functions，Deno runtime。
 - AI 总结：DeepSeek Chat Completions API。
-- 部署：可直接静态托管，也可用 Nginx 部署到香港轻量服务器。
+- 部署：可直接部署到任意静态托管服务。
 
 ## 项目结构
 
@@ -34,12 +34,6 @@ OfferDecisionTool 是一个面向职业选择场景的 offer 决策档案工具�
 │       ├── .env.example
 │       └── generate-decision-summary/
 │           └── index.ts
-├── scripts/
-│   ├── bootstrap-hk-server.sh
-│   └── deploy-hk.sh
-├── deploy/
-│   └── nginx-site.conf.template
-├── DEPLOY-HK.md
 ├── package.json
 └── README.md
 ```
@@ -124,28 +118,9 @@ npx supabase functions deploy generate-decision-summary
 
 这个 JSON 目前作为 AI 决策总结的内部输入，不作为前台导出功能展示。
 
-## 部署
-
-纯静态版本可以部署到任意静态托管服务。仓库也提供了香港服务器部署脚本，适合短期让国内访问更稳定。
-
-详细步骤见 `DEPLOY-HK.md`。
-
-常用命令：
-
-```bash
-DEPLOY_HOST=你的服务器IP DEPLOY_USER=ubuntu ./scripts/deploy-hk.sh
-```
-
-服务器初始化脚本：
-
-```bash
-sudo SITE_NAME=offer-score DOMAIN=你的域名 DEPLOY_PATH=/var/www/offer-score bash /tmp/bootstrap-hk-server.sh
-```
-
 ## 当前状态
 
 - 前端核心功能已在 `index.html` 中实现。
 - Supabase 数据表 schema 已准备好。
 - DeepSeek 总结函数已放在 `supabase/functions/generate-decision-summary`。
-- 香港服务器部署方案已写入 `DEPLOY-HK.md`。
 - 仍建议在正式发布前补充一次端到端测试：本地保存、登录同步、GitHub OAuth、AI 总结、JSON 导出和移动端布局。

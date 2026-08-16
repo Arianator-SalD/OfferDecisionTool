@@ -36,4 +36,3 @@
 - 明确 AI 总结方案：推荐 JSON 只保留事实数据，prompt 放在后端，AI 只负责解释系统已经算出的推荐结果。
 - 新增 Supabase Edge Function `generate-decision-summary`，并切换为 DeepSeek 模型生成 2-3 句中文决策总结。
 - 前端新增“生成决策总结”按钮，用户登录后可调用后端函数生成当前档案的 AI 摘要。
-- 补充 README 和香港服务器部署方案，为国内访问准备 Nginx 静态部署脚本。
