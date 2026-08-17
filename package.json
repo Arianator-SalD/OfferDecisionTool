@@ -1,8 +1,6 @@
 {
+  "type": "module",
   "scripts": {
-    "supabase": "supabase"
-  },
-  "devDependencies": {
-    "supabase": "^2.98.2"
+    "test": "node --test tests/*.test.mjs"
   }
 }

@@ -5,54 +5,44 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Offer 选择打分表</title>
   <link rel="icon" href="data:,">
-  <link rel="stylesheet" href="https://fonts.googleapis.cn/css2?family=Playfair+Display:wght@400;600;700&family=DM+Sans:wght@300;400;500;600;700;800&display=swap">
   <style>
     :root {
       color-scheme: light;
 
-      /* 主题色 - 个人网站同源的印象派调色 */
-      --primary: #4a6b7a;
-      --primary-hover: #365462;
-      --primary-soft: #eaf3f6;
-      --mist: #a8c4d4;
-      --mist-soft: #edf5f8;
-      --lotus: #d4a8c4;
-      --lotus-soft: #f7edf4;
-      --cream: #f5f0e8;
+      --primary: #0066cc;
+      --primary-hover: #0055b3;
+      --primary-soft: #e8f3ff;
+      --mist: #86868b;
+      --mist-soft: #f5f5f7;
 
-      /* 文本色 */
-      --text: #3d3d3d;
-      --text-muted: #7a8a92;
-      --text-light: #a7b4ba;
+      --text: #1d1d1f;
+      --text-muted: #6e6e73;
+      --text-light: #86868b;
       --text-inverse: #ffffff;
 
-      /* 背景与表面 */
-      --bg: #f5f0e8;
+      --bg: #f5f5f7;
       --surface: #ffffff;
-      --surface-subtle: #f8f5f0;
-      --surface-hover: #eff6f8;
+      --surface-subtle: #f5f5f7;
+      --surface-hover: #f0f6ff;
       --surface-raised: #ffffff;
 
-      /* 边界与焦点 */
-      --border: #dce8ee;
-      --border-strong: #a8c4d4;
-      --focus-ring: rgba(168, 196, 212, 0.46);
+      --border: #d2d2d7;
+      --border-strong: #aeaeb2;
+      --focus-border: #0066cc;
 
-      /* 语义色 */
-      --success: #4b8778;
-      --success-soft: #e9f6f1;
-      --warning: #96703c;
-      --warning-soft: #f8efdc;
-      --danger: #9f4d65;
-      --danger-soft: #f8eaf0;
+      --success: #248a3d;
+      --success-soft: #eaf7ed;
+      --warning: #b76e00;
+      --warning-soft: #fff4df;
+      --danger: #a85a63;
+      --danger-soft: #fcf2f3;
+      --danger-border: #edd9dc;
 
-      /* 阴影系统 - 柔和阴影 */
-      --shadow-sm: 0 1px 2px rgba(74, 107, 122, 0.05);
-      --shadow-md: 0 10px 24px rgba(74, 107, 122, 0.08);
-      --shadow-lg: 0 22px 48px rgba(74, 107, 122, 0.13);
+      --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.06);
+      --shadow-md: 0 12px 28px rgba(0, 0, 0, 0.1);
+      --shadow-lg: 0 20px 48px rgba(0, 0, 0, 0.16);
 
-      /* 圆角 */
-      --radius: 8px;
+      --radius: 10px;
     }
 
     * {
@@ -62,13 +52,9 @@
     body {
       margin: 0;
       min-height: 100vh;
-      font-family: "DM Sans", "PingFang SC", "Microsoft YaHei", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text", "SF Pro Display", "Inter", "PingFang SC", "Microsoft YaHei", "Segoe UI", sans-serif;
       color: var(--text);
-      background:
-        linear-gradient(120deg, rgba(245, 240, 232, 0.98) 0%, rgba(255, 255, 255, 0.96) 42%, rgba(168, 196, 212, 0.22) 100%),
-        linear-gradient(155deg, transparent 0%, rgba(212, 168, 196, 0.13) 46%, transparent 72%),
-        repeating-linear-gradient(90deg, rgba(74, 107, 122, 0.035) 0 1px, transparent 1px 44px),
-        var(--bg);
+      background: var(--bg);
     }
 
     button,
@@ -80,35 +66,38 @@
     button {
       border: 0;
       cursor: pointer;
+      -webkit-tap-highlight-color: transparent;
     }
 
     button:focus-visible,
-    input:focus-visible,
-    textarea:focus-visible,
-    select:focus-visible {
-      outline: 3px solid var(--focus-ring);
+    select:focus-visible,
+    summary:focus-visible {
+      outline: 2px solid var(--focus-border);
       outline-offset: 2px;
-      border-color: var(--primary);
+      border-color: var(--focus-border);
+      box-shadow: none;
+    }
+
+    input:focus,
+    textarea:focus {
+      outline: none;
+      border-color: var(--focus-border);
+      box-shadow: none;
     }
 
     .page {
-      width: min(1280px, calc(100% - 32px));
+      width: min(1360px, calc(100% - 64px));
       margin: 0 auto;
-      padding: 28px 0 40px;
+      padding: 20px 0 64px;
     }
 
     .topbar {
-      display: flex;
+      display: grid;
+      grid-template-columns: minmax(260px, 1fr) minmax(240px, 340px);
       align-items: center;
-      justify-content: space-between;
-      gap: 18px;
-      margin-bottom: 16px;
-      padding: 16px 18px;
-      border: 1px solid rgba(168, 196, 212, 0.32);
-      border-radius: var(--radius);
-      background: rgba(255, 255, 255, 0.74);
-      box-shadow: var(--shadow-md);
-      backdrop-filter: blur(14px);
+      gap: 32px;
+      min-height: 44px;
+      margin-bottom: 32px;
     }
 
     .titleGroup {
@@ -117,9 +106,8 @@
 
     .archiveArea {
       display: grid;
-      gap: 8px;
-      min-width: min(420px, 100%);
-      flex: 1 1 420px;
+      gap: 7px;
+      min-width: 0;
     }
 
     .archiveSelector {
@@ -158,16 +146,16 @@
       gap: 10px;
       align-items: center;
       width: 100%;
-      height: 38px;
+      min-height: 44px;
       border: 1px solid var(--border);
-      border-radius: var(--radius);
+      border-radius: 10px;
       padding: 0 10px 0 12px;
       color: var(--text);
       background: var(--surface-raised);
       font-size: 13px;
       font-weight: 600;
       text-align: left;
-      box-shadow: var(--shadow-sm);
+      box-shadow: none;
     }
 
     .archiveDropdownButton:hover {
@@ -176,9 +164,9 @@
     }
 
     .archiveDropdownButton:focus-visible {
-      outline: 3px solid var(--focus-ring);
+      outline: 2px solid var(--focus-border);
       outline-offset: 2px;
-      border-color: var(--primary);
+      border-color: var(--focus-border);
     }
 
     .archiveDropdownValue {
@@ -210,7 +198,7 @@
       max-height: 260px;
       overflow-y: auto;
       border: 1px solid var(--border);
-      border-radius: var(--radius);
+      border-radius: 12px;
       padding: 6px;
       background: var(--surface-raised);
       box-shadow: var(--shadow-lg);
@@ -221,8 +209,8 @@
       grid-template-columns: 18px minmax(0, 1fr);
       gap: 8px;
       align-items: center;
-      min-height: 36px;
-      border-radius: var(--radius);
+      min-height: 40px;
+      border-radius: 8px;
       padding: 0 9px;
       color: var(--text);
       background: transparent;
@@ -233,7 +221,8 @@
 
     .archiveOption:hover,
     .archiveOption:focus-visible {
-      outline: 0;
+      outline: 2px solid var(--focus-border);
+      outline-offset: 0;
       background: var(--surface-hover);
     }
 
@@ -258,6 +247,81 @@
       white-space: nowrap;
     }
 
+    .archiveInlineName {
+      width: 100%;
+      min-width: 0;
+      border: 0;
+      border-radius: 4px;
+      padding: 2px 0;
+      color: inherit;
+      background: transparent;
+      font: inherit;
+      font-weight: inherit;
+    }
+
+    .archiveInlineName:focus-visible {
+      outline: 2px solid var(--focus-border);
+      outline-offset: 2px;
+    }
+
+    .archiveRenameField {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) auto auto;
+      gap: 8px;
+      align-items: center;
+      min-width: 0;
+    }
+
+    .archiveRenameButton {
+      display: grid;
+      place-items: center;
+      width: 24px;
+      height: 24px;
+      padding: 0;
+      border: 0;
+      border-radius: 4px;
+      color: var(--text-muted);
+      background: transparent;
+      cursor: pointer;
+    }
+
+    .archiveRenameButton svg {
+      width: 16px;
+      height: 16px;
+      fill: none;
+      stroke: currentColor;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+      stroke-width: 1.8;
+    }
+
+    .archiveRenameButton:hover {
+      color: var(--primary);
+    }
+
+    .archiveRenameButton:focus-visible {
+      outline: 2px solid var(--focus-border);
+      outline-offset: 2px;
+    }
+
+    .archiveDeleteButton {
+      display: grid;
+      place-items: center;
+      width: 24px;
+      height: 24px;
+      padding: 0;
+      border: 0;
+      border-radius: 6px;
+      color: var(--text-light);
+      background: transparent;
+      font-size: 18px;
+      line-height: 1;
+    }
+
+    .archiveDeleteButton:hover {
+      color: var(--danger);
+      background: transparent;
+    }
     .archiveMenuDivider {
       height: 1px;
       margin: 4px 2px;
@@ -269,46 +333,20 @@
       color: var(--text);
     }
 
-    .archiveMenuAction.danger {
-      color: var(--danger);
-    }
-
-    .archiveMenuAction:disabled {
-      cursor: not-allowed;
-      color: var(--text-light);
-      background: transparent;
-      opacity: 0.72;
-    }
-
-    .archiveMenuAction:disabled:hover,
-    .archiveMenuAction:disabled:focus-visible {
-      background: transparent;
-    }
-
-    .eyebrow {
-      display: block;
-      margin-bottom: 6px;
-      color: var(--text-muted);
-      font-size: 12px;
-      font-weight: 600;
-      letter-spacing: 0;
-    }
-
     h1 {
       margin: 0;
-      font-family: "Playfair Display", "Songti SC", "STSong", serif;
-      font-size: clamp(22px, 2.2vw, 30px);
+      font-size: 34px;
       font-weight: 700;
-      line-height: 1.18;
+      line-height: 1.08;
       letter-spacing: 0;
     }
 
     .subtitle {
-      margin: 6px 0 0;
-      max-width: 760px;
+      margin: 8px 0 0;
+      max-width: 520px;
       color: var(--text-muted);
-      font-size: 13px;
-      line-height: 1.6;
+      font-size: 14px;
+      line-height: 1.5;
     }
 
     .actions {
@@ -321,14 +359,15 @@
     .accountArea {
       display: flex;
       align-items: center;
-      gap: 10px;
-      flex-wrap: wrap;
+      gap: 14px;
+      flex-wrap: nowrap;
       justify-content: flex-end;
     }
 
     .authSummary {
-      display: grid;
-      gap: 3px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
       min-width: 0;
       text-align: right;
     }
@@ -336,11 +375,11 @@
     .authBadge {
       justify-self: end;
       width: fit-content;
-      border: 1px solid rgba(168, 196, 212, 0.34);
+      border: 0;
       border-radius: 999px;
-      padding: 5px 9px;
+      padding: 0;
       color: var(--primary);
-      background: rgba(168, 196, 212, 0.18);
+      background: transparent;
       font-size: 12px;
       font-weight: 600;
     }
@@ -348,8 +387,9 @@
     .syncStatus {
       margin: 0;
       color: var(--text-muted);
-      font-size: 12px;
-      line-height: 1.5;
+      font-size: 11px;
+      line-height: 1.35;
+      text-align: right;
     }
 
     .authModalBackdrop {
@@ -358,58 +398,57 @@
       z-index: 20;
       display: grid;
       place-items: center;
-      padding: 20px;
-      background: rgba(61, 61, 61, 0.28);
+      padding: 24px;
+      background: rgba(15, 23, 42, 0.36);
+      backdrop-filter: blur(8px);
+      -webkit-backdrop-filter: blur(8px);
     }
 
     .authModal {
-      width: min(420px, 100%);
-      border: 1px solid var(--border);
-      border-radius: var(--radius);
-      background: rgba(255, 255, 255, 0.92);
-      box-shadow: var(--shadow-lg);
-      backdrop-filter: blur(14px);
+      width: min(380px, 100%);
+      border: 1px solid rgba(255, 255, 255, 0.72);
+      border-radius: 20px;
+      background: #ffffff;
+      box-shadow: 0 24px 64px rgba(15, 23, 42, 0.2), 0 4px 12px rgba(15, 23, 42, 0.08);
       overflow: hidden;
+      animation: modalIn 180ms ease-out;
     }
 
     .authModalHeader {
-      display: flex;
-      align-items: flex-start;
-      justify-content: space-between;
-      gap: 14px;
-      padding: 18px 20px 8px;
+      display: block;
+      padding: 28px 28px 0;
+      text-align: center;
     }
 
     .authModalHeader h2 {
       margin: 0;
-      font-size: 20px;
-      line-height: 1.2;
+      font-size: 21px;
+      font-weight: 700;
+      letter-spacing: -0.01em;
+      line-height: 1.25;
     }
 
     .authModalHeader p {
-      margin: 6px 0 0;
+      margin: 8px 0 0;
       color: var(--text-muted);
-      font-size: 13px;
-      line-height: 1.5;
+      font-size: 14px;
+      line-height: 1.55;
+    }
+
+    .authModalHeader p:empty,
+    .summaryText:empty {
+      display: none;
     }
 
     .iconButton {
-      display: grid;
-      place-items: center;
-      width: 34px;
-      height: 34px;
-      border: 1px solid var(--border);
-      border-radius: var(--radius);
-      color: var(--danger);
-      background: var(--danger-soft);
-      font-size: 20px;
-      font-weight: 700;
+      display: none;
     }
 
     .authForm {
       display: grid;
-      gap: 10px;
-      padding: 12px 20px 20px;
+      gap: 24px;
+      padding: 20px 28px 0;
+      text-align: center;
     }
 
     .oauthButton {
@@ -453,34 +492,22 @@
       background: var(--border);
     }
 
-    .authInput {
-      width: 100%;
-      height: 38px;
-      border: 1px solid var(--border);
-      border-radius: var(--radius);
-      padding: 0 10px;
-      color: var(--text);
-      background: var(--surface-raised);
-      font-weight: 600;
-    }
-
     .authModalActions {
       display: grid;
       grid-template-columns: 1fr 1fr;
-      gap: 10px;
+      margin: 0 -28px;
+      border-top: 1px solid var(--border);
+      gap: 0;
     }
 
     .authModalStatus {
       display: none;
       margin: 0;
-      border: 1px solid var(--border);
-      border-radius: var(--radius);
-      padding: 9px 10px;
+      padding: 0;
       color: var(--text-muted);
-      background: var(--surface-subtle);
-      font-size: 12px;
-      font-weight: 600;
-      line-height: 1.45;
+      font-size: 14px;
+      font-weight: 500;
+      line-height: 1.55;
     }
 
     .authModalStatus.isVisible {
@@ -488,9 +515,53 @@
     }
 
     .authModalStatus.isError {
-      border-color: var(--danger);
       color: var(--danger);
+    }
+
+    .authModalActions .button {
+      min-height: 52px;
+      border: 0;
+      border-radius: 0;
+      padding: 0 18px;
+      background: transparent;
+      box-shadow: none;
+      font-size: 15px;
+      font-weight: 600;
+    }
+
+    .authModalActions .button + .button {
+      border-left: 1px solid var(--border);
+    }
+
+    .authModalActions .button.secondary {
+      color: var(--primary);
+      background: transparent;
+    }
+
+    .authModalActions .button.secondary:hover {
+      background: var(--primary-soft);
+    }
+
+    .authModalActions .button.danger {
+      color: var(--danger);
+      background: transparent;
+    }
+
+    .authModalActions .button.danger:hover {
+      color: #9a3e49;
       background: var(--danger-soft);
+    }
+
+    @keyframes modalIn {
+      from {
+        opacity: 0;
+        transform: scale(0.97) translateY(4px);
+      }
+
+      to {
+        opacity: 1;
+        transform: scale(1) translateY(0);
+      }
     }
 
     .toastRegion {
@@ -505,7 +576,7 @@
     }
 
     .toast {
-      border: 1px solid rgba(168, 196, 212, 0.36);
+      border: 1px solid var(--border);
       border-radius: var(--radius);
       padding: 11px 12px;
       color: var(--text);
@@ -556,10 +627,6 @@
       }
     }
 
-    .authInput::placeholder {
-      color: var(--text-light);
-    }
-
     .isHidden {
       display: none !important;
     }
@@ -568,31 +635,53 @@
       display: inline-flex;
       align-items: center;
       justify-content: center;
-      min-height: 40px;
-      border-radius: var(--radius);
-      padding: 0 14px;
+      min-height: 44px;
+      border-radius: 8px;
+      padding: 0 16px;
       font-weight: 600;
       color: var(--text-inverse);
       border: 1px solid var(--primary);
       background: var(--primary);
-      box-shadow: var(--shadow-sm);
-      transition: transform 0.16s ease, box-shadow 0.16s ease, background 0.16s ease;
+      box-shadow: none;
+      transition: background 160ms ease, border-color 160ms ease, color 160ms ease, transform 160ms ease;
       white-space: nowrap;
+    }
+
+    .button:not(:disabled):active {
+      transform: translateY(1px);
     }
 
     .button:hover {
       background: var(--primary-hover);
-      box-shadow: var(--shadow-md);
+      box-shadow: none;
+    }
+
+    .button:disabled,
+    .iconButton:disabled,
+    .deleteButton:disabled {
+      cursor: not-allowed;
+      opacity: 0.45;
+      transform: none;
     }
 
     .button.secondary {
       color: var(--text);
-      border-color: rgba(168, 196, 212, 0.36);
+      border-color: var(--border);
       background: rgba(255, 255, 255, 0.72);
       box-shadow: none;
     }
 
     .button.secondary:hover {
+      background: var(--mist-soft);
+    }
+
+    #generateSummaryButton {
+      color: var(--text);
+      border-color: var(--border);
+      background: var(--surface-subtle);
+    }
+
+    #generateSummaryButton:hover {
       background: var(--mist-soft);
     }
 
@@ -610,18 +699,18 @@
 
     .grid {
       display: grid;
-      grid-template-columns: minmax(0, 1.24fr) minmax(360px, 0.76fr);
-      gap: 18px;
+      grid-template-columns: minmax(0, 1.35fr) minmax(320px, 0.65fr);
+      gap: 40px;
       align-items: start;
     }
 
     .panel {
-      border: 1px solid rgba(168, 196, 212, 0.28);
-      border-radius: var(--radius);
-      background: rgba(255, 255, 255, 0.82);
-      box-shadow: var(--shadow-md);
-      backdrop-filter: blur(12px);
-      overflow: hidden;
+      min-width: 0;
+      background: transparent;
+    }
+
+    .mainColumn {
+      min-width: 0;
     }
 
     .panelHeader {
@@ -629,15 +718,13 @@
       align-items: center;
       justify-content: space-between;
       gap: 12px;
-      padding: 18px 20px;
-      border-bottom: 1px solid var(--border);
+      padding: 0 0 16px;
     }
 
     .panelHeader h2 {
       margin: 0;
-      font-family: "Playfair Display", "Songti SC", "STSong", serif;
-      font-size: 18px;
-      font-weight: 600;
+      font-size: 17px;
+      font-weight: 700;
       letter-spacing: 0;
     }
 
@@ -652,28 +739,60 @@
     .smallNote {
       margin: 0;
       color: var(--text-muted);
-      font-size: 13px;
+      font-size: 12px;
       line-height: 1.5;
       text-align: right;
+    }
+
+    .textButton {
+      padding: 8px 0;
+      color: var(--primary);
+      background: transparent;
+      font-size: 13px;
+      font-weight: 600;
+    }
+
+    .textButton:hover,
+    .textButton:focus-visible {
+      color: var(--primary-hover);
+      text-decoration: underline;
+    }
+
+    .fieldGroup {
+      display: grid;
+      gap: 5px;
+      min-width: 0;
+    }
+
+    .fieldLabel {
+      color: var(--text-muted);
+      font-size: 11px;
+      font-weight: 600;
+      line-height: 1;
     }
 
     .tableWrap {
       overflow-x: auto;
       overflow-y: visible;
       max-height: none;
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      background: var(--surface-raised);
+      box-shadow: var(--shadow-sm);
+      scrollbar-color: var(--border-strong) transparent;
     }
 
     table {
       width: 100%;
       border-collapse: separate;
       border-spacing: 0;
-      min-width: 760px;
+      min-width: 560px;
     }
 
     th,
     td {
       border-bottom: 1px solid var(--border);
-      padding: 12px 10px;
+      padding: 10px;
       vertical-align: middle;
       background: var(--surface-raised);
     }
@@ -683,7 +802,7 @@
       top: 0;
       z-index: 2;
       color: var(--text);
-      background: rgba(245, 240, 232, 0.86);
+      background: var(--surface-subtle);
       font-size: 12px;
       font-weight: 600;
       text-align: left;
@@ -707,16 +826,17 @@
       border-bottom: 0;
     }
 
-    tbody tr:hover td {
+    tbody tr:hover td,
+    tbody tr:hover td:first-child {
       background: var(--surface-hover);
     }
 
     .offerName {
       width: 100%;
-      min-width: 128px;
+      min-width: 100px;
       height: 36px;
       border: 1px solid var(--border);
-      border-radius: var(--radius);
+      border-radius: 8px;
       padding: 0 10px;
       color: var(--text);
       background: var(--surface);
@@ -726,10 +846,58 @@
 
     .offerHeader {
       display: grid;
-      grid-template-columns: minmax(128px, 1fr) 34px;
       gap: 8px;
+      min-width: 176px;
+    }
+
+    .offerMetaRow {
+      display: flex;
       align-items: center;
-      min-width: 178px;
+      justify-content: space-between;
+      gap: 8px;
+      min-width: 0;
+    }
+
+    .offerNoteButton {
+      display: block;
+      min-width: 0;
+      min-height: 32px;
+      padding: 0;
+      overflow: hidden;
+      color: var(--text-muted);
+      background: transparent;
+      font-size: 11px;
+      font-weight: 600;
+      text-align: left;
+    }
+
+    .offerNoteButton:hover,
+    .offerNoteButton:focus-visible,
+    .offerNoteButton[aria-expanded="true"] {
+      color: var(--primary);
+    }
+
+    .offerNotePreview {
+      min-width: 0;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+
+    .offerNoteButton.hasNote .offerNotePreview {
+      color: var(--text-muted);
+    }
+
+    .noteEditorStatus {
+      flex: none;
+      color: var(--text-light);
+      font-size: 10px;
+      font-weight: 600;
+      white-space: nowrap;
+    }
+
+    .noteEditorStatus.isSaved {
+      color: var(--success);
     }
 
     .dimensionName {
@@ -739,108 +907,260 @@
       white-space: nowrap;
     }
 
+    .anchorToggle {
+      min-height: 30px;
+      margin-top: 4px;
+      padding: 0;
+      color: var(--text-muted);
+      background: transparent;
+      font-size: 11px;
+      font-weight: 600;
+    }
+
+    .anchorToggle:hover,
+    .anchorToggle:focus-visible {
+      color: var(--primary);
+      text-decoration: underline;
+      text-underline-offset: 3px;
+    }
+
     tbody tr td:first-child {
-      border-left: 3px solid rgba(168, 196, 212, 0.45);
-      background: rgba(255, 255, 255, 0.92);
+      border-left: 0;
+      background: var(--surface);
     }
 
     .scoreCell {
-      min-width: 210px;
-    }
-
-    .dimensionEntry {
-      display: grid;
-      grid-template-columns: minmax(126px, 1fr) 54px;
-      gap: 8px;
-      align-items: start;
-      min-width: 190px;
-    }
-
-    .fieldGroup {
-      display: grid;
-      gap: 5px;
-      min-width: 0;
-    }
-
-    .scoreGroup {
       position: relative;
-    }
-
-    .fieldLabel {
-      color: var(--text-muted);
-      font-size: 11px;
-      font-weight: 600;
-      line-height: 1;
-    }
-
-    .noteInput {
-      width: 100%;
-      min-height: 0;
-      height: auto;
-      resize: none;
-      overflow-y: hidden;
-      border: 1px solid var(--border);
-      border-radius: var(--radius);
-      padding: 8px 10px;
-      color: var(--text);
-      background: var(--surface);
-      font-size: 13px;
-      font-weight: 400;
-      line-height: 1.42;
-    }
-
-    .noteInput.isScrollable {
-      overflow-y: auto;
-    }
-
-    .noteInput::placeholder {
-      color: var(--text-light);
+      min-width: 176px;
+      cursor: text;
     }
 
     .scoreInput {
-      width: 54px;
-      height: 34px;
-      border: 1px solid var(--border);
-      border-radius: var(--radius);
-      padding: 0 8px;
+      display: block;
+      width: 48px;
+      min-height: 38px;
+      margin: 0 auto;
+      border: 1px solid transparent;
+      border-radius: 8px;
+      padding: 0 6px;
       color: var(--text);
-      background: var(--surface-raised);
+      background: transparent;
       text-align: center;
-      font-size: 13px;
-      font-weight: 600;
+      font-size: 15px;
+      font-weight: 700;
+      font-variant-numeric: tabular-nums;
     }
 
-    .scoreGroup.hasError .scoreInput {
+    .scoreInput:hover {
+      background: var(--surface-hover);
+    }
+
+    .scoreInput:focus,
+    .scoreCell.isActive .scoreInput {
+      border-color: var(--focus-border);
+      background: var(--surface-raised);
+    }
+
+    .scoreCell.hasError .scoreInput {
       border-color: var(--danger);
       background: var(--danger-soft);
     }
 
     .scoreWarning {
-      position: absolute;
-      top: 100%;
-      right: 0;
       display: none;
-      transform: translateY(2px);
+      margin-top: 4px;
       color: var(--danger);
       font-size: 10px;
       font-weight: 600;
       line-height: 1;
-      white-space: nowrap;
     }
 
-    .scoreGroup.hasError .scoreWarning {
+    .scoreCell.hasError .scoreWarning {
       display: block;
     }
 
-    .deleteButton {
-      width: 34px;
-      height: 34px;
-      border-radius: var(--radius);
-      color: var(--danger);
-      background: var(--danger-soft);
-      font-size: 19px;
+    .noteButton {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+      width: 100%;
+      min-height: 30px;
+      margin-top: 2px;
+      padding: 0;
+      overflow: hidden;
+      color: var(--text-muted);
+      background: transparent;
+      font-size: 11px;
+      font-weight: 600;
+      text-align: center;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+
+    .noteButton.hasNote {
+      justify-content: flex-start;
+    }
+
+    .noteButtonPreview {
+      min-width: 0;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+
+    .noteButton:hover,
+    .noteButton:focus-visible {
+      color: var(--primary);
+    }
+
+    .anchorGuideRow td,
+    .anchorGuideRow td:first-child {
+      position: static;
+      padding: 0;
+      background: var(--surface-subtle);
+      box-shadow: none;
+    }
+
+    .anchorGuide {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 16px;
+      min-width: 520px;
+      padding: 12px 16px;
+    }
+
+    .anchorItem {
+      display: grid;
+      grid-template-columns: 22px minmax(0, 1fr);
+      gap: 8px;
+      align-items: baseline;
+      min-width: 0;
+      color: var(--text-muted);
+      font-size: 12px;
+      line-height: 1.45;
+    }
+
+    .anchorScore {
+      color: var(--text);
       font-weight: 700;
+      font-variant-numeric: tabular-nums;
+    }
+
+    .noteEditorRow td:first-child,
+    .offerNoteEditorRow td:first-child {
+      position: static;
+      min-width: 0;
+      box-shadow: none;
+    }
+
+    .noteEditorRow td,
+    .offerNoteEditorRow td {
+      padding: 0;
+      background: var(--surface-subtle);
+    }
+
+    .noteEditor {
+      display: grid;
+      gap: 8px;
+      padding: 12px;
+    }
+
+    .noteEditorHeader {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+    }
+
+    .noteEditorTitle {
+      margin: 0;
+      color: var(--text-muted);
+      font-size: 12px;
+      font-weight: 600;
+    }
+
+    .noteEditorStatus {
+      display: inline-flex;
+      align-items: center;
+      min-height: 32px;
+      margin-left: auto;
+      font-size: 11px;
+    }
+
+    .noteEditorComplete {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 32px;
+      padding: 0 8px;
+      color: var(--primary);
+      background: transparent;
+      font-size: 12px;
+      font-weight: 600;
+    }
+
+    .noteEditorComplete:hover,
+    .noteEditorComplete:focus-visible {
+      color: var(--primary-hover);
+      text-decoration: underline;
+      text-underline-offset: 3px;
+    }
+
+    .noteEditorInput {
+      width: 100%;
+      min-height: 72px;
+      resize: vertical;
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 9px 10px;
+      color: var(--text);
+      background: var(--surface-raised);
+      font-size: 13px;
+      line-height: 1.5;
+    }
+
+    .noteEditorClose {
+      display: grid;
+      place-items: center;
+      width: 32px;
+      height: 32px;
+      border: 0;
+      border-radius: 4px;
+      padding: 0 0 2px;
+      color: var(--text-muted);
+      background: transparent;
+      font-size: 18px;
       line-height: 1;
+    }
+
+    .noteEditorClose:hover,
+    .noteEditorClose:focus-visible {
+      color: var(--text);
+      background: var(--surface-hover);
+    }
+
+    .deleteButton {
+      min-width: 60px;
+      min-height: 32px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 4px;
+      border: 1px solid transparent;
+      border-radius: 8px;
+      color: var(--text-light);
+      background: transparent;
+      font-size: 11px;
+      font-weight: 600;
+      line-height: 1;
+      transition: color 160ms ease, border-color 160ms ease, background 160ms ease, transform 160ms ease;
+    }
+
+    .deleteButton svg {
+      width: 14px;
+      height: 14px;
+      flex: none;
     }
 
     .deleteButton:disabled {
@@ -848,32 +1168,76 @@
       opacity: 0.42;
     }
 
+    .deleteButton:not(:disabled):hover {
+      border-color: transparent;
+      color: var(--danger);
+      background: transparent;
+    }
+
+    .deleteButton:not(:disabled):focus-visible {
+      border-color: var(--focus-border);
+      color: var(--text-muted);
+      background: var(--surface-subtle);
+    }
+
     .sideStack {
-      display: grid;
-      gap: 18px;
+      display: block;
+      position: sticky;
+      top: 24px;
+      align-self: start;
+    }
+
+    .preferencePanel {
+      border-bottom: 1px solid var(--border);
+      margin-bottom: 32px;
+      padding-bottom: 28px;
+    }
+
+    .preferencePanel .weights {
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 16px 24px;
     }
 
     .chartPanel {
-      padding-bottom: 18px;
+      border-top: 1px solid var(--border);
+      padding-top: 20px;
+      margin-top: 24px;
     }
 
     .chartArea {
       display: grid;
-      grid-template-columns: 1fr;
-      gap: 18px;
-      padding: 18px;
+      gap: 24px;
+      padding: 0;
       align-items: center;
+    }
+
+    .chartPanel > summary {
+      list-style: none;
+      cursor: pointer;
+    }
+
+    .chartPanel > summary::-webkit-details-marker {
+      display: none;
+    }
+
+    .chartPanel > summary::after {
+      content: "+";
+      color: var(--text-muted);
+      font-size: 18px;
+      font-weight: 400;
+    }
+
+    .chartPanel[open] > summary::after {
+      content: "-";
     }
 
     .radarBox {
       width: 100%;
-      max-width: 330px;
+      max-width: 280px;
       aspect-ratio: 1;
       min-height: 246px;
       margin: 0 auto;
-      border: 1px solid var(--border);
-      border-radius: var(--radius);
-      background: linear-gradient(135deg, rgba(255, 255, 255, 0.94), rgba(168, 196, 212, 0.1));
+      background: transparent;
     }
 
     canvas {
@@ -884,15 +1248,16 @@
 
     .weights {
       display: grid;
-      gap: 12px;
+      gap: 14px;
       min-width: 0;
     }
 
     .weightControl {
       display: grid;
-      grid-template-columns: 92px minmax(110px, 1fr) 34px;
-      gap: 10px;
+      grid-template-columns: minmax(0, 1fr) 34px;
+      gap: 8px 10px;
       align-items: center;
+      min-width: 0;
     }
 
     .weightControl label {
@@ -902,9 +1267,20 @@
       white-space: nowrap;
     }
 
+    .weightRange {
+      grid-column: 1 / -1;
+    }
+
     input[type="range"] {
       width: 100%;
+      min-width: 0;
       accent-color: var(--primary);
+    }
+
+    input[type="range"]:focus-visible {
+      outline: 2px solid var(--focus-border);
+      outline-offset: 2px;
+      border-radius: 4px;
     }
 
     .weightValue {
@@ -914,69 +1290,161 @@
       text-align: right;
     }
 
+    .minimumControl {
+      grid-column: 1 / -1;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+    }
+
+    .minimumLabel {
+      color: var(--text-muted);
+      font-size: 11px;
+      font-weight: 600;
+    }
+
+    .minimumSelect {
+      min-height: 36px;
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 0 30px 0 10px;
+      color: var(--text);
+      background: var(--surface-raised);
+      font-size: 12px;
+      font-weight: 600;
+    }
+
+    .minimumSettingsButton,
+    .minimumSummary {
+      min-height: 32px;
+      padding: 0;
+      color: var(--text-muted);
+      background: transparent;
+      font-size: 11px;
+      font-weight: 600;
+    }
+
+    .minimumSettingsButton:hover,
+    .minimumSummary:hover {
+      color: var(--primary);
+    }
+
+    .minimumSummary {
+      grid-column: 1 / -1;
+      justify-self: start;
+    }
+
     .winnerPanel {
-      padding: 14px;
+      padding: 0;
     }
 
     .winnerTitle {
-      margin: 0 0 10px;
-      font-family: "Playfair Display", "Songti SC", "STSong", serif;
-      font-size: 15px;
-      font-weight: 600;
+      margin: 0 0 16px;
+      font-size: 17px;
+      font-weight: 700;
       line-height: 1.2;
     }
 
     .winner {
       display: grid;
       grid-template-columns: 1fr auto;
-      gap: 4px 12px;
+      gap: 8px 16px;
       align-items: baseline;
-      padding: 14px 15px;
-      border: 1px solid rgba(168, 196, 212, 0.42);
-      border-left: 5px solid var(--mist);
-      border-radius: var(--radius);
+      padding: 0 0 20px;
+      border: 0;
+      border-bottom: 1px solid var(--border);
       color: var(--text);
-      background: linear-gradient(135deg, rgba(168, 196, 212, 0.34), rgba(212, 168, 196, 0.18), rgba(255, 255, 255, 0.94));
-    }
-
-    .winnerLabel {
-      margin: 0;
-      color: var(--text-muted);
-      font-size: 11px;
-      font-weight: 800;
+      background: transparent;
     }
 
     .winnerName {
       margin: 0;
       min-width: 0;
-      font-size: 18px;
-      font-weight: 950;
+      font-size: 28px;
+      font-weight: 700;
       overflow-wrap: anywhere;
     }
 
     .winnerScore {
-      grid-row: 1 / span 2;
-      grid-column: 2;
-      color: var(--primary);
-      font-size: 24px;
-      font-weight: 950;
+      color: var(--text);
+      font-size: 28px;
+      font-weight: 700;
       white-space: nowrap;
     }
 
     .ranking {
       display: grid;
-      gap: 7px;
-      margin-top: 10px;
+      gap: 0;
+      margin-top: 0;
+    }
+
+    .recommendationDetails {
+      display: grid;
+      gap: 8px;
+      border-bottom: 1px solid var(--border);
+      padding: 16px 0;
+    }
+
+    .recommendationDetailsTitle {
+      margin: 0 0 4px;
+      color: var(--text);
+      font-size: 12px;
+      font-weight: 700;
+    }
+
+    .recommendationDetail {
+      display: grid;
+      grid-template-columns: 68px minmax(0, 1fr);
+      gap: 10px;
+      color: var(--text-muted);
+      font-size: 12px;
+      line-height: 1.5;
+    }
+
+    .recommendationDetailLabel {
+      color: var(--text);
+      font-weight: 700;
+    }
+
+    .constraintFailures {
+      display: grid;
+      gap: 4px;
+      border-bottom: 1px solid var(--border);
+      padding: 16px 0;
+    }
+
+    .constraintFailuresTitle {
+      margin: 0 0 4px;
+      color: var(--text);
+      font-size: 12px;
+      font-weight: 700;
+    }
+
+    .constraintFailure {
+      display: grid;
+      gap: 2px;
+      padding: 7px 0;
+    }
+
+    .constraintFailureName {
+      color: var(--text);
+      font-size: 12px;
+      font-weight: 700;
+    }
+
+    .constraintFailureReason {
+      color: var(--text-muted);
+      font-size: 12px;
+      line-height: 1.5;
     }
 
     .summaryBox {
-      display: grid;
-      gap: 8px;
-      margin-top: 12px;
-      border: 1px solid rgba(212, 168, 196, 0.26);
-      border-radius: var(--radius);
-      padding: 11px 12px;
-      background: rgba(247, 237, 244, 0.56);
+      margin-top: 24px;
+      border: 0;
+      border-top: 1px solid var(--border);
+      padding: 22px 0 0;
+      background: transparent;
     }
 
     .summaryHeader {
@@ -986,11 +1454,54 @@
       gap: 10px;
     }
 
+    .summaryBox > summary {
+      list-style: none;
+      cursor: pointer;
+    }
+
+    .summaryBox > summary::-webkit-details-marker {
+      display: none;
+    }
+
+    .summaryBox > summary::after {
+      content: "+";
+      color: var(--text-muted);
+      font-size: 18px;
+      font-weight: 400;
+    }
+
+    .summaryBox[open] > summary::after {
+      content: "-";
+    }
+
+    .summaryContent {
+      display: grid;
+      gap: 8px;
+      margin-top: 8px;
+    }
+
+    .summaryBox:not([open]) > .summaryContent {
+      display: none;
+    }
+
+    .summaryHeading {
+      display: grid;
+      gap: 4px;
+      min-width: 0;
+    }
+
     .summaryTitle {
       margin: 0;
       color: var(--text);
       font-size: 13px;
-      font-weight: 950;
+      font-weight: 700;
+    }
+
+    .summaryHint {
+      margin: 0;
+      color: var(--text-muted);
+      font-size: 11px;
+      line-height: 1.45;
     }
 
     .summaryText {
@@ -1006,20 +1517,18 @@
     .rankRow {
       display: grid;
       grid-template-columns: 24px minmax(0, 1fr) auto;
-      gap: 8px;
+      gap: 10px;
       align-items: center;
-      min-height: 34px;
-      padding: 7px 8px;
-      border: 1px solid var(--border);
-      border-left: 5px solid var(--border-strong);
-      border-radius: var(--radius);
-      background: var(--surface-raised);
+      min-height: 44px;
+      padding: 14px 0;
+      border: 0;
+      border-bottom: 1px solid var(--border);
+      background: transparent;
     }
 
     .rankRow:first-child {
-      border-color: rgba(212, 168, 196, 0.36);
-      border-left-color: var(--lotus);
-      background: linear-gradient(135deg, rgba(168, 196, 212, 0.24), rgba(212, 168, 196, 0.15));
+      border-color: var(--border);
+      background: transparent;
     }
 
     .rankNo {
@@ -1027,28 +1536,28 @@
       place-items: center;
       width: 24px;
       height: 24px;
-      border-radius: 50%;
+      border-radius: 0;
       color: var(--text-muted);
-      background: var(--surface-subtle);
-      font-weight: 950;
+      background: transparent;
+      font-weight: 600;
       font-size: 11px;
     }
 
     .rankRow:first-child .rankNo {
-      color: var(--text-inverse);
-      background: var(--primary);
+      color: var(--primary);
+      background: transparent;
     }
 
     .rankName {
       min-width: 0;
-      font-weight: 900;
+      font-weight: 600;
       font-size: 13px;
       overflow-wrap: anywhere;
     }
 
     .rankScore {
       color: var(--text-muted);
-      font-weight: 950;
+      font-weight: 600;
       font-size: 13px;
       white-space: nowrap;
     }
@@ -1059,7 +1568,7 @@
 
     .bar {
       grid-column: 2 / 4;
-      height: 5px;
+      height: 2px;
       border-radius: 999px;
       background: var(--surface-subtle);
       overflow: hidden;
@@ -1073,37 +1582,27 @@
     }
 
     .rankRow:first-child .bar span {
-      background: var(--lotus);
+      background: var(--primary);
     }
 
-    .siteFooter {
-      margin-top: 3rem;
-      border-top: 1px solid rgba(168, 196, 212, 0.26);
-      padding: 2rem 0;
-      background: rgba(255, 255, 255, 0.58);
-      text-align: center;
-    }
+    @media (prefers-reduced-motion: reduce) {
+      .button,
+      .iconButton,
+      .archiveDropdownIcon,
+      .deleteButton,
+      .toast.isLeaving {
+        transition: none;
+      }
 
-    .siteFooterInner {
-      width: min(1200px, calc(100% - 48px));
-      margin: 0 auto;
-    }
-
-    .siteFooterTitle {
-      margin: 0 0 0.5rem;
-      color: var(--text-muted);
-      font-size: 0.875rem;
-    }
-
-    .siteFooterMeta {
-      margin: 0;
-      color: var(--text-light);
-      font-size: 0.75rem;
+      .toast,
+      .authModal {
+        animation: none;
+      }
     }
 
     @media (max-width: 1080px) {
       .grid {
-        grid-template-columns: 1fr;
+        grid-template-columns: minmax(0, 1fr);
       }
 
       .tableWrap {
@@ -1111,20 +1610,51 @@
       }
 
       .sideStack {
+        position: static;
+        max-height: none;
+        overflow: visible;
+      }
+    }
+
+    @media (max-width: 900px) {
+      .topbar {
         grid-template-columns: 1fr;
+        gap: 16px;
+      }
+
+      .accountArea {
+        justify-content: space-between;
+      }
+
+      .authSummary {
+        text-align: left;
+      }
+
+      .authBadge {
+        justify-self: start;
       }
     }
 
     @media (max-width: 720px) {
       .page {
         width: min(100% - 20px, 1280px);
-        padding-top: 18px;
+        padding: 12px 0 40px;
       }
 
       .topbar,
       .panelHeader {
         align-items: stretch;
         flex-direction: column;
+      }
+
+      .topbar {
+        grid-template-columns: 1fr;
+        gap: 12px;
+        margin-bottom: 24px;
+      }
+
+      h1 {
+        font-size: 28px;
       }
 
       .titleGroup,
@@ -1143,8 +1673,10 @@
       }
 
       .panelHeaderActions {
-        align-items: stretch;
-        flex-direction: column;
+        align-items: center;
+        flex-direction: row;
+        justify-content: space-between;
+        width: 100%;
       }
 
       .accountArea {
@@ -1178,7 +1710,23 @@
       }
 
       .weightControl {
-        grid-template-columns: 82px minmax(90px, 1fr) 30px;
+        grid-template-columns: minmax(0, 1fr) 30px;
+      }
+
+      .minimumSelect {
+        min-height: 44px;
+      }
+
+      .offerNoteButton,
+      .noteButton,
+      .anchorToggle,
+      .deleteButton,
+      .scoreInput {
+        min-height: 44px;
+      }
+
+      .preferencePanel .weights {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
       }
 
       .winner {
@@ -1190,15 +1738,19 @@
         grid-column: auto;
       }
     }
+
+    @media (max-width: 520px) {
+      .preferencePanel .weights {
+        grid-template-columns: 1fr;
+      }
+    }
   </style>
 </head>
 <body>
   <main class="page">
     <header class="topbar">
       <div class="titleGroup">
-        <span class="eyebrow">Career Decision Journal</span>
-        <h1>职业选择档案</h1>
-        <p class="subtitle">记录每一次选择的理由、偏好与逻辑，让重要决定有迹可循。</p>
+        <h1>Offer 比较</h1>
       </div>
       <div class="archiveArea" aria-label="档案管理">
         <div class="archiveSelector">
@@ -1213,41 +1765,7 @@
           </div>
         </div>
       </div>
-      <div class="accountArea" aria-label="账号与云端保存">
-        <div class="authSummary">
-          <span class="authBadge" id="authBadge">本地模式</span>
-          <p class="syncStatus" id="syncStatus">配置 Supabase 后，登录即可把 offer 信息同步到云端。</p>
-        </div>
-        <button class="button" id="openAuthButton" type="button">登录 / 注册</button>
-        <button class="button secondary isHidden" id="signOutButton" type="button">退出登录</button>
-      </div>
     </header>
-
-    <div class="authModalBackdrop isHidden" id="authModalBackdrop">
-      <section class="authModal" role="dialog" aria-modal="true" aria-labelledby="authModalTitle">
-        <div class="authModalHeader">
-          <div>
-            <h2 id="authModalTitle">登录云端同步</h2>
-            <p>用邮箱和密码保存你的 offer 信息，换浏览器也能恢复。</p>
-          </div>
-          <button class="iconButton" id="closeAuthButton" type="button" aria-label="关闭登录窗口">x</button>
-        </div>
-        <form class="authForm" id="authForm">
-          <button class="button secondary oauthButton" id="githubSignInButton" type="button">
-            <span class="oauthIcon" aria-hidden="true">G</span>
-            <span>使用 GitHub 登录</span>
-          </button>
-          <div class="authDivider">或使用邮箱</div>
-          <input class="authInput" id="authEmail" type="email" placeholder="邮箱" autocomplete="email" required>
-          <input class="authInput" id="authPassword" type="password" placeholder="密码" autocomplete="current-password" minlength="6" required>
-          <div class="authModalActions">
-            <button class="button" id="signInButton" type="submit">登录</button>
-            <button class="button secondary" id="signUpButton" type="button">注册</button>
-          </div>
-          <p class="authModalStatus" id="authModalStatus" role="status" aria-live="polite"></p>
-        </form>
-      </section>
-    </div>
 
     <div class="authModalBackdrop isHidden" id="archiveModalBackdrop">
       <section class="authModal" role="dialog" aria-modal="true" aria-labelledby="archiveModalTitle">
@@ -1256,13 +1774,9 @@
             <h2 id="archiveModalTitle">新建档案</h2>
             <p id="archiveModalDescription">创建一组完整 offer 数据。</p>
           </div>
-          <button class="iconButton" id="closeArchiveModalButton" type="button" aria-label="关闭档案窗口">x</button>
+          <button class="iconButton" id="closeArchiveModalButton" type="button" aria-label="关闭档案窗口">&times;</button>
         </div>
         <form class="authForm" id="archiveForm">
-          <div class="fieldGroup" id="archiveNameGroup">
-            <label class="fieldLabel" for="archiveNameInput">档案名称</label>
-            <input class="authInput" id="archiveNameInput" type="text" autocomplete="off" maxlength="40" required>
-          </div>
           <p class="authModalStatus isVisible" id="archiveModalMessage"></p>
           <div class="authModalActions">
             <button class="button secondary" id="archiveCancelButton" type="button">取消</button>
@@ -1273,87 +1787,105 @@
     </div>
 
     <div class="grid">
-      <section class="panel" aria-labelledby="scoreTitle">
-        <div class="panelHeader">
-          <h2 id="scoreTitle">自定义打分表</h2>
-          <div class="panelHeaderActions">
-            <p class="smallNote">每格：相关信息 + 0-10 分</p>
-            <button class="button" id="addOfferButton" type="button">新增 offer</button>
+      <section class="mainColumn" aria-labelledby="scoreTitle">
+        <section class="panel preferencePanel" aria-labelledby="preferenceTitle">
+          <div class="panelHeader">
+            <div>
+              <h2 id="preferenceTitle">你更在意什么</h2>
+              <p class="smallNote">数值越高，越重要；0 不参与比较</p>
+            </div>
+            <div class="panelHeaderActions">
+              <button class="minimumSettingsButton" id="minimumSettingsButton" type="button" aria-controls="weightControls" aria-expanded="false">设置底线</button>
+            </div>
           </div>
-        </div>
-        <div class="tableWrap" id="scoreTableWrap">
-          <table>
-            <thead>
-              <tr id="scoreHead"></tr>
-            </thead>
-            <tbody id="scoreBody"></tbody>
-          </table>
-        </div>
+          <div class="weights" id="weightControls"></div>
+        </section>
+
+        <section class="panel" aria-labelledby="scoreTitle">
+          <div class="panelHeader">
+            <h2 id="scoreTitle">评分矩阵</h2>
+            <div class="panelHeaderActions">
+              <p class="smallNote" id="scoreProgress"></p>
+              <button class="textButton" id="addOfferButton" type="button">新增 offer</button>
+            </div>
+          </div>
+          <div class="tableWrap" id="scoreTableWrap">
+            <table>
+              <thead>
+                <tr id="scoreHead"></tr>
+              </thead>
+              <tbody id="scoreBody"></tbody>
+            </table>
+          </div>
+        </section>
+
       </section>
 
       <aside class="sideStack">
         <section class="panel winnerPanel" aria-labelledby="winnerTitle">
-          <h2 class="winnerTitle" id="winnerTitle">实时推荐</h2>
+          <h2 class="winnerTitle" id="winnerTitle">暂时排名</h2>
           <div class="winner">
-            <p class="winnerLabel">当前最合适</p>
             <p class="winnerName" id="winnerName">-</p>
             <div class="winnerScore" id="winnerScore">0.00</div>
           </div>
           <div class="ranking" id="rankingList"></div>
-          <div class="summaryBox" aria-label="AI 决策总结">
-            <div class="summaryHeader">
-              <h3 class="summaryTitle">决策总结</h3>
+          <div class="recommendationDetails" id="recommendationDetails"></div>
+          <div class="constraintFailures isHidden" id="constraintFailures"></div>
+          <details class="summaryBox" id="summaryBox" open>
+            <summary class="summaryHeader">
+              <div class="summaryHeading">
+                <h3 class="summaryTitle">AI 分析</h3>
+                <p class="summaryHint" id="summaryHint"></p>
+              </div>
+            </summary>
+            <div class="summaryContent">
+              <p class="summaryText" id="decisionSummaryText"></p>
+              <button class="button" id="generateSummaryButton" type="button">生成 AI 分析</button>
             </div>
-            <p class="summaryText" id="decisionSummaryText">点击生成后，会基于当前档案的 offer 分数、权重和备注生成摘要。</p>
-            <button class="button" id="generateSummaryButton" type="button">生成决策总结</button>
-          </div>
+          </details>
         </section>
 
-        <section class="panel chartPanel" aria-labelledby="radarTitle">
-          <div class="panelHeader">
-            <h2 id="radarTitle">权重雷达图</h2>
-            <p class="smallNote">权重越高，排序越受该维度影响</p>
-          </div>
+        <details class="panel chartPanel" id="radarDetails" open>
+          <summary class="panelHeader" aria-labelledby="radarTitle">
+            <h2 id="radarTitle">评分画像</h2>
+            <p class="smallNote" id="radarNote">权重与推荐差异</p>
+          </summary>
           <div class="chartArea">
             <div class="radarBox">
               <canvas id="radarCanvas" aria-label="Offer 维度权重雷达图"></canvas>
             </div>
-            <div class="weights" id="weightControls"></div>
           </div>
-        </section>
+        </details>
       </aside>
+
     </div>
   </main>
-
-  <footer class="siteFooter">
-    <div class="siteFooterInner">
-      <p class="siteFooterTitle">
-        Offer 决策助手
-      </p>
-      <p class="siteFooterMeta">
-        帮助你做出更明智的职业选择
-      </p>
-    </div>
-  </footer>
 
   <div class="toastRegion" id="toastRegion" role="status" aria-live="polite" aria-atomic="true"></div>
 
   <script type="module">
+    import {
+      getComparisonStatus,
+      getHardConstraintStatus,
+      getRecommendationExplanation
+    } from "./decision-logic.mjs";
+    import {
+      buildLocalDecisionSummary,
+      buildSummaryPayload,
+      canGenerateDecisionSummary
+    } from "./summary-payload.mjs";
+
     const STORAGE_KEY = "offerDecisionBoard.v1";
-    const MAX_NOTE_LINES = 5;
-    const CLOUD_TABLE = "offer_boards";
-    const CLOUD_BOARD_KEY = "default";
+    const AI_SUMMARY_ENDPOINT = "";
     const DEFAULT_ARCHIVE_NAME = "暑期实习 offer";
-    const SUPABASE_URL = "https://gabpavfvsbfewszwtxno.supabase.co";
-    const SUPABASE_ANON_KEY = "sb_publishable_vVxQeL0YKii-60n4wxXaBQ_1KqYkqR2";
 
     const dimensions = [
-      { id: "business", label: "业务前景", weight: 7 },
-      { id: "interest", label: "兴趣程度", weight: 8 },
-      { id: "salary", label: "待遇", weight: 6 },
-      { id: "location", label: "工作地", weight: 5 },
-      { id: "workload", label: "工作生活平衡", weight: 6 },
-      { id: "conversion", label: "转正概率", weight: 7 }
+      { id: "business", label: "业务前景", weight: 5, anchors: ["明显衰退", "稳定", "高增长且有壁垒"] },
+      { id: "interest", label: "兴趣程度", weight: 5, anchors: ["抗拒", "可以接受", "强烈期待"] },
+      { id: "salary", label: "待遇", weight: 5, anchors: ["低于底线", "达到目标", "明显超预期"] },
+      { id: "location", label: "工作地", weight: 5, anchors: ["不可接受", "可以接受", "理想"] },
+      { id: "workload", label: "工作生活平衡", weight: 5, anchors: ["不可持续", "可管理", "符合期望"] },
+      { id: "conversion", label: "转正概率", weight: 5, anchors: ["几乎没有", "不确定，约五成", "高度确定"] }
     ];
 
     const defaultOffers = [
@@ -1368,6 +1900,7 @@
           workload: 6,
           conversion: 7
         },
+        note: "",
         notes: {}
       },
       {
@@ -1381,6 +1914,7 @@
           workload: 7,
           conversion: 5
         },
+        note: "",
         notes: {}
       },
       {
@@ -1394,31 +1928,39 @@
           workload: 5,
           conversion: 8
         },
+        note: "",
         notes: {}
       }
     ];
 
     let state = loadState();
-    let supabaseClient = null;
-    let currentUser = null;
-    let activeUserId = null;
-    let cloudSaveTimer = null;
-    let isApplyingCloudState = false;
     let archiveModalMode = null;
     let hasGeneratedDecisionSummary = false;
-    let hasShownDecisionSummaryStaleToast = false;
-    let decisionSummaryToast = null;
+    let hasMarkedDecisionSummaryStale = false;
+    let activeNoteSelection = null;
+    let activeOfferNoteId = null;
+    let minimumSettingsExpanded = false;
+    const expandedAnchorDimensions = new Set();
 
     const scoreHead = document.getElementById("scoreHead");
     const scoreBody = document.getElementById("scoreBody");
+    const scoreProgress = document.getElementById("scoreProgress");
     const scoreTableWrap = document.getElementById("scoreTableWrap");
     const weightControls = document.getElementById("weightControls");
+    const minimumSettingsButton = document.getElementById("minimumSettingsButton");
+    const winnerTitle = document.getElementById("winnerTitle");
     const winnerName = document.getElementById("winnerName");
     const winnerScore = document.getElementById("winnerScore");
     const rankingList = document.getElementById("rankingList");
+    const recommendationDetails = document.getElementById("recommendationDetails");
+    const constraintFailures = document.getElementById("constraintFailures");
+    const summaryBox = document.getElementById("summaryBox");
+    const summaryHint = document.getElementById("summaryHint");
     const generateSummaryButton = document.getElementById("generateSummaryButton");
     const decisionSummaryText = document.getElementById("decisionSummaryText");
     const toastRegion = document.getElementById("toastRegion");
+    const radarDetails = document.getElementById("radarDetails");
+    const radarNote = document.getElementById("radarNote");
     const canvas = document.getElementById("radarCanvas");
     const context = canvas.getContext("2d");
     const archiveSelect = document.getElementById("archiveSelect");
@@ -1428,29 +1970,18 @@
     const archiveMenu = document.getElementById("archiveMenu");
     const archiveModalBackdrop = document.getElementById("archiveModalBackdrop");
     const archiveForm = document.getElementById("archiveForm");
-    const archiveNameGroup = document.getElementById("archiveNameGroup");
-    const archiveNameInput = document.getElementById("archiveNameInput");
     const archiveModalTitle = document.getElementById("archiveModalTitle");
     const archiveModalDescription = document.getElementById("archiveModalDescription");
     const archiveModalMessage = document.getElementById("archiveModalMessage");
     const archiveConfirmButton = document.getElementById("archiveConfirmButton");
     const archiveCancelButton = document.getElementById("archiveCancelButton");
     const closeArchiveModalButton = document.getElementById("closeArchiveModalButton");
-    const authBadge = document.getElementById("authBadge");
-    const syncStatus = document.getElementById("syncStatus");
-    const authForm = document.getElementById("authForm");
-    const authEmail = document.getElementById("authEmail");
-    const authPassword = document.getElementById("authPassword");
-    const authModalBackdrop = document.getElementById("authModalBackdrop");
-    const authModalStatus = document.getElementById("authModalStatus");
-    const openAuthButton = document.getElementById("openAuthButton");
-    const closeAuthButton = document.getElementById("closeAuthButton");
-    const githubSignInButton = document.getElementById("githubSignInButton");
-    const signInButton = document.getElementById("signInButton");
-    const signUpButton = document.getElementById("signUpButton");
-    const signOutButton = document.getElementById("signOutButton");
-
     document.getElementById("addOfferButton").addEventListener("click", addOffer);
+    minimumSettingsButton.addEventListener("click", () => {
+      minimumSettingsExpanded = !minimumSettingsExpanded;
+      renderWeights();
+    });
+    scoreTableWrap.addEventListener("scroll", syncNoteEditorOffset);
     archiveSelect.addEventListener("change", switchArchive);
     archiveDropdownButton.addEventListener("click", toggleArchiveMenu);
     archiveDropdownButton.addEventListener("keydown", handleArchiveDropdownKeydown);
@@ -1464,27 +1995,19 @@
         closeArchiveModal();
       }
     });
-    openAuthButton.addEventListener("click", openAuthModal);
-    closeAuthButton.addEventListener("click", closeAuthModal);
-    authModalBackdrop.addEventListener("click", (event) => {
-      if (event.target === authModalBackdrop) {
-        closeAuthModal();
+    generateSummaryButton.addEventListener("click", generateDecisionSummary);
+    radarDetails.addEventListener("toggle", () => {
+      if (radarDetails.open) {
+        drawRadar();
       }
     });
-    authForm.addEventListener("submit", handleSignIn);
-    githubSignInButton.addEventListener("click", handleGithubSignIn);
-    signUpButton.addEventListener("click", handleSignUp);
-    signOutButton.addEventListener("click", handleSignOut);
-    generateSummaryButton.addEventListener("click", generateDecisionSummary);
     document.addEventListener("keydown", (event) => {
       if (event.key === "Escape") {
         closeArchiveMenu();
-        closeAuthModal();
         closeArchiveModal();
       }
     });
     window.addEventListener("resize", () => {
-      syncAllNoteHeights();
       drawRadar();
     });
 
@@ -1493,6 +2016,7 @@
         id: crypto.randomUUID(),
         name: offer.name || `Offer ${index + 1}`,
         scores: { ...offer.scores },
+        note: offer.note || "",
         notes: Object.fromEntries(dimensions.map((dimension) => [dimension.id, offer.notes?.[dimension.id] || ""]))
       }));
     }
@@ -1501,11 +2025,16 @@
       return Object.fromEntries(dimensions.map((dimension) => [dimension.id, dimension.weight]));
     }
 
+    function getDefaultMinimumScores() {
+      return Object.fromEntries(dimensions.map((dimension) => [dimension.id, ""]));
+    }
+
     function createArchive(name = DEFAULT_ARCHIVE_NAME, payload = {}) {
       return {
         id: payload.id || crypto.randomUUID(),
         name: String(name || DEFAULT_ARCHIVE_NAME).trim() || DEFAULT_ARCHIVE_NAME,
         weights: payload.weights || getDefaultWeights(),
+        minimumScores: payload.minimumScores || getDefaultMinimumScores(),
         offers: payload.offers || cloneDefaultOffers()
       };
     }
@@ -1540,6 +2069,7 @@
         id: value.archiveId,
         name: value.archiveName || DEFAULT_ARCHIVE_NAME,
         weights: value.weights,
+        minimumScores: value.minimumScores,
         offers: value.offers
       }, 0);
 
@@ -1555,6 +2085,15 @@
         const storedWeight = Number(archive.weights?.[dimension.id]);
         return [dimension.id, Number.isFinite(storedWeight) ? storedWeight : fallbackWeights[dimension.id]];
       }));
+      const minimumScores = Object.fromEntries(dimensions.map((dimension) => {
+        const storedMinimum = Number(archive.minimumScores?.[dimension.id]);
+        return [
+          dimension.id,
+          Number.isInteger(storedMinimum) && storedMinimum >= 1 && storedMinimum <= 10
+            ? storedMinimum
+            : ""
+        ];
+      }));
       const offers = Array.isArray(archive.offers) && archive.offers.length
         ? archive.offers.map(normalizeOffer)
         : cloneDefaultOffers();
@@ -1563,6 +2102,7 @@
         id: archive.id || crypto.randomUUID(),
         name: String(archive.name || `档案 ${index + 1}`).trim() || `档案 ${index + 1}`,
         weights,
+        minimumScores,
         offers
       };
     }
@@ -1593,6 +2133,7 @@
         id: offer.id || crypto.randomUUID(),
         name: String(offer.name || `Offer ${index + 1}`),
         scores,
+        note: String(offer.note || ""),
         notes
       };
     }
@@ -1600,7 +2141,6 @@
     function saveState() {
       localStorage.setItem(STORAGE_KEY, JSON.stringify(getStatePayload()));
       markDecisionSummaryStale();
-      scheduleCloudSave();
     }
 
     function getStatePayload() {
@@ -1610,10 +2150,12 @@
           id: archive.id,
           name: archive.name,
           weights: { ...archive.weights },
+          minimumScores: { ...archive.minimumScores },
           offers: archive.offers.map((offer) => ({
             id: offer.id,
             name: offer.name,
             scores: { ...offer.scores },
+            note: offer.note,
             notes: { ...offer.notes }
           }))
         }))
@@ -1634,41 +2176,6 @@
 
       state.activeArchiveId = state.archives[0].id;
       return state.archives[0];
-    }
-
-    function isSupabaseConfigured() {
-      const projectUrl = getSupabaseUrl();
-      return projectUrl.startsWith("https://")
-        && projectUrl.includes(".supabase.co")
-        && SUPABASE_ANON_KEY.length > 40;
-    }
-
-    function getSupabaseUrl() {
-      try {
-        return new URL(SUPABASE_URL.trim()).origin;
-      } catch (error) {
-        return SUPABASE_URL.trim().replace(/\/+$/, "");
-      }
-    }
-
-    function getAuthRedirectUrl() {
-      const redirectUrl = new URL(window.location.href);
-      redirectUrl.search = "";
-      redirectUrl.hash = "";
-      return redirectUrl.toString();
-    }
-
-    function setSyncStatus(message, tone = "info") {
-      syncStatus.textContent = message;
-      if (!authModalBackdrop.classList.contains("isHidden")) {
-        setAuthModalStatus(message, tone);
-      }
-    }
-
-    function setAuthModalStatus(message, tone = "info") {
-      authModalStatus.textContent = message;
-      authModalStatus.classList.toggle("isVisible", Boolean(message));
-      authModalStatus.classList.toggle("isError", tone === "error");
     }
 
     function showToast(message, tone = "info", options = {}) {
@@ -1720,305 +2227,14 @@
       }, 180);
     }
 
-    function isFetchFailure(error) {
-      const message = String(error?.message || error || "");
-      return /failed to fetch|load failed|networkerror/i.test(message);
-    }
-
-    function formatSupabaseError(action, error) {
-      if (isFetchFailure(error)) {
-        return `${action}失败：无法连接 Supabase 项目 ${getSupabaseUrl()}。请确认 SUPABASE_URL 是 Dashboard 里的 Project URL，项目仍可访问，并且当前网络能访问 *.supabase.co。`;
-      }
-
-      const message = String(error?.message || "");
-      const code = String(error?.code || "");
-      if (code === "invalid_credentials" || /invalid login credentials/i.test(message)) {
-        return `${action}失败：邮箱或密码不正确。请确认这个邮箱已经注册、密码输入无误；如果刚注册，请先完成邮箱确认后再登录。`;
-      }
-
-      if (code === "email_not_confirmed" || /email not confirmed/i.test(message)) {
-        return `${action}失败：这个邮箱还没有完成确认。请先点击 Supabase 发来的确认邮件，或在 Supabase Auth 设置里关闭邮箱确认。`;
-      }
-
-      return `${action}失败：${error?.message || "请稍后重试。"}`;
-    }
-
     function markDecisionSummaryStale() {
-      if (!hasGeneratedDecisionSummary || isApplyingCloudState || hasShownDecisionSummaryStaleToast) {
+      if (!hasGeneratedDecisionSummary || hasMarkedDecisionSummaryStale) {
         return;
       }
 
-      hasShownDecisionSummaryStaleToast = true;
-      showToast("数据已更新，建议重新生成决策总结。", "info");
-    }
-
-    function openAuthModal() {
-      if (!isSupabaseConfigured()) {
-        setSyncStatus("请先填写 Supabase 配置后再登录。", "error");
-        return;
-      }
-
-      authModalBackdrop.classList.remove("isHidden");
-      setAuthModalStatus("登录后会自动加载云端数据，并把同步后续的修改。");
-      requestAnimationFrame(() => authEmail.focus());
-    }
-
-    function closeAuthModal() {
-      authModalBackdrop.classList.add("isHidden");
-      setAuthModalStatus("");
-    }
-
-    function updateAuthUI() {
-      const configured = isSupabaseConfigured();
-      const isSignedIn = Boolean(currentUser);
-
-      authBadge.textContent = !configured
-        ? "本地模式"
-        : isSignedIn
-          ? `已登录：${currentUser.email || "Supabase 用户"}`
-          : "云端同步未登录";
-
-      openAuthButton.classList.toggle("isHidden", isSignedIn);
-      signOutButton.classList.toggle("isHidden", !isSignedIn);
-      [openAuthButton, githubSignInButton, authEmail, authPassword, signInButton, signUpButton].forEach((control) => {
-        control.disabled = !configured;
-      });
-
-      if (isSignedIn) {
-        closeAuthModal();
-      }
-
-      if (!configured) {
-        setSyncStatus("请先在代码中填写 SUPABASE_URL 和 SUPABASE_ANON_KEY；当前数据只保存在本地浏览器。");
-      } else if (!isSignedIn) {
-        setSyncStatus("登录后会自动加载云端数据，并把同步后续的修改。");
-      }
-    }
-
-    async function initSupabase() {
-      updateAuthUI();
-      if (!isSupabaseConfigured()) {
-        return;
-      }
-
-      let createClient;
-      try {
-        ({ createClient } = await import("https://esm.sh/@supabase/supabase-js@2"));
-      } catch (error) {
-        setSyncStatus("Supabase SDK 加载失败，请检查网络或稍后重试。", "error");
-        return;
-      }
-
-      supabaseClient = createClient(getSupabaseUrl(), SUPABASE_ANON_KEY);
-      const { data, error } = await supabaseClient.auth.getSession();
-      if (error) {
-        setSyncStatus(`读取登录状态失败：${error.message}`, "error");
-      } else {
-        await applySession(data.session);
-      }
-
-      supabaseClient.auth.onAuthStateChange((_event, session) => {
-        applySession(session);
-      });
-    }
-
-    async function applySession(session) {
-      const nextUser = session?.user || null;
-      if (nextUser?.id === activeUserId) {
-        return;
-      }
-
-      currentUser = nextUser;
-      activeUserId = nextUser?.id || null;
-      updateAuthUI();
-
-      if (!currentUser) {
-        setSyncStatus(isSupabaseConfigured() ? "已退出登录，之后的修改会先保存在本地。" : syncStatus.textContent);
-        return;
-      }
-
-      await loadCloudState();
-    }
-
-    async function handleSignIn(event) {
-      event.preventDefault();
-      if (!supabaseClient) {
-        return;
-      }
-
-      setSyncStatus("正在登录...");
-      try {
-        const { error } = await supabaseClient.auth.signInWithPassword({
-          email: authEmail.value.trim(),
-          password: authPassword.value
-        });
-
-        if (error) {
-          throw error;
-        }
-      } catch (error) {
-        setSyncStatus(formatSupabaseError("登录", error), "error");
-        return;
-      }
-
-      authPassword.value = "";
-      setSyncStatus("登录成功，正在同步数据...");
-    }
-
-    async function handleGithubSignIn() {
-      if (!supabaseClient) {
-        return;
-      }
-
-      setSyncStatus("正在跳转到 GitHub...");
-      try {
-        const { error } = await supabaseClient.auth.signInWithOAuth({
-          provider: "github",
-          options: {
-            redirectTo: getAuthRedirectUrl(),
-            scopes: "read:user user:email"
-          }
-        });
-
-        if (error) {
-          throw error;
-        }
-      } catch (error) {
-        setSyncStatus(formatSupabaseError("GitHub 登录", error), "error");
-      }
-    }
-
-    async function handleSignUp() {
-      if (!supabaseClient) {
-        return;
-      }
-
-      if (!authEmail.reportValidity() || !authPassword.reportValidity()) {
-        return;
-      }
-
-      setSyncStatus("正在注册...");
-      const options = {};
-      if (window.location.protocol.startsWith("http")) {
-        options.emailRedirectTo = window.location.href;
-      }
-      let data;
-      try {
-        const result = await supabaseClient.auth.signUp({
-          email: authEmail.value.trim(),
-          password: authPassword.value,
-          options
-        });
-        data = result.data;
-
-        if (result.error) {
-          throw result.error;
-        }
-      } catch (error) {
-        setSyncStatus(formatSupabaseError("注册", error), "error");
-        return;
-      }
-
-      authPassword.value = "";
-      setSyncStatus(data.session ? "注册成功，已登录并开始同步。" : "注册成功，请去邮箱完成确认后再登录。");
-    }
-
-    async function handleSignOut() {
-      if (!supabaseClient) {
-        return;
-      }
-
-      setSyncStatus("正在退出登录...");
-      try {
-        const { error } = await supabaseClient.auth.signOut();
-        if (error) {
-          throw error;
-        }
-      } catch (error) {
-        setSyncStatus(formatSupabaseError("退出", error), "error");
-        return;
-      }
-
-      currentUser = null;
-      activeUserId = null;
-      updateAuthUI();
-      restoreDemoLocally();
-      setSyncStatus("已退出登录，界面已恢复为示例数据。");
-    }
-
-    async function loadCloudState() {
-      if (!supabaseClient || !currentUser) {
-        return;
-      }
-
-      setSyncStatus("正在加载云端 offer...");
-      let data;
-      try {
-        const result = await supabaseClient
-          .from(CLOUD_TABLE)
-          .select("board_data")
-          .eq("user_id", currentUser.id)
-          .eq("board_key", CLOUD_BOARD_KEY)
-          .maybeSingle();
-        data = result.data;
-
-        if (result.error) {
-          throw result.error;
-        }
-      } catch (error) {
-        setSyncStatus(formatSupabaseError("云端加载", error), "error");
-        return;
-      }
-
-      if (data?.board_data) {
-        isApplyingCloudState = true;
-        state = normalizeState(data.board_data);
-        render();
-        isApplyingCloudState = false;
-        setSyncStatus("已加载云端 offer，之后修改会自动同步。");
-        return;
-      }
-
-      setSyncStatus("云端还没有数据，正在把本地表格初始化到云端...");
-      await saveCloudState();
-    }
-
-    function scheduleCloudSave() {
-      if (!supabaseClient || !currentUser || isApplyingCloudState) {
-        return;
-      }
-
-      setSyncStatus("保存中...");
-      clearTimeout(cloudSaveTimer);
-      cloudSaveTimer = window.setTimeout(saveCloudState, 550);
-    }
-
-    async function saveCloudState() {
-      if (!supabaseClient || !currentUser) {
-        return;
-      }
-
-      try {
-        const { error } = await supabaseClient
-          .from(CLOUD_TABLE)
-          .upsert({
-            user_id: currentUser.id,
-            board_key: CLOUD_BOARD_KEY,
-            board_data: getStatePayload(),
-            updated_at: new Date().toISOString()
-          }, { onConflict: "user_id,board_key" })
-          .select("id")
-          .single();
-
-        if (error) {
-          throw error;
-        }
-      } catch (error) {
-        setSyncStatus(formatSupabaseError("云端保存", error), "error");
-        return;
-      }
-
-      setSyncStatus("已同步到云端");
+      hasMarkedDecisionSummaryStale = true;
+      decisionSummaryText.textContent = "";
+      updateSummaryAvailability();
     }
 
     function clampScore(value) {
@@ -2052,46 +2268,24 @@
       return Number.isFinite(score) ? clampScore(score) : 0;
     }
 
-    function getExportScore(value) {
-      return value === "" || value === null || value === undefined
-        ? null
-        : getScoreNumber(value);
-    }
-
     function getScoreValidationMessage(value) {
       const trimmed = String(value).trim();
       if (trimmed === "") {
         return "";
       }
 
-      const plainNumberPattern = /^(?:\d+(?:\.\d*)?|\.\d+)$/;
-      if (!plainNumberPattern.test(trimmed)) {
-        return "分数范围0-10之间";
+      if (!/^\d+$/.test(trimmed)) {
+        return "请输入 0-10 的整数";
       }
       const score = Number(trimmed);
-      if (trimmed === "" || !Number.isFinite(score)) {
-        return "分数范围0-10之间";
-      }
-      if (score < 0 || score > 10) {
-        return "分数范围0-10之间";
+      if (!Number.isInteger(score) || score < 0 || score > 10) {
+        return "请输入 0-10 的整数";
       }
       return "";
     }
 
     function sanitizeScoreInput(value) {
-      let sanitized = "";
-      let hasDot = false;
-      String(value).split("").forEach((char) => {
-        if (char >= "0" && char <= "9") {
-          sanitized += char;
-          return;
-        }
-        if (char === "." && !hasDot) {
-          sanitized += char;
-          hasDot = true;
-        }
-      });
-      return sanitized;
+      return String(value).match(/^\d{0,2}/)?.[0] || "";
     }
 
     function getUniqueArchiveName(baseName) {
@@ -2117,18 +2311,78 @@
         option.textContent = archive.name;
         archiveSelect.appendChild(option);
 
-        const menuItem = document.createElement("button");
         const isActive = archive.id === activeArchive.id;
-        menuItem.className = `archiveMenuItem archiveOption${isActive ? " isActive" : ""}`;
-        menuItem.type = "button";
-        menuItem.role = "menuitemradio";
-        menuItem.dataset.archiveId = archive.id;
-        menuItem.setAttribute("aria-checked", String(isActive));
-
         const check = document.createElement("span");
         check.className = "archiveOptionCheck";
         check.textContent = isActive ? "✓" : "";
 
+        if (isActive) {
+          const currentItem = document.createElement("div");
+          currentItem.className = "archiveOption isActive";
+          currentItem.setAttribute("role", "group");
+
+          const renameInput = document.createElement("input");
+          renameInput.className = "archiveInlineName";
+          renameInput.type = "text";
+          renameInput.value = archive.name;
+          renameInput.maxLength = 40;
+          renameInput.autocomplete = "off";
+          renameInput.setAttribute("aria-label", "重命名当前档案");
+          renameInput.title = "点击修改名称";
+          renameInput.addEventListener("keydown", (event) => {
+            event.stopPropagation();
+            if (event.key === "Enter") {
+              event.preventDefault();
+              renameInput.value = renameActiveArchive(renameInput.value);
+              renameInput.blur();
+            } else if (event.key === "Escape") {
+              event.preventDefault();
+              renameInput.value = archive.name;
+              renameInput.blur();
+            }
+          });
+          renameInput.addEventListener("change", () => {
+            renameInput.value = renameActiveArchive(renameInput.value);
+          });
+
+          const renameField = document.createElement("div");
+          renameField.className = "archiveRenameField";
+          const renameButton = document.createElement("button");
+          renameButton.className = "archiveRenameButton";
+          renameButton.type = "button";
+          renameButton.innerHTML = '<svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M12 20h9"/><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4Z"/></svg>';
+          renameButton.title = "重命名当前档案";
+          renameButton.setAttribute("aria-label", "重命名当前档案");
+          renameButton.addEventListener("click", (event) => {
+            event.stopPropagation();
+            renameInput.focus();
+            renameInput.select();
+          });
+          renameField.append(renameInput, renameButton);
+          if (state.archives.length > 1) {
+            const deleteButton = document.createElement("button");
+            deleteButton.className = "archiveDeleteButton";
+            deleteButton.type = "button";
+            deleteButton.textContent = "×";
+            deleteButton.title = "删除当前档案";
+            deleteButton.setAttribute("aria-label", "删除当前档案");
+            deleteButton.addEventListener("click", (event) => {
+              event.stopPropagation();
+              openDeleteArchiveModal();
+            });
+            renameField.appendChild(deleteButton);
+          }
+          currentItem.append(check, renameField);
+          archiveMenu.appendChild(currentItem);
+          return;
+        }
+
+        const menuItem = document.createElement("button");
+        menuItem.className = "archiveMenuItem archiveOption";
+        menuItem.type = "button";
+        menuItem.role = "menuitemradio";
+        menuItem.dataset.archiveId = archive.id;
+        menuItem.setAttribute("aria-checked", "false");
         const name = document.createElement("span");
         name.className = "archiveOptionName";
         name.textContent = archive.name;
@@ -2143,29 +2397,20 @@
       divider.role = "separator";
       archiveMenu.appendChild(divider);
 
-      archiveMenu.appendChild(createArchiveMenuAction("新建档案", openNewArchiveModal));
-      archiveMenu.appendChild(createArchiveMenuAction("重命名当前档案", openRenameArchiveModal));
-      archiveMenu.appendChild(createArchiveMenuAction("删除当前档案", openDeleteArchiveModal, {
-        danger: true,
-        disabled: state.archives.length <= 1
-      }));
+      archiveMenu.appendChild(createArchiveMenuAction("新建档案", createNewArchive));
 
       archiveSelect.value = activeArchive.id;
       archiveDropdownValue.textContent = activeArchive.name;
       archiveDropdownButton.setAttribute("aria-expanded", String(!archiveMenu.classList.contains("isHidden")));
     }
 
-    function createArchiveMenuAction(label, handler, options = {}) {
+    function createArchiveMenuAction(label, handler) {
       const action = document.createElement("button");
-      action.className = `archiveMenuItem archiveOption archiveMenuAction${options.danger ? " danger" : ""}`;
+      action.className = "archiveMenuItem archiveOption archiveMenuAction";
       action.type = "button";
       action.role = "menuitem";
       action.textContent = label;
-      action.disabled = Boolean(options.disabled);
       action.addEventListener("click", () => {
-        if (action.disabled) {
-          return;
-        }
         closeArchiveMenu();
         handler();
       });
@@ -2253,37 +2498,16 @@
     }
 
     function getArchiveOptionElements() {
-      return Array.from(archiveMenu.querySelectorAll(".archiveMenuItem:not(:disabled)"));
+      return Array.from(archiveMenu.querySelectorAll("button.archiveMenuItem:not(:disabled)"));
     }
 
-    function openNewArchiveModal() {
-      const defaultName = getUniqueArchiveName(`档案 ${state.archives.length + 1}`);
-      archiveModalMode = "create";
-      archiveModalTitle.textContent = "新建档案";
-      archiveModalDescription.textContent = "创建一组完整 offer 数据，权重、备注和排序都会独立保存。";
-      archiveModalMessage.textContent = "";
-      archiveModalMessage.classList.remove("isVisible");
-      archiveConfirmButton.textContent = "创建档案";
-      archiveConfirmButton.classList.remove("danger");
-      archiveNameGroup.classList.remove("isHidden");
-      archiveNameInput.value = defaultName;
-      archiveNameInput.required = true;
-      openArchiveModal();
-    }
-
-    function openRenameArchiveModal() {
-      const activeArchive = getActiveArchive();
-      archiveModalMode = "rename";
-      archiveModalTitle.textContent = "重命名档案";
-      archiveModalDescription.textContent = "修改当前档案名称，档案内的 offer、权重和备注不会改变。";
-      archiveModalMessage.textContent = `当前档案：${activeArchive.name}`;
-      archiveModalMessage.classList.add("isVisible");
-      archiveConfirmButton.textContent = "保存名称";
-      archiveConfirmButton.classList.remove("danger");
-      archiveNameGroup.classList.remove("isHidden");
-      archiveNameInput.value = activeArchive.name;
-      archiveNameInput.required = true;
-      openArchiveModal();
+    function createNewArchive() {
+      const name = getUniqueArchiveName(`档案 ${state.archives.length + 1}`);
+      const archive = createArchive(name);
+      state.archives.push(archive);
+      state.activeArchiveId = archive.id;
+      render();
+      showToast(`已新建「${archive.name}」。`, "success");
     }
 
     function openDeleteArchiveModal() {
@@ -2293,26 +2517,17 @@
 
       const activeArchive = getActiveArchive();
       archiveModalMode = "delete";
-      archiveModalTitle.textContent = "删除档案";
-      archiveModalDescription.textContent = "是否确认删除档案？";
-      archiveModalMessage.textContent = `将删除「${activeArchive.name}」里的 offer、权重和备注。此操作不会影响其他档案。`;
+      archiveModalTitle.textContent = `删除「${activeArchive.name}」？`;
+      archiveModalDescription.textContent = "";
+      archiveModalMessage.textContent = "将删除其中所有 offer、权重和备注，且无法撤销。";
       archiveModalMessage.classList.add("isVisible");
       archiveConfirmButton.textContent = "确认删除";
       archiveConfirmButton.classList.add("danger");
-      archiveNameGroup.classList.add("isHidden");
-      archiveNameInput.value = "";
-      archiveNameInput.required = false;
       openArchiveModal();
     }
 
     function openArchiveModal() {
       archiveModalBackdrop.classList.remove("isHidden");
-      if (!archiveNameGroup.classList.contains("isHidden")) {
-        requestAnimationFrame(() => {
-          archiveNameInput.focus();
-          archiveNameInput.select();
-        });
-      }
     }
 
     function closeArchiveModal() {
@@ -2323,14 +2538,6 @@
 
     function handleArchiveModalSubmit(event) {
       event.preventDefault();
-      if (archiveModalMode === "create") {
-        createArchiveFromModal();
-        return;
-      }
-      if (archiveModalMode === "rename") {
-        renameArchiveFromModal();
-        return;
-      }
       if (archiveModalMode === "delete") {
         deleteArchiveFromModal();
         return;
@@ -2340,27 +2547,22 @@
       }
     }
 
-    function createArchiveFromModal() {
-      const defaultName = getUniqueArchiveName(`档案 ${state.archives.length + 1}`);
-      const archiveName = archiveNameInput.value.trim() || defaultName;
-      const archive = createArchive(getUniqueArchiveName(archiveName));
-      state.archives.push(archive);
-      state.activeArchiveId = archive.id;
-      closeArchiveModal();
-      render();
-    }
-
-    function renameArchiveFromModal() {
+    function renameActiveArchive(value) {
       const activeArchive = getActiveArchive();
-      const trimmedName = archiveNameInput.value.trim();
+      const trimmedName = value.trim();
       if (!trimmedName || trimmedName === activeArchive.name) {
-        closeArchiveModal();
-        return;
+        return activeArchive.name;
       }
 
       activeArchive.name = getUniqueArchiveName(trimmedName);
-      closeArchiveModal();
-      render();
+      const selectedOption = Array.from(archiveSelect.options)
+        .find((option) => option.value === activeArchive.id);
+      if (selectedOption) {
+        selectedOption.textContent = activeArchive.name;
+      }
+      archiveDropdownValue.textContent = activeArchive.name;
+      saveState();
+      return activeArchive.name;
     }
 
     function deleteArchiveFromModal() {
@@ -2391,15 +2593,12 @@
 
       archiveModalMode = "deleteOffer";
       archiveModalBackdrop.dataset.offerId = offerId;
-      archiveModalTitle.textContent = "删除 offer";
-      archiveModalDescription.textContent = "是否确认删除这个 offer？";
-      archiveModalMessage.textContent = `将删除「${offer.name}」的所有备注和分数。此操作不会影响其他 offer。`;
+      archiveModalTitle.textContent = `删除「${offer.name}」？`;
+      archiveModalDescription.textContent = "";
+      archiveModalMessage.textContent = "将删除分数和备注，且无法撤销。";
       archiveModalMessage.classList.add("isVisible");
       archiveConfirmButton.textContent = "确认删除";
       archiveConfirmButton.classList.add("danger");
-      archiveNameGroup.classList.add("isHidden");
-      archiveNameInput.value = "";
-      archiveNameInput.required = false;
       openArchiveModal();
     }
 
@@ -2419,8 +2618,9 @@
 
     function render() {
       renderArchives();
+      closeOfferNoteEditor();
+      closeNoteEditor();
       renderScoreTable();
-      syncAllNoteHeights();
       renderWeights();
       renderRanking();
       drawRadar();
@@ -2429,6 +2629,7 @@
 
     function renderScoreTable() {
       const activeArchive = getActiveArchive();
+      updateScoreProgress(activeArchive);
       scoreHead.innerHTML = "";
       const titleCell = document.createElement("th");
       titleCell.textContent = "维度";
@@ -2443,22 +2644,48 @@
         nameInput.className = "offerName";
         nameInput.value = offer.name;
         nameInput.setAttribute("aria-label", `${offer.name} 名称`);
+
+        const metaRow = document.createElement("div");
+        metaRow.className = "offerMetaRow";
+        const noteButton = document.createElement("button");
+        noteButton.className = "offerNoteButton";
+        noteButton.type = "button";
+        noteButton.dataset.offerId = offer.id;
+        noteButton.setAttribute("aria-expanded", "false");
+        noteButton.setAttribute("aria-controls", `offer-note-editor-${offer.id}`);
+        updateOfferNoteButtonState(noteButton, offer);
+        noteButton.addEventListener("click", () => openOfferNoteEditor(offer.id));
+
+        const deleteButton = document.createElement("button");
+        deleteButton.className = "deleteButton";
+        deleteButton.type = "button";
+        deleteButton.innerHTML = `
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <path d="M3 6h18"></path>
+            <path d="M8 6V4h8v2"></path>
+            <path d="m19 6-1 14H6L5 6"></path>
+            <path d="M10 11v5"></path>
+            <path d="M14 11v5"></path>
+          </svg>
+          <span>删除</span>
+        `;
+        deleteButton.disabled = activeArchive.offers.length <= 1;
+        deleteButton.setAttribute("aria-label", `删除 ${offer.name}`);
+        deleteButton.title = deleteButton.disabled ? "至少保留一份 Offer" : `删除 ${offer.name}`;
+        deleteButton.addEventListener("click", () => openDeleteOfferModal(offer.id));
+
         nameInput.addEventListener("input", (event) => {
           offer.name = event.target.value.trim() || "未命名 offer";
+          nameInput.setAttribute("aria-label", `${offer.name} 名称`);
+          deleteButton.setAttribute("aria-label", `删除 ${offer.name}`);
+          if (!deleteButton.disabled) deleteButton.title = `删除 ${offer.name}`;
           renderRanking();
           drawRadar();
           saveState();
         });
 
-        const deleteButton = document.createElement("button");
-        deleteButton.className = "deleteButton";
-        deleteButton.type = "button";
-        deleteButton.textContent = "x";
-        deleteButton.disabled = activeArchive.offers.length <= 1;
-        deleteButton.setAttribute("aria-label", `删除 ${offer.name}`);
-        deleteButton.addEventListener("click", () => openDeleteOfferModal(offer.id));
-
-        header.append(nameInput, deleteButton);
+        metaRow.append(noteButton, deleteButton);
+        header.append(nameInput, metaRow);
         cell.appendChild(header);
         scoreHead.appendChild(cell);
       });
@@ -2466,64 +2693,64 @@
       scoreBody.innerHTML = "";
       dimensions.forEach((dimension) => {
         const row = document.createElement("tr");
+        row.dataset.dimensionId = dimension.id;
 
         const dimensionCell = document.createElement("td");
         const dimensionName = document.createElement("div");
         dimensionName.className = "dimensionName";
         dimensionName.textContent = dimension.label;
-        dimensionCell.appendChild(dimensionName);
+        const anchorToggle = document.createElement("button");
+        anchorToggle.className = "anchorToggle";
+        anchorToggle.type = "button";
+        const isAnchorExpanded = expandedAnchorDimensions.has(dimension.id);
+        anchorToggle.textContent = isAnchorExpanded ? "收起参考" : "评分参考";
+        anchorToggle.setAttribute("aria-expanded", String(isAnchorExpanded));
+        anchorToggle.setAttribute("aria-controls", `anchor-guide-${dimension.id}`);
+        anchorToggle.addEventListener("click", () => {
+          if (isAnchorExpanded) {
+            expandedAnchorDimensions.delete(dimension.id);
+          } else {
+            expandedAnchorDimensions.add(dimension.id);
+          }
+          closeOfferNoteEditor();
+          closeNoteEditor();
+          renderScoreTable();
+          requestAnimationFrame(() => {
+            scoreBody.querySelector(`tr[data-dimension-id="${dimension.id}"] .anchorToggle`)?.focus();
+          });
+        });
+        dimensionCell.append(dimensionName, anchorToggle);
         row.appendChild(dimensionCell);
 
         activeArchive.offers.forEach((offer) => {
           const cell = document.createElement("td");
           cell.className = "scoreCell";
-          const entry = document.createElement("div");
-          entry.className = "dimensionEntry";
-
-          const note = document.createElement("textarea");
-          note.className = "noteInput";
-          note.rows = 1;
-          note.dataset.dimensionId = dimension.id;
-          note.value = offer.notes[dimension.id] || "";
-          note.placeholder = dimension.label;
-          note.setAttribute("aria-label", `${offer.name} ${dimension.label} 相关信息`);
-          note.addEventListener("input", (event) => {
-            offer.notes[dimension.id] = event.target.value;
-            syncNoteRowHeight(dimension.id);
-            saveState();
-          });
-
-          const noteGroup = document.createElement("div");
-          noteGroup.className = "fieldGroup";
-          const noteLabel = document.createElement("span");
-          noteLabel.className = "fieldLabel";
-          noteLabel.textContent = "备注";
-          noteGroup.append(noteLabel, note);
-
-          const scoreGroup = document.createElement("div");
-          scoreGroup.className = "fieldGroup scoreGroup";
-          const scoreLabel = document.createElement("span");
-          scoreLabel.className = "fieldLabel";
-          scoreLabel.textContent = "分数";
-
+          cell.dataset.offerId = offer.id;
+          cell.dataset.dimensionId = dimension.id;
           const input = document.createElement("input");
           input.className = "scoreInput";
           input.type = "text";
-          input.inputMode = "none";
+          input.inputMode = "numeric";
           input.autocomplete = "off";
           input.spellcheck = false;
           input.value = offer.scores[dimension.id] ?? "";
           input.setAttribute("aria-label", `${offer.name} ${dimension.label} 分数`);
+          const noteButton = document.createElement("button");
+          noteButton.className = "noteButton";
+          noteButton.type = "button";
+          noteButton.setAttribute("aria-expanded", "false");
+          updateNoteButtonState(noteButton, offer, dimension);
+          noteButton.addEventListener("click", () => openNoteEditor(offer.id, dimension.id));
 
           const scoreWarning = document.createElement("span");
           scoreWarning.className = "scoreWarning";
-          scoreWarning.textContent = "分数范围0-10之间";
+          scoreWarning.textContent = "请输入 0-10 的整数";
 
           input.addEventListener("beforeinput", (event) => {
             if (event.inputType.startsWith("delete") || event.inputType === "insertFromPaste") {
               return;
             }
-            if (!/^[0-9.]*$/.test(event.data || "")) {
+            if (!/^\d*$/.test(event.data || "")) {
               event.preventDefault();
             }
           });
@@ -2533,74 +2760,302 @@
               event.target.value = sanitized;
             }
             const message = getScoreValidationMessage(sanitized);
-            scoreGroup.classList.toggle("hasError", Boolean(message));
+            cell.classList.toggle("hasError", Boolean(message));
             if (message) {
               scoreWarning.textContent = message;
               return;
             }
 
             offer.scores[dimension.id] = sanitized === "" ? "" : Number(sanitized);
+            updateScoreProgress(activeArchive);
             renderRanking();
             drawRadar();
             saveState();
           });
+          input.addEventListener("keydown", (event) => {
+            if (event.key !== "Enter") {
+              return;
+            }
+            event.preventDefault();
+            const dimensionIndex = dimensions.findIndex((item) => item.id === dimension.id);
+            const nextDimension = dimensions[dimensionIndex + 1];
+            scoreBody.querySelector(
+              `.scoreCell[data-offer-id="${offer.id}"][data-dimension-id="${nextDimension?.id}"] .scoreInput`
+            )?.focus();
+          });
 
-          scoreGroup.append(scoreLabel, input, scoreWarning);
-          entry.append(noteGroup, scoreGroup);
-          cell.appendChild(entry);
+          cell.append(input, noteButton, scoreWarning);
           row.appendChild(cell);
         });
 
         scoreBody.appendChild(row);
+        if (isAnchorExpanded) {
+          scoreBody.appendChild(createAnchorGuideRow(dimension, activeArchive.offers.length + 1));
+        }
       });
     }
 
-    function syncAllNoteHeights() {
-      dimensions.forEach((dimension) => syncNoteRowHeight(dimension.id));
+    function createAnchorGuideRow(dimension, columnCount) {
+      const row = document.createElement("tr");
+      row.className = "anchorGuideRow";
+      row.id = `anchor-guide-${dimension.id}`;
+      const cell = document.createElement("td");
+      cell.colSpan = columnCount;
+      const guide = document.createElement("div");
+      guide.className = "anchorGuide";
+      [0, 5, 10].forEach((score, index) => {
+        const item = document.createElement("div");
+        item.className = "anchorItem";
+        const value = document.createElement("span");
+        value.className = "anchorScore";
+        value.textContent = score;
+        const label = document.createElement("span");
+        label.textContent = dimension.anchors[index];
+        item.append(value, label);
+        guide.appendChild(item);
+      });
+      cell.appendChild(guide);
+      row.appendChild(cell);
+      return row;
     }
 
-    function syncNoteRowHeight(dimensionId) {
-      const textareas = Array.from(scoreBody.querySelectorAll(`.noteInput[data-dimension-id="${dimensionId}"]`));
-      if (!textareas.length) {
+    function updateOfferNoteButtonState(button, offer) {
+      const note = offer.note?.trim() || "";
+      const preview = document.createElement("span");
+      preview.className = "offerNotePreview";
+      preview.textContent = note || "+ 添加备注";
+      button.replaceChildren(preview);
+      button.classList.toggle("hasNote", Boolean(note));
+      button.title = note || "添加 Offer 备注";
+      button.setAttribute(
+        "aria-label",
+        note ? `编辑 ${offer.name} Offer 备注：${note}` : `添加 ${offer.name} Offer 备注`
+      );
+    }
+
+    function updateNoteButtonState(button, offer, dimension) {
+      const note = offer.notes[dimension.id]?.trim() || "";
+      const preview = document.createElement("span");
+      preview.className = "noteButtonPreview";
+      preview.textContent = note || "+ 添加依据";
+      button.replaceChildren(preview);
+      button.classList.toggle("hasNote", Boolean(note));
+      button.title = note || "添加评分依据";
+      button.setAttribute(
+        "aria-label",
+        note
+          ? `编辑 ${offer.name} ${dimension.label} 评分依据：${note}`
+          : `添加 ${offer.name} ${dimension.label} 评分依据`
+      );
+    }
+
+    function updateScoreProgress(activeArchive = getActiveArchive()) {
+      const comparisonStatus = getComparisonStatus(dimensions, activeArchive);
+      scoreProgress.textContent = `${comparisonStatus.completedScoreCount} / ${comparisonStatus.totalRequiredScoreCount} 已评分`;
+      return comparisonStatus;
+    }
+
+    function openOfferNoteEditor(offerId) {
+      const activeArchive = getActiveArchive();
+      const offer = activeArchive.offers.find((item) => item.id === offerId);
+      const currentEditor = scoreBody.querySelector(".offerNoteEditorRow");
+      if (!offer) {
+        return;
+      }
+      if (activeOfferNoteId === offerId && currentEditor) {
+        closeOfferNoteEditor();
         return;
       }
 
-      let targetHeight = 0;
-      textareas.forEach((textarea) => {
-        const { minHeight, maxHeight } = getNoteHeightLimits(textarea);
-        textarea.style.height = `${minHeight}px`;
-        const naturalHeight = textarea.scrollHeight + getVerticalBorderSize(textarea);
-        targetHeight = Math.max(targetHeight, Math.min(naturalHeight, maxHeight));
-      });
+      closeNoteEditor();
+      activeOfferNoteId = offerId;
+      currentEditor?.remove();
+      scoreHead.querySelectorAll(".offerNoteButton").forEach((button) => button.setAttribute("aria-expanded", "false"));
 
-      textareas.forEach((textarea) => {
-        const { minHeight, maxHeight } = getNoteHeightLimits(textarea);
-        const height = Math.max(minHeight, Math.min(targetHeight, maxHeight));
-        textarea.style.height = `${height}px`;
-        textarea.classList.toggle("isScrollable", textarea.scrollHeight + getVerticalBorderSize(textarea) > height + 1);
-      });
-    }
+      const noteButton = scoreHead.querySelector(`.offerNoteButton[data-offer-id="${offerId}"]`);
+      noteButton?.setAttribute("aria-expanded", "true");
 
-    function getNoteHeightLimits(textarea) {
-      const style = window.getComputedStyle(textarea);
-      const fontSize = Number.parseFloat(style.fontSize) || 16;
-      const lineHeight = Number.parseFloat(style.lineHeight) || fontSize * 1.45;
-      const paddingY = Number.parseFloat(style.paddingTop) + Number.parseFloat(style.paddingBottom);
-      const borderY = getVerticalBorderSize(textarea);
+      const row = document.createElement("tr");
+      row.className = "offerNoteEditorRow";
+      row.id = `offer-note-editor-${offerId}`;
+      const cell = document.createElement("td");
+      cell.colSpan = activeArchive.offers.length + 1;
 
-      return {
-        minHeight: Math.ceil(lineHeight + paddingY + borderY),
-        maxHeight: Math.ceil(lineHeight * MAX_NOTE_LINES + paddingY + borderY)
+      const editor = document.createElement("div");
+      editor.className = "noteEditor";
+      const header = document.createElement("div");
+      header.className = "noteEditorHeader";
+      const title = document.createElement("p");
+      title.className = "noteEditorTitle";
+      title.textContent = `${offer.name} · 整体备注`;
+      const editorStatus = document.createElement("span");
+      editorStatus.className = "noteEditorStatus";
+      editorStatus.setAttribute("aria-live", "polite");
+      const closeButton = document.createElement("button");
+      closeButton.className = "noteEditorClose";
+      closeButton.type = "button";
+      closeButton.textContent = "×";
+      closeButton.setAttribute("aria-label", `关闭 ${offer.name} 备注编辑`);
+      closeButton.addEventListener("click", () => closeOfferNoteEditor({ restoreFocus: true }));
+      const completeButton = document.createElement("button");
+      completeButton.className = "noteEditorComplete";
+      completeButton.type = "button";
+      completeButton.textContent = "完成";
+      completeButton.setAttribute("aria-label", `完成 ${offer.name} 备注编辑`);
+      completeButton.addEventListener("click", () => closeOfferNoteEditor({ restoreFocus: true }));
+      header.append(title, editorStatus, closeButton, completeButton);
+
+      const textarea = document.createElement("textarea");
+      textarea.className = "noteEditorInput";
+      textarea.rows = 3;
+      textarea.value = offer.note || "";
+      textarea.placeholder = "记录这份 Offer 的整体备注";
+      textarea.setAttribute("aria-label", `${offer.name} Offer 备注`);
+      const updateEditorStatus = () => {
+        const hasNote = textarea.value.trim().length > 0;
+        editorStatus.textContent = hasNote ? "已保存" : "自动保存";
+        editorStatus.classList.toggle("isSaved", hasNote);
       };
+      updateEditorStatus();
+      textarea.addEventListener("input", (event) => {
+        offer.note = event.target.value;
+        updateOfferNoteButtonState(noteButton, offer);
+        saveState();
+        updateEditorStatus();
+      });
+
+      editor.append(header, textarea);
+      cell.appendChild(editor);
+      row.appendChild(cell);
+      scoreBody.prepend(row);
+      syncNoteEditorOffset();
+      textarea.focus({ preventScroll: true });
     }
 
-    function getVerticalBorderSize(element) {
-      const style = window.getComputedStyle(element);
-      return Number.parseFloat(style.borderTopWidth) + Number.parseFloat(style.borderBottomWidth);
+    function closeOfferNoteEditor({ restoreFocus = false } = {}) {
+      const offerId = activeOfferNoteId;
+      activeOfferNoteId = null;
+      scoreBody.querySelector(".offerNoteEditorRow")?.remove();
+      scoreHead.querySelectorAll(".offerNoteButton").forEach((button) => button.setAttribute("aria-expanded", "false"));
+      if (restoreFocus && offerId) {
+        requestAnimationFrame(() => {
+          scoreHead.querySelector(`.offerNoteButton[data-offer-id="${offerId}"]`)?.focus();
+        });
+      }
+    }
+
+    function openNoteEditor(offerId, dimensionId) {
+      const activeArchive = getActiveArchive();
+      const offer = activeArchive.offers.find((item) => item.id === offerId);
+      const dimension = dimensions.find((item) => item.id === dimensionId);
+      const currentEditor = scoreBody.querySelector(".noteEditorRow");
+      if (!offer || !dimension) {
+        return;
+      }
+      if (
+        activeNoteSelection?.offerId === offerId &&
+        activeNoteSelection?.dimensionId === dimensionId &&
+        currentEditor
+      ) {
+        closeNoteEditor();
+        return;
+      }
+
+      closeOfferNoteEditor();
+      activeNoteSelection = { offerId, dimensionId };
+      currentEditor?.remove();
+      scoreBody.querySelectorAll(".scoreCell.isActive").forEach((cell) => cell.classList.remove("isActive"));
+      scoreBody.querySelectorAll(".noteButton").forEach((button) => button.setAttribute("aria-expanded", "false"));
+
+      const activeCell = scoreBody.querySelector(`.scoreCell[data-offer-id="${offerId}"][data-dimension-id="${dimensionId}"]`);
+      activeCell?.classList.add("isActive");
+      const noteButton = activeCell?.querySelector(".noteButton");
+      noteButton?.setAttribute("aria-expanded", "true");
+
+      const row = document.createElement("tr");
+      row.className = "noteEditorRow";
+      const cell = document.createElement("td");
+      cell.colSpan = activeArchive.offers.length + 1;
+
+      const editor = document.createElement("div");
+      editor.className = "noteEditor";
+      const header = document.createElement("div");
+      header.className = "noteEditorHeader";
+      const title = document.createElement("p");
+      title.className = "noteEditorTitle";
+      title.textContent = `${offer.name} · ${dimension.label}`;
+      const editorStatus = document.createElement("span");
+      editorStatus.className = "noteEditorStatus";
+      editorStatus.setAttribute("aria-live", "polite");
+      const closeButton = document.createElement("button");
+      closeButton.className = "noteEditorClose";
+      closeButton.type = "button";
+      closeButton.textContent = "×";
+      closeButton.setAttribute("aria-label", "关闭依据编辑");
+      closeButton.addEventListener("click", closeNoteEditor);
+      const completeButton = document.createElement("button");
+      completeButton.className = "noteEditorComplete";
+      completeButton.type = "button";
+      completeButton.textContent = "完成";
+      completeButton.setAttribute("aria-label", "完成依据编辑");
+      completeButton.addEventListener("click", closeNoteEditor);
+      header.append(title, editorStatus, closeButton, completeButton);
+
+      const textarea = document.createElement("textarea");
+      textarea.className = "noteEditorInput";
+      textarea.rows = 2;
+      textarea.value = offer.notes[dimensionId] || "";
+      textarea.placeholder = "记录依据（可选）";
+      textarea.setAttribute("aria-label", `${offer.name} ${dimension.label} 判断依据`);
+      const updateEditorStatus = () => {
+        const hasNote = textarea.value.trim().length > 0;
+        editorStatus.textContent = hasNote ? "已保存" : "未填写";
+        editorStatus.classList.toggle("isSaved", hasNote);
+      };
+      updateEditorStatus();
+      textarea.addEventListener("input", (event) => {
+        offer.notes[dimensionId] = event.target.value;
+        updateNoteButtonState(noteButton, offer, dimension);
+        saveState();
+        updateEditorStatus();
+      });
+
+      editor.append(header, textarea);
+      cell.appendChild(editor);
+      row.appendChild(cell);
+      scoreBody.querySelector(`tr[data-dimension-id="${dimensionId}"]`)?.after(row);
+      syncNoteEditorOffset();
+      textarea.focus({ preventScroll: true });
+    }
+
+    function closeNoteEditor() {
+      activeNoteSelection = null;
+      scoreBody.querySelector(".noteEditorRow")?.remove();
+      scoreBody.querySelectorAll(".scoreCell.isActive").forEach((cell) => cell.classList.remove("isActive"));
+      scoreBody.querySelectorAll(".noteButton").forEach((button) => button.setAttribute("aria-expanded", "false"));
+    }
+
+    function syncNoteEditorOffset() {
+      const editor = scoreBody.querySelector(".noteEditor");
+      if (editor) {
+        editor.style.transform = `translateX(${scoreTableWrap.scrollLeft}px)`;
+      }
+    }
+
+    function getMinimumSettingsSummary(minimumScores, isExpanded = false) {
+      const count = Object.values(minimumScores)
+        .filter((value) => Number.isInteger(Number(value)) && Number(value) >= 1).length;
+      return {
+        count,
+        label: isExpanded ? "完成" : count ? `底线 ${count} 项` : "设置底线"
+      };
     }
 
     function renderWeights() {
       const activeArchive = getActiveArchive();
+      const minimumSummary = getMinimumSettingsSummary(activeArchive.minimumScores, minimumSettingsExpanded);
+      minimumSettingsButton.textContent = minimumSummary.label;
+      minimumSettingsButton.setAttribute("aria-expanded", String(minimumSettingsExpanded));
       weightControls.innerHTML = "";
       dimensions.forEach((dimension) => {
         const wrapper = document.createElement("div");
@@ -2616,10 +3071,12 @@
         range.min = "0";
         range.max = "10";
         range.step = "1";
+        range.className = "weightRange";
         range.value = activeArchive.weights[dimension.id];
         range.addEventListener("input", (event) => {
           activeArchive.weights[dimension.id] = Number(event.target.value);
           value.textContent = event.target.value;
+          updateScoreProgress(activeArchive);
           renderRanking();
           drawRadar();
           saveState();
@@ -2629,7 +3086,55 @@
         value.className = "weightValue";
         value.textContent = activeArchive.weights[dimension.id];
 
-        wrapper.append(label, range, value);
+        wrapper.append(label, value, range);
+
+        const minimumValue = activeArchive.minimumScores[dimension.id];
+        if (minimumSettingsExpanded) {
+          const minimumControl = document.createElement("div");
+          minimumControl.className = "minimumControl";
+          const minimumLabel = document.createElement("span");
+          minimumLabel.className = "minimumLabel";
+          minimumLabel.textContent = "底线";
+          const minimum = document.createElement("select");
+          minimum.id = `minimum-${dimension.id}`;
+          minimum.className = "minimumSelect";
+          minimum.setAttribute("aria-label", `${dimension.label} 最低可接受分`);
+          const emptyOption = document.createElement("option");
+          emptyOption.value = "";
+          emptyOption.textContent = "无";
+          minimum.appendChild(emptyOption);
+          for (let score = 1; score <= 10; score += 1) {
+            const option = document.createElement("option");
+            option.value = String(score);
+            option.textContent = `${score} 分`;
+            minimum.appendChild(option);
+          }
+          minimum.value = String(minimumValue || "");
+          minimum.addEventListener("change", (event) => {
+            activeArchive.minimumScores[dimension.id] = event.target.value === ""
+              ? ""
+              : Number(event.target.value);
+            const nextSummary = getMinimumSettingsSummary(activeArchive.minimumScores, minimumSettingsExpanded);
+            minimumSettingsButton.textContent = nextSummary.label;
+            renderRanking();
+            drawRadar();
+            saveState();
+          });
+          minimumControl.append(minimumLabel, minimum);
+          wrapper.append(minimumControl);
+        } else if (minimumValue !== "" && minimumValue != null) {
+          const minimumSummaryButton = document.createElement("button");
+          minimumSummaryButton.className = "minimumSummary";
+          minimumSummaryButton.type = "button";
+          minimumSummaryButton.textContent = `底线 >= ${minimumValue}`;
+          minimumSummaryButton.setAttribute("aria-label", `${dimension.label} 底线 ${minimumValue} 分`);
+          minimumSummaryButton.addEventListener("click", () => {
+            minimumSettingsExpanded = true;
+            renderWeights();
+            document.getElementById(`minimum-${dimension.id}`)?.focus({ preventScroll: true });
+          });
+          wrapper.append(minimumSummaryButton);
+        }
         weightControls.appendChild(wrapper);
       });
     }
@@ -2655,7 +3160,11 @@
     }
 
     function getRanking() {
-      return getActiveArchive().offers
+      const activeArchive = getActiveArchive();
+      const { eligibleOfferIds } = getHardConstraintStatus(dimensions, activeArchive);
+      const eligibleIds = new Set(eligibleOfferIds);
+      return activeArchive.offers
+        .filter((offer) => eligibleIds.has(offer.id))
         .map((offer) => ({
           ...offer,
           weightedScore: getWeightedScore(offer)
@@ -2664,10 +3173,17 @@
     }
 
     function renderRanking() {
+      const activeArchive = getActiveArchive();
+      const comparisonStatus = getComparisonStatus(dimensions, activeArchive);
+      const constraintStatus = getHardConstraintStatus(dimensions, activeArchive);
       const ranking = getRanking();
       const topOffer = ranking[0];
-      winnerName.textContent = topOffer ? topOffer.name : "-";
-      winnerScore.textContent = topOffer ? topOffer.weightedScore.toFixed(2) : "0.00";
+      const explanation = getRecommendationExplanation(dimensions, ranking, activeArchive.weights);
+
+      winnerTitle.textContent = "当前推荐";
+      winnerName.textContent = topOffer ? topOffer.name : "暂无推荐";
+      winnerScore.textContent = topOffer ? topOffer.weightedScore.toFixed(2) : "-";
+      radarNote.textContent = "权重与推荐差异";
 
       rankingList.innerHTML = "";
       ranking.forEach((offer, index) => {
@@ -2695,124 +3211,148 @@
         row.append(number, name, score, bar);
         rankingList.appendChild(row);
       });
+
+      const details = topOffer
+        ? [
+          [
+            "最高贡献",
+            explanation.primaryStrength
+              ? `${explanation.primaryStrength.label} · 加权贡献 ${explanation.primaryStrength.value.toFixed(1)}`
+              : "暂无已填写分数"
+          ],
+          [
+            "最低项",
+            explanation.primaryWeakness
+              ? `${explanation.primaryWeakness.label} · ${explanation.primaryWeakness.value} 分`
+              : "暂无已填写分数"
+          ],
+          [
+            "关键差异",
+            explanation.keyDifference && ranking[1]
+              ? `${explanation.keyDifference.label} · 较 ${ranking[1].name} ${explanation.keyDifference.value >= 0 ? "+" : ""}${explanation.keyDifference.value.toFixed(1)} 加权分`
+              : "暂无第二名可比较"
+          ]
+        ]
+        : [
+          ["最高贡献", "所有 Offer 均未满足底线"],
+          ["最低项", "调整底线或重新评分"],
+          ["关键差异", "暂无合格 Offer 可比较"]
+        ];
+      recommendationDetails.innerHTML = "";
+      const detailsTitle = document.createElement("h3");
+      detailsTitle.className = "recommendationDetailsTitle";
+      detailsTitle.textContent = "决策依据";
+      recommendationDetails.appendChild(detailsTitle);
+      details.forEach(([label, content]) => {
+        const row = document.createElement("div");
+        row.className = "recommendationDetail";
+        const title = document.createElement("span");
+        title.className = "recommendationDetailLabel";
+        title.textContent = label;
+        const value = document.createElement("span");
+        value.textContent = content;
+        row.append(title, value);
+        recommendationDetails.appendChild(row);
+      });
+      renderConstraintFailures(constraintStatus.failures);
+      updateSummaryAvailability(comparisonStatus, Boolean(topOffer));
     }
 
-    function buildRecommendationJson() {
-      const activeArchive = getActiveArchive();
-      const totalWeight = getTotalWeight(activeArchive);
-      const rankedOffers = getRanking();
-      const selectedOffer = rankedOffers[0] || null;
+    function renderConstraintFailures(failures) {
+      constraintFailures.innerHTML = "";
+      constraintFailures.classList.toggle("isHidden", failures.length === 0);
+      if (!failures.length) {
+        return;
+      }
 
-      return {
-        schemaVersion: "recommendation_result.v1",
-        archive: {
-          name: activeArchive.name
-        },
-        scoringRule: {
-          method: "weighted_average",
-          formula: "sum(score * weight) / sum(weight)",
-          scoreRange: [0, 10],
-          higherIsBetter: true,
-          totalWeight
-        },
-        dimensions: dimensions.map((dimension) => ({
-          id: dimension.id,
-          label: dimension.label,
-          weight: activeArchive.weights[dimension.id]
-        })),
-        offers: rankedOffers.map((offer, index) => {
-          const weightedSum = getWeightedSum(offer, activeArchive);
-          return {
-            id: offer.id,
-            name: offer.name,
-            rank: index + 1,
-            weightedScore: roundScore(offer.weightedScore),
-            weightedSum: roundScore(weightedSum),
-            scores: Object.fromEntries(dimensions.map((dimension) => [
-              dimension.id,
-              getExportScore(offer.scores[dimension.id])
-            ])),
-            weightedContributions: Object.fromEntries(dimensions.map((dimension) => [
-              dimension.id,
-              roundScore(getScoreNumber(offer.scores[dimension.id]) * activeArchive.weights[dimension.id])
-            ])),
-            notes: Object.fromEntries(dimensions.map((dimension) => [
-              dimension.id,
-              offer.notes[dimension.id] || ""
-            ]))
-          };
-        }),
-        recommendation: {
-          selectedOfferId: selectedOffer?.id || null,
-          selectedOfferName: selectedOffer?.name || null,
-          selectedOfferRank: selectedOffer ? 1 : null,
-          selectedOfferWeightedScore: selectedOffer ? roundScore(selectedOffer.weightedScore) : null
-        }
-      };
+      const title = document.createElement("h3");
+      title.className = "constraintFailuresTitle";
+      title.textContent = "未满足底线";
+      constraintFailures.appendChild(title);
+      failures.forEach((failure) => {
+        const row = document.createElement("div");
+        row.className = "constraintFailure";
+        const name = document.createElement("span");
+        name.className = "constraintFailureName";
+        name.textContent = failure.offerName;
+        const reason = document.createElement("span");
+        reason.className = "constraintFailureReason";
+        reason.textContent = failure.dimensions
+          .map((dimension) => `${dimension.label} ${dimension.score}/${dimension.minimum}`)
+          .join("、");
+        row.append(name, reason);
+        constraintFailures.appendChild(row);
+      });
     }
 
-    function roundScore(value) {
-      return Number(Number(value || 0).toFixed(2));
+    function getAiSummaryEndpoint() {
+      return AI_SUMMARY_ENDPOINT.trim().replace(/\/+$/, "");
+    }
+
+    function updateSummaryAvailability(
+      comparisonStatus = getComparisonStatus(dimensions, getActiveArchive()),
+      hasEligibleOffer = getRanking().length > 0
+    ) {
+      const ready = canGenerateDecisionSummary(comparisonStatus, hasEligibleOffer);
+      generateSummaryButton.disabled = !ready;
+      generateSummaryButton.textContent = hasGeneratedDecisionSummary && !hasMarkedDecisionSummaryStale
+        ? "重新生成 AI 分析"
+        : "生成 AI 分析";
+      if (!comparisonStatus.isComplete) {
+        summaryHint.textContent = `完成评分后可生成分析（${comparisonStatus.completedScoreCount}/${comparisonStatus.totalRequiredScoreCount}）`;
+      } else if (!hasEligibleOffer) {
+        summaryHint.textContent = "暂无满足底线的 Offer";
+      } else {
+        summaryHint.textContent = "基于当前评分生成可复盘的决策说明";
+      }
     }
 
     async function generateDecisionSummary() {
-      if (!isSupabaseConfigured()) {
-        showToast("请先配置 Supabase 后再生成决策总结。", "error");
+      const endpoint = getAiSummaryEndpoint();
+      const activeArchive = getActiveArchive();
+      const comparisonStatus = getComparisonStatus(dimensions, activeArchive);
+      const rankedOffers = getRanking();
+      if (!canGenerateDecisionSummary(comparisonStatus, rankedOffers.length > 0)) {
         return;
       }
 
-      if (!supabaseClient) {
-        showToast("Supabase 还在初始化，请稍后再试。", "error");
-        return;
-      }
-
-      if (!currentUser) {
-        showToast("请先登录后再生成决策总结。", "error");
-        return;
-      }
-
-      const recommendationJson = buildRecommendationJson();
+      const recommendation = buildSummaryPayload({
+        dimensions,
+        activeArchive,
+        rankedOffers,
+        comparisonStatus
+      });
       generateSummaryButton.disabled = true;
       generateSummaryButton.textContent = "生成中...";
-      decisionSummaryToast = showToast("正在生成决策总结...", "info", {
-        persist: true,
-        toast: decisionSummaryToast
+      let summary = buildLocalDecisionSummary({
+        dimensions,
+        activeArchive,
+        rankedOffers,
+        comparisonStatus
       });
 
-      try {
-        const { data, error } = await supabaseClient.functions.invoke("generate-decision-summary", {
-          body: {
-            recommendation: recommendationJson
+      if (endpoint) {
+        try {
+          const response = await fetch(`${endpoint}/summary`, {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify(recommendation),
+            signal: AbortSignal.timeout(8000)
+          });
+          const data = await response.json();
+          if (!response.ok || !data?.summary) {
+            throw new Error(data?.error || "empty summary");
           }
-        });
-
-        if (error) {
-          throw error;
+          summary = data.summary;
+        } catch (error) {
+          console.warn("AI summary unavailable", error);
         }
-
-        if (data?.error) {
-          throw new Error(data.error);
-        }
-
-        if (!data?.summary) {
-          throw new Error("API 没有返回 summary。");
-        }
-
-        hasGeneratedDecisionSummary = true;
-        hasShownDecisionSummaryStaleToast = false;
-        decisionSummaryText.textContent = data.summary;
-        decisionSummaryToast = showToast("已基于当前数据生成。", "success", {
-          toast: decisionSummaryToast
-        });
-      } catch (error) {
-        console.error("generate decision summary failed", error);
-        decisionSummaryToast = showToast(`生成失败：${error.message || "请稍后重试。"}`, "error", {
-          toast: decisionSummaryToast
-        });
-      } finally {
-        generateSummaryButton.disabled = false;
-        generateSummaryButton.textContent = "生成决策总结";
       }
+
+      hasGeneratedDecisionSummary = true;
+      hasMarkedDecisionSummaryStale = false;
+      decisionSummaryText.textContent = summary;
+      updateSummaryAvailability();
     }
 
     function getThemeColor(name) {
@@ -2862,7 +3402,7 @@
       context.lineWidth = 1;
       context.strokeStyle = colors.border;
       context.fillStyle = colors.textMuted;
-      context.font = "700 10px DM Sans, PingFang SC, sans-serif";
+      context.font = "700 10px -apple-system, BlinkMacSystemFont, PingFang SC, sans-serif";
       context.textAlign = "center";
       context.textBaseline = "middle";
 
@@ -2896,7 +3436,7 @@
       });
       drawPolygon(weightPoints, true, colors.borderStrong, colorWithAlpha(colors.borderStrong, 0.18));
 
-      const topOffer = getRanking()[0];
+      const topOffer = getRanking()[0] || null;
       if (topOffer) {
         const offerPoints = dimensions.map((dimension, index) => {
           const angle = getAngle(index, count);
@@ -2905,7 +3445,7 @@
         drawPolygon(offerPoints, true, colors.primary, colorWithAlpha(colors.primary, 0.16));
       }
 
-      drawLegend(size, colors);
+      drawLegend(size, colors, Boolean(topOffer));
     }
 
     function getAngle(index, count) {
@@ -2947,15 +3487,15 @@
       }
     }
 
-    function drawLegend(size, colors) {
-      const items = [
-        { label: "权重", color: colors.borderStrong },
-        { label: "第一名", color: colors.primary }
-      ];
+    function drawLegend(size, colors, hasTopOffer) {
+      const items = [{ label: "权重", color: colors.borderStrong }];
+      if (hasTopOffer) {
+        items.push({ label: "第一名", color: colors.primary });
+      }
       const y = size - 10;
       let x = size / 2 - 58;
 
-      context.font = "800 11px DM Sans, PingFang SC, sans-serif";
+      context.font = "800 11px -apple-system, BlinkMacSystemFont, PingFang SC, sans-serif";
       context.textAlign = "left";
       context.textBaseline = "middle";
       items.forEach((item) => {
@@ -2980,6 +3520,7 @@
         id: crypto.randomUUID(),
         name: `Offer ${nextNumber}`,
         scores,
+        note: "",
         notes
       });
       render();
@@ -2993,15 +3534,7 @@
       });
     }
 
-    function restoreDemoLocally() {
-      isApplyingCloudState = true;
-      state = getDefaultState();
-      render();
-      isApplyingCloudState = false;
-    }
-
     render();
-    initSupabase();
   </script>
 </body>
 </html>

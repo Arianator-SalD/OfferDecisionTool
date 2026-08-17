@@ -1,126 +1,73 @@
-# OfferDecisionTool
+# Offer 比较
 
-OfferDecisionTool 是一个面向职业选择场景的 offer 决策档案工具。它帮助用户把不同 offer 的关键信息、维度打分、权重偏好和最终排序放在同一个界面里，形成可复盘、可同步的决策记录。
+一个本地优先的 Offer 决策工具，用于对比多个 Offer 的权重、评分、备注和最终排名。
 
-当前版本以单页静态应用为主，入口文件是 `index.html`。本地可以直接打开使用；配置 Supabase 后，可以开启账号登录、云端同步和 AI 决策总结。
+## 功能
 
-## 核心功能
+- 对多个 Offer 进行 0-10 分的六维比较。
+- 调整各维度权重，并按需设置底线。
+- 保存 Offer 整体备注和每项评分依据。
+- 实时生成排名、关键差异和评分画像。
+- 支持多个决策档案，数据默认保存在当前浏览器。
+- AI 服务不可用时，仍会生成本地决策分析。
 
-- 多 offer 横向比较：为每个 offer 记录备注和 0-10 分。
-- 自定义权重：按业务前景、兴趣程度、待遇、工作地、工作生活平衡、转正概率等维度调整排序逻辑。
-- 实时推荐：自动计算加权分，展示当前最佳 offer 和完整排名。
-- 雷达图：同时展示权重分布和当前最高分 offer 的能力轮廓。
-- 职业选择档案：支持新建、切换、重命名、删除档案；每个档案独立保存 offer、权重、备注和排序。
-- 本地保存：默认使用浏览器 `localStorage` 保存数据。
-- 云端同步：配置 Supabase 后支持邮箱登录、GitHub OAuth 和跨设备恢复。
-- AI 决策总结：通过 Supabase Edge Function 调用 DeepSeek，根据当前内部推荐 JSON 生成简短中文总结。
+## 快速启动
 
-## 技术栈
-
-- 前端：原生 HTML/CSS/JavaScript，单文件静态应用。
-- 数据同步：Supabase Auth + Postgres + Row Level Security。
-- 云函数：Supabase Edge Functions，Deno runtime。
-- AI 总结：DeepSeek Chat Completions API。
-- 部署：可直接部署到任意静态托管服务。
-
-## 项目结构
-
-```text
-.
-├── index.html
-├── supabase-schema.sql
-├── supabase/
-│   └── functions/
-│       ├── .env.example
-│       └── generate-decision-summary/
-│           └── index.ts
-├── package.json
-└── README.md
-```
-
-## 本地使用
-
-这个项目不依赖前端构建流程。只需要在浏览器中打开 `index.html` 即可使用本地保存版本。
-
-如果要通过本地静态服务器访问，也可以在项目根目录运行：
+项目不需要安装依赖或构建。解压后在项目目录运行：
 
 ```bash
 python3 -m http.server 5173
 ```
 
-然后打开：
+Windows 也可以使用：
+
+```powershell
+py -m http.server 5173
+```
+
+然后打开 `http://127.0.0.1:5173/`。由于页面使用 ES Module，不建议直接双击 `index.html`。
+
+## 数据与隐私
+
+- 档案、评分和备注保存在浏览器 `localStorage` 中。
+- 清除该站点的浏览器数据会删除本地档案。
+- 默认不上传备注。启用远程 AI 时，只传递权重、分数、排名和推荐结果。
+
+## 静态部署
+
+将以下三个文件部署到任意静态托管服务即可：
 
 ```text
-http://localhost:5173
+index.html
+decision-logic.mjs
+summary-payload.mjs
 ```
 
-## Supabase 配置
+## 可选：Cloudflare AI
 
-云端同步依赖 `offer_boards` 表。先在 Supabase SQL Editor 中执行：
+默认情况下，“生成 AI 分析”会使用本地逻辑给出结果。需要接入 Cloudflare Workers AI 时：
 
-```sql
--- see supabase-schema.sql
-```
+1. 把 `wrangler.jsonc` 中的 `ALLOWED_ORIGIN` 改为静态站点来源。
+2. 运行 `npx wrangler login` 和 `npx wrangler deploy`。
+3. 把 Worker URL 填入 `index.html` 中的 `AI_SUMMARY_ENDPOINT`。
 
-也可以直接复制 `supabase-schema.sql` 的完整内容执行。该 schema 会创建 `offer_boards` 表，并启用 RLS，确保用户只能读写自己的决策档案。
+远程 AI 请求失败时会自动使用本地分析，不影响主要功能。
 
-前端目前在 `index.html` 中配置：
+## 测试
 
-```js
-const SUPABASE_URL = "...";
-const SUPABASE_ANON_KEY = "...";
-```
-
-配置完成后，页面会启用登录、注册、退出和自动云端同步。
-
-## GitHub OAuth
-
-如果要使用 GitHub 登录，需要在 Supabase Dashboard 中开启 GitHub Provider，并配置 OAuth App 的 callback URL。前端会使用当前页面地址作为登录后的跳转地址。
-
-## AI 决策总结
-
-AI 总结由 Supabase Edge Function `generate-decision-summary` 提供。它接收前端生成的 `recommendation_result.v1` JSON，并调用 DeepSeek API 返回 2-3 句中文总结。
-
-安装 Supabase CLI 依赖：
+需要 Node.js 18 或更高版本：
 
 ```bash
-npm install
+npm test
 ```
 
-配置函数环境变量：
+## 文件说明
 
-```bash
-cp supabase/functions/.env.example supabase/functions/.env
+```text
+index.html             页面、样式与交互
+decision-logic.mjs     评分、排名与底线逻辑
+summary-payload.mjs    本地分析与 AI 请求数据
+worker.js              Cloudflare Workers AI 接口
+wrangler.jsonc         Cloudflare Worker 配置
+tests/                 回归测试
 ```
-
-在 Supabase 项目中配置 secrets：
-
-```bash
-npx supabase secrets set DEEPSEEK_API_KEY=sk-your-deepseek-api-key
-npx supabase secrets set DEEPSEEK_MODEL=deepseek-v4-flash
-```
-
-部署函数：
-
-```bash
-npx supabase functions deploy generate-decision-summary
-```
-
-## AI 总结输入 JSON
-
-前端在调用 AI 总结时会内部生成 `recommendation_result.v1` JSON，主要包含：
-
-- `archive`：当前档案名称。
-- `scoringRule`：加权平均公式、分数范围和总权重。
-- `dimensions`：所有维度及当前权重。
-- `offers`：每个 offer 的排名、加权分、原始分数、加权贡献和备注。
-- `recommendation`：最终推荐 offer 的 ID、名称、排名和加权分。
-
-这个 JSON 目前作为 AI 决策总结的内部输入，不作为前台导出功能展示。
-
-## 当前状态
-
-- 前端核心功能已在 `index.html` 中实现。
-- Supabase 数据表 schema 已准备好。
-- DeepSeek 总结函数已放在 `supabase/functions/generate-decision-summary`。
-- 仍建议在正式发布前补充一次端到端测试：本地保存、登录同步、GitHub OAuth、AI 总结、JSON 导出和移动端布局。
